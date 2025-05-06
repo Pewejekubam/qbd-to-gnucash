@@ -1,0 +1,91 @@
+{
+  "metadata": {
+    "version": "1.8",
+    "last_updated": "2025-05-06",
+    "description": "Comprehensive mapping of QuickBooks account types to GNUCash hierarchy and structure"
+  },
+  "account_types": {
+    "BANK": {
+      "gnucash_type": "BANK",
+      "destination_hierarchy": "Assets:Current Assets",
+      "placeholder": false
+    },
+    "AR": {
+      "gnucash_type": "RECEIVABLE",
+      "destination_hierarchy": "Assets:Accounts Receivable",
+      "placeholder": false
+    },
+    "OCASSET": {
+      "gnucash_type": "ASSET",
+      "destination_hierarchy": "Assets:Current Assets:Other Current Assets",
+      "placeholder": true
+    },
+    "FIXASSET": {
+      "gnucash_type": "ASSET",
+      "destination_hierarchy": "Assets:Fixed Assets",
+      "placeholder": true
+    },
+    "AP": {
+      "gnucash_type": "PAYABLE",
+      "destination_hierarchy": "Liabilities:Accounts Payable",
+      "placeholder": false
+    },
+    "CCARD": {
+      "gnucash_type": "CREDIT",
+      "destination_hierarchy": "Liabilities:Credit Cards",
+      "placeholder": false
+    },
+    "OCLIAB": {
+      "gnucash_type": "LIABILITY",
+      "destination_hierarchy": "Liabilities:Current Liabilities",
+      "placeholder": true
+    },
+    "LTLIAB": {
+      "gnucash_type": "LIABILITY",
+      "destination_hierarchy": "Liabilities:Long Term Liabilities",
+      "placeholder": true
+    },
+    "EQUITY": {
+      "gnucash_type": "EQUITY",
+      "destination_hierarchy": "Equity",
+      "placeholder": true
+    },
+    "INC": {
+      "gnucash_type": "INCOME",
+      "destination_hierarchy": "Income",
+      "placeholder": true
+    },
+    "COGS": {
+      "gnucash_type": "EXPENSE",
+      "destination_hierarchy": "Expenses:Cost of Goods Sold",
+      "placeholder": false
+    },
+    "EXP": {
+      "gnucash_type": "EXPENSE",
+      "destination_hierarchy": "Expenses",
+      "placeholder": true
+    },
+    "EXINC": {
+      "gnucash_type": "INCOME",
+      "destination_hierarchy": "Income:Other Income",
+      "placeholder": true
+    },
+    "EXEXP": {
+      "gnucash_type": "EXPENSE",
+      "destination_hierarchy": "Expenses:Other Expenses",
+      "placeholder": true
+    },
+    "NONPOSTING": {
+      "gnucash_type": "ASSET",
+      "destination_hierarchy": "Assets:Non-Posting",
+      "placeholder": true
+    }
+  },
+  "default_rules": {
+    "unmapped_accounts": {
+      "gnucash_type": "ASSET",
+      "destination_hierarchy": "Assets:Uncategorized",
+      "placeholder": false
+    }
+  }
+}

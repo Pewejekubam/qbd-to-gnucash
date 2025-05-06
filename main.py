@@ -9,6 +9,9 @@ def main():
     try:
         config.load_config()
 
+        baseline_mapping_file = 'mappings/account_mapping_baseline.json'
+        specific_mapping_file = os.path.join(config.output_dir, 'account_mapping_specific.json')
+
         print(f"Input directory: {config.input_dir}")
         print(f"Output directory: {config.output_dir}")
 
@@ -22,7 +25,12 @@ def main():
 
         for file_path in iif_files:
             print(f"Processing {file_path}")
-            convert_accounts(file_path, os.path.join(config.output_dir, 'accounts.csv'), 'mappings/accounts_mapping.json')
+            convert_accounts(
+                file_path,
+                os.path.join(config.output_dir, 'accounts.csv'),
+                baseline_mapping_file,
+                specific_mapping_file
+            )
 
     except Exception as e:
         handle_error(e)
