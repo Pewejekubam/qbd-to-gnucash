@@ -1,6 +1,6 @@
 # QuickBooks to GnuCash Converter
 
-This project converts QuickBooks IIF files into GnuCash-compatible CSV files. It uses modular JSON mappings to map QuickBooks account types to GnuCash-compatible hierarchies and attributes.
+This project converts QuickBooks IIF files into GnuCash-compatible CSV files and generates formatted HTML files for manual data entry of Sales Tax Codes and Payment Terms. It uses modular JSON mappings to map QuickBooks account types to GnuCash-compatible hierarchies and attributes.
 
 ## Features
 
@@ -10,6 +10,11 @@ This project converts QuickBooks IIF files into GnuCash-compatible CSV files. It
 - **Hierarchy Validation**: Ensures parent accounts are created before child accounts to maintain a valid GnuCash hierarchy.
 - **Placeholder Optimization**: Removes redundant placeholder accounts with only one child and promotes the child to the parent level.
 - **CSV Export**: Generates a GnuCash-compatible CSV file with all processed accounts.
+- **HTML Export for Sales Tax Codes and Payment Terms**: Converts Sales Tax Codes and Payment Terms into well-formatted HTML files to make manual data entry into GnuCash less of a pain.
+
+## Why HTML for Sales Tax Codes and Payment Terms?
+
+Manually entering Sales Tax Codes and Payment Terms into GnuCash can be tedious and error-prone. To alleviate this, the project generates HTML files that are formatted for easy readability. These files allow users to quickly reference the data and reduce the frustration of manual entry.
 
 ## Workflow Overview
 
@@ -41,28 +46,12 @@ This project converts QuickBooks IIF files into GnuCash-compatible CSV files. It
    - The processed accounts are written to an `accounts.csv` file in the output directory.
    - The accounts are sorted to ensure parent accounts are written before child accounts, maintaining a valid hierarchy.
 
-7. **Iterative Workflow**:
+7. **Generate HTML for Sales Tax Codes and Payment Terms**:
+   - Sales Tax Codes and Payment Terms are converted into formatted HTML files (`sales_tax_codes.html` and `payment_terms.html`) for easy manual entry into GnuCash.
+
+8. **Iterative Workflow**:
    - The user can modify the specific mapping file to refine the mappings.
    - The script can be re-run to generate an updated `accounts.csv` file based on the modified mappings.
-
-## File Structure
-
-### Metadata
-- `version`: Version of the mapping file.
-- `last_updated`: Last modification date.
-- `description`: Purpose of the file.
-
-### Account Types
-Each account type in QuickBooks is mapped to a GnuCash-compatible structure:
-- `gnucash_type`: Corresponds to GnuCash account type (`BANK`, `ASSET`, etc.).
-- `destination_hierarchy`: Target hierarchy in GnuCash.
-- `placeholder`: Boolean indicating if the account is a parent/grouping account.
-
-### Default Rules
-Unmapped accounts are routed to a default hierarchy.
-
-## Modular Approach
-Each list type (e.g., accounts, customers, vendors) has its own JSON mapping file under the `mappings` directory. This ensures scalability and easier maintenance.
 
 ## Example Usage
 
@@ -72,22 +61,27 @@ Each list type (e.g., accounts, customers, vendors) has its own JSON mapping fil
    python main.py
    ```
 3. Review the generated `account_mapping_specific.json` file (if created) and update it as needed.
-4. Re-run the script to generate the final `accounts.csv` file.
+4. Re-run the script to generate the final `accounts.csv` file and HTML files for Sales Tax Codes and Payment Terms.
 
 ## Output
-The output CSV file contains the following fields:
-- `Type`: GnuCash account type.
-- `Full Account Name`: Full hierarchical name of the account.
-- `Account Name`: Name of the account.
-- `Account Code`: Code associated with the account.
-- `Description`: Description of the account.
-- `Account Color`: (Optional) Color for the account.
-- `Notes`: (Optional) Additional notes for the account.
-- `Symbol`: Currency symbol (e.g., `USD`).
-- `Namespace`: Namespace for the account (e.g., `CURRENCY`).
-- `Hidden`: Whether the account is hidden.
-- `Tax Info`: Tax-related information.
-- `Placeholder`: Whether the account is a placeholder.
+The output includes:
+- **Accounts CSV**: A GnuCash-compatible CSV file containing the following fields:
+  - `Type`: GnuCash account type.
+  - `Full Account Name`: Full hierarchical name of the account.
+  - `Account Name`: Name of the account.
+  - `Account Code`: Code associated with the account.
+  - `Description`: Description of the account.
+  - `Account Color`: (Optional) Color for the account.
+  - `Notes`: (Optional) Additional notes for the account.
+  - `Symbol`: Currency symbol (e.g., `USD`).
+  - `Namespace`: Namespace for the account (e.g., `CURRENCY`).
+  - `Hidden`: Whether the account is hidden.
+  - `Tax Info`: Tax-related information.
+  - `Placeholder`: Whether the account is a placeholder.
+
+- **HTML Files**:
+  - `sales_tax_codes.html`: A formatted HTML file listing all Sales Tax Codes for easy manual entry into GnuCash.
+  - `payment_terms.html`: A formatted HTML file listing all Payment Terms for easy manual entry into GnuCash.
 
 ## External References
 This project aligns with the GnuCash CSV import logic, as detailed in the [GnuCash source code](https://github.com/Gnucash/gnucash/blob/stable/gnucash/import-export/csv-imp/assistant-csv-account-import.c). Key considerations include:
