@@ -1,17 +1,24 @@
 {
   "metadata": {
-    "version": "1.8",
-    "last_updated": "2025-05-06",
-    "description": "Comprehensive mapping of QuickBooks account types to GNUCash hierarchy and structure"
+    "version": "1.9",
+    "last_updated": "2025-05-07",
+    "description": "Baseline mapping of QuickBooks account types to GNUCash hierarchy and structure"
+  },
+  "basic_accounting_types": {
+    "ASSET": "Assets",
+    "LIABILITY": "Liabilities",
+    "EQUITY": "Equity", 
+    "INCOME": "Income",
+    "EXPENSE": "Expenses"
   },
   "account_types": {
     "BANK": {
-      "gnucash_type": "BANK",
+      "gnucash_type": "ASSET",
       "destination_hierarchy": "Assets:Current Assets",
       "placeholder": false
     },
     "AR": {
-      "gnucash_type": "RECEIVABLE",
+      "gnucash_type": "ASSET",
       "destination_hierarchy": "Assets:Accounts Receivable",
       "placeholder": false
     },
@@ -25,13 +32,23 @@
       "destination_hierarchy": "Assets:Fixed Assets",
       "placeholder": true
     },
+    "OASSET": {
+      "gnucash_type": "ASSET",
+      "destination_hierarchy": "Assets:Other Assets",
+      "placeholder": true
+    },
+    "RECEIVABLE": {
+      "gnucash_type": "ASSET",
+      "destination_hierarchy": "Assets:Accounts Receivable",
+      "placeholder": false
+    },
     "AP": {
-      "gnucash_type": "PAYABLE",
+      "gnucash_type": "LIABILITY",
       "destination_hierarchy": "Liabilities:Accounts Payable",
       "placeholder": false
     },
     "CCARD": {
-      "gnucash_type": "CREDIT",
+      "gnucash_type": "LIABILITY",
       "destination_hierarchy": "Liabilities:Credit Cards",
       "placeholder": false
     },
@@ -45,6 +62,16 @@
       "destination_hierarchy": "Liabilities:Long Term Liabilities",
       "placeholder": true
     },
+    "PAYABLE": {
+      "gnucash_type": "LIABILITY",
+      "destination_hierarchy": "Liabilities:Accounts Payable",
+      "placeholder": false
+    },
+    "CREDIT": {
+      "gnucash_type": "LIABILITY",
+      "destination_hierarchy": "Liabilities:Credit Cards",
+      "placeholder": false
+    },
     "EQUITY": {
       "gnucash_type": "EQUITY",
       "destination_hierarchy": "Equity",
@@ -53,6 +80,16 @@
     "INC": {
       "gnucash_type": "INCOME",
       "destination_hierarchy": "Income",
+      "placeholder": true
+    },
+    "INCOME": {
+      "gnucash_type": "INCOME",
+      "destination_hierarchy": "Income",
+      "placeholder": true
+    },
+    "EXINC": {
+      "gnucash_type": "INCOME",
+      "destination_hierarchy": "Income:Other Income",
       "placeholder": true
     },
     "COGS": {
@@ -65,9 +102,9 @@
       "destination_hierarchy": "Expenses",
       "placeholder": true
     },
-    "EXINC": {
-      "gnucash_type": "INCOME",
-      "destination_hierarchy": "Income:Other Income",
+    "EXPENSE": {
+      "gnucash_type": "EXPENSE",
+      "destination_hierarchy": "Expenses",
       "placeholder": true
     },
     "EXEXP": {
