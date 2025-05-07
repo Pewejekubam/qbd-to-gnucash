@@ -2,6 +2,8 @@ import csv
 import json
 import os
 import logging
+from utils.csv_writer import write_gnucash_csv
+from list_converters.mapping import load_mappings, handle_unmapped_account_types
 
 
 def load_mappings(baseline_mapping_file, specific_mapping_file):
@@ -55,22 +57,27 @@ def load_mappings(baseline_mapping_file, specific_mapping_file):
 
 def extract_accounts_from_iif(iif_file_path):
     """
-    Extract account data from QuickBooks IIF file.
-    
+    Extract account data from a QuickBooks IIF file.
+
     Args:
-        iif_file_path: Path to the QuickBooks IIF file
-    
+        iif_file_path (str): Path to the QuickBooks IIF file.
+
     Returns:
-        tuple: (accounts_data, account_types, accounts_by_type)
+        tuple: A tuple containing:
+            - accounts_data (dict): Dictionary of account details keyed by account name.
+            - account_types (dict): Dictionary of account types and their counts.
+            - accounts_by_type (dict): Dictionary grouping accounts by type.
     """
     accounts_data = {}
     account_types = {}
     accounts_by_type = {}
     
     try:
+        # Open and read the IIF file
         with open(iif_file_path, 'r') as iif_file:
             section = None
             for line in iif_file:
+                # Clean up the line and determine the section
                 line = line.strip().replace('"', '')
                 if line.startswith('!ACCNT'):
                     section = 'ACCNT'
@@ -79,6 +86,7 @@ def extract_accounts_from_iif(iif_file_path):
                     section = None
                     continue
                 
+                # Process account data within the ACCNT section
                 if section == 'ACCNT' and line.startswith('ACCNT'):
                     account_data = line.split('\t')
                     if len(account_data) < 12:
@@ -88,7 +96,7 @@ def extract_accounts_from_iif(iif_file_path):
                     account_name = account_data[1]
                     account_type = account_data[4]
                     
-                    # Store account data
+                    # Store account details
                     accounts_data[account_name] = {
                         'type': account_type,
                         'code': account_data[7] if len(account_data) > 7 else '',
@@ -96,10 +104,10 @@ def extract_accounts_from_iif(iif_file_path):
                         'hidden': 'T' if len(account_data) > 11 and account_data[11] == 'Y' else 'F'
                     }
                     
-                    # Track account types and count
+                    # Track account types and their counts
                     account_types[account_type] = account_types.get(account_type, 0) + 1
                     
-                    # Group accounts by type for easier processing
+                    # Group accounts by type
                     if account_type not in accounts_by_type:
                         accounts_by_type[account_type] = []
                     accounts_by_type[account_type].append(account_name)
@@ -205,19 +213,19 @@ def handle_unmapped_account_types(account_types, mapping, specific_mapping_file)
 
 def build_gnucash_accounts(accounts_data, mapping):
     """
-    Generate GnuCash account structure from QuickBooks account data.
-    
+    Generate a GnuCash account structure from QuickBooks account data.
+
     Args:
-        accounts_data: Dictionary containing QuickBooks account data
-        mapping: Mapping configuration for account types
-    
+        accounts_data (dict): Dictionary containing QuickBooks account data.
+        mapping (dict): Mapping configuration for account types.
+
     Returns:
-        dict: GnuCash account structure
+        dict: GnuCash account structure.
     """
     logging.basicConfig(level=logging.INFO)
     gnucash_accounts = {}
     
-    # Get basic accounting types from the config
+    # Retrieve basic accounting types from the mapping configuration
     basic_account_types = mapping.get("basic_accounting_types", {
         "ASSET": "Assets",
         "LIABILITY": "Liabilities",
@@ -226,7 +234,7 @@ def build_gnucash_accounts(accounts_data, mapping):
         "EXPENSE": "Expenses"
     })
     
-    # Add top-level placeholders
+    # Add top-level placeholder accounts for each basic type
     for basic_type, account_name in basic_account_types.items():
         gnucash_accounts[account_name] = {
             'Type': basic_type,
@@ -239,7 +247,7 @@ def build_gnucash_accounts(accounts_data, mapping):
             'Symbol': 'USD',
         }
     
-    # Process accounts from the IIF file
+    # Process each account from the IIF file
     for account_name, data in accounts_data.items():
         try:
             account_type = data['type']
@@ -252,9 +260,11 @@ def build_gnucash_accounts(accounts_data, mapping):
             destination = mapping_entry.get('destination_hierarchy', 'Uncategorized')
             top_level = basic_account_types.get(gnucash_type, "Assets")
             
+            # Ensure the destination hierarchy starts with the correct top-level account
             if not destination.startswith(top_level):
                 destination = f"{top_level}:{destination.split(':', 1)[1]}" if ':' in destination else top_level
             
+            # Construct the full account name and hierarchy
             full_account_name = f"{destination}:{account_name}"
             parts = full_account_name.split(':')
             current_path = ""
@@ -262,6 +272,7 @@ def build_gnucash_accounts(accounts_data, mapping):
             for i, part in enumerate(parts):
                 current_path = f"{current_path}:{part}" if current_path else part
                 if i == len(parts) - 1:
+                    # Add the final account
                     gnucash_accounts[current_path] = {
                         'Type': gnucash_type,
                         'Account Name': part,
@@ -273,6 +284,7 @@ def build_gnucash_accounts(accounts_data, mapping):
                         'Symbol': 'USD',
                     }
                 elif current_path not in gnucash_accounts:
+                    # Add intermediate placeholder accounts
                     gnucash_accounts[current_path] = {
                         'Type': gnucash_type,
                         'Account Name': part,
@@ -289,12 +301,11 @@ def build_gnucash_accounts(accounts_data, mapping):
     # Remove redundant placeholders
     for account in list(gnucash_accounts.keys()):
         try:
-            # Ensure the account still exists in gnucash_accounts
             if account not in gnucash_accounts:
                 continue
             
             if gnucash_accounts[account]['Placeholder'] == 'T':
-                # Check if it has exactly one child
+                # Check if the placeholder has exactly one child
                 children = [key for key in gnucash_accounts if key.startswith(f"{account}:")]
                 if len(children) == 1:
                     child = children[0]
@@ -306,65 +317,22 @@ def build_gnucash_accounts(accounts_data, mapping):
     return gnucash_accounts
 
 
-def write_gnucash_csv(gnucash_accounts, csv_file_path):
-    """
-    Write the GnuCash account structure to a CSV file.
-    
-    Args:
-        gnucash_accounts: Dictionary containing GnuCash account structure
-        csv_file_path: Output path for the GnuCash CSV file
-    """
-    # Sort accounts to ensure parent accounts are written before child accounts
-    sorted_accounts = sorted(gnucash_accounts.items(), key=lambda x: x[0])
-    
-    try:
-        with open(csv_file_path, 'w', newline='') as csvfile:
-            fieldnames = [
-                'Type', 'Full Account Name', 'Account Name', 'Account Code', 
-                'Description', 'Account Color', 'Notes', 'Symbol', 'Namespace', 
-                'Hidden', 'Tax Info', 'Placeholder'
-            ]
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
-            
-            writer.writeheader()
-            for full_account_name, data in sorted_accounts:
-                writer.writerow({
-                    'Type': data.get('Type', ''),
-                    'Full Account Name': full_account_name,
-                    'Account Name': data.get('Account Name', ''),
-                    'Account Code': data.get('Account Code', ''),
-                    'Description': data.get('Description', ''),
-                    'Account Color': '',
-                    'Notes': '',
-                    'Symbol': data.get('Symbol', 'USD'),
-                    'Namespace': data.get('Namespace', 'CURRENCY'),
-                    'Hidden': data.get('Hidden', 'F'),
-                    'Tax Info': 'F',
-                    'Placeholder': data.get('Placeholder', 'F'),
-                })
-        
-        print(f"Successfully converted {len(gnucash_accounts)} accounts to GnuCash CSV format.")
-        
-    except IOError as e:
-        print(f"Error writing to CSV file: {e}")
-
-
 def convert_accounts(iif_file_path, csv_file_path, baseline_mapping_file, specific_mapping_file):
     """
     Convert QuickBooks IIF account data to GnuCash CSV format.
-    
+
     Args:
-        iif_file_path: Path to the QuickBooks IIF file
-        csv_file_path: Output path for the GnuCash CSV file
-        baseline_mapping_file: Path to the baseline mapping JSON file
-        specific_mapping_file: Path to the specific mapping JSON file (will be created if it doesn't exist)
+        iif_file_path (str): Path to the QuickBooks IIF file.
+        csv_file_path (str): Output path for the GnuCash CSV file.
+        baseline_mapping_file (str): Path to the baseline mapping JSON file.
+        specific_mapping_file (str): Path to the specific mapping JSON file (will be created if it doesn't exist).
     """
     # Step 1: Load configuration mappings
     mapping = load_mappings(baseline_mapping_file, specific_mapping_file)
     if mapping is None:
         return
     
-    # Step 2: Extract account data from IIF file
+    # Step 2: Extract account data from the IIF file
     accounts_data, account_types, accounts_by_type = extract_accounts_from_iif(iif_file_path)
     if not accounts_data:
         return
@@ -375,7 +343,7 @@ def convert_accounts(iif_file_path, csv_file_path, baseline_mapping_file, specif
     # Step 4: Build GnuCash account structure
     gnucash_accounts = build_gnucash_accounts(accounts_data, mapping)
     
-    # Step 5: Write output to CSV
+    # Step 5: Write the output to a CSV file
     write_gnucash_csv(gnucash_accounts, csv_file_path)
 
 
