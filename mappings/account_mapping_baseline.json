@@ -18,7 +18,7 @@
       "placeholder": false
     },
     "AR": {
-      "gnucash_type": "ASSET",
+      "gnucash_type": "RECEIVABLE",
       "destination_hierarchy": "Assets:Accounts Receivable",
       "placeholder": false
     },
@@ -38,12 +38,12 @@
       "placeholder": true
     },
     "RECEIVABLE": {
-      "gnucash_type": "ASSET",
+      "gnucash_type": "RECEIVABLE",
       "destination_hierarchy": "Assets:Accounts Receivable",
       "placeholder": false
     },
     "AP": {
-      "gnucash_type": "LIABILITY",
+      "gnucash_type": "PAYABLE",
       "destination_hierarchy": "Liabilities:Accounts Payable",
       "placeholder": false
     },
@@ -63,7 +63,7 @@
       "placeholder": true
     },
     "PAYABLE": {
-      "gnucash_type": "LIABILITY",
+      "gnucash_type": "PAYABLE",
       "destination_hierarchy": "Liabilities:Accounts Payable",
       "placeholder": false
     },
