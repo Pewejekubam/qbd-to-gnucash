@@ -1,11 +1,11 @@
 import os
 
-def convert_sales_tax_codes(iif_file_path, output_file_path):
+def convert_payment_terms(iif_file_path, output_file_path):
     """
-    Convert QuickBooks Sales Tax Codes IIF file to a well-formatted HTML file.
+    Convert QuickBooks Payment Terms IIF file to a well-formatted HTML file.
 
     Args:
-        iif_file_path (str): Path to the Sales Tax Codes IIF file.
+        iif_file_path (str): Path to the Payment Terms IIF file.
         output_file_path (str): Path to the output HTML file.
     """
     # Ensure the output file has a .html extension
@@ -21,7 +21,7 @@ def convert_sales_tax_codes(iif_file_path, output_file_path):
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Sales Tax Codes</title>
+                <title>Payment Terms</title>
                 <style>
                     body {
                         font-family: Arial, sans-serif;
@@ -56,13 +56,14 @@ def convert_sales_tax_codes(iif_file_path, output_file_path):
                 </style>
             </head>
             <body>
-                <h1>Sales Tax Codes</h1>
+                <h1>Payment Terms</h1>
                 <table>
                     <thead>
                         <tr>
-                            <th>Code</th>
-                            <th>Description</th>
-                            <th>Taxable</th>
+                            <th>Name</th>
+                            <th>Discount %</th>
+                            <th>Net Days</th>
+                            <th>Discount Days</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -70,17 +71,19 @@ def convert_sales_tax_codes(iif_file_path, output_file_path):
 
             # Process the IIF file
             for line in iif_file:
-                if line.startswith("SALESTAXCODE"):
+                if line.startswith("TERMS"):
                     parts = line.strip().split('\t')
                     if len(parts) >= 7:
-                        code = parts[1]
-                        description = parts[5]
-                        taxable = "Yes" if parts[6] == "Y" else "No"
+                        name = parts[1]
+                        discount_percent = parts[4]
+                        net_days = parts[5]
+                        discount_days = parts[6]
                         output_file.write(f"""
                         <tr>
-                            <td>{code}</td>
-                            <td>{description}</td>
-                            <td>{taxable}</td>
+                            <td>{name}</td>
+                            <td>{discount_percent}</td>
+                            <td>{net_days}</td>
+                            <td>{discount_days}</td>
                         </tr>
                         """)
 
@@ -91,6 +94,6 @@ def convert_sales_tax_codes(iif_file_path, output_file_path):
             </body>
             </html>
             """)
-        print(f"Sales Tax Codes converted to {output_file_path}")
+        print(f"Payment Terms converted to {output_file_path}")
     except Exception as e:
-        print(f"Error converting Sales Tax Codes: {e}")
+        print(f"Error converting Payment Terms: {e}")
