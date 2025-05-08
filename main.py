@@ -2,45 +2,201 @@ import os
 from config import Config
 from utils.error_handler import handle_error
 from list_converters.accounts import convert_accounts
-from list_converters.sales_tax_codes import convert_sales_tax_codes
 from list_converters.payment_terms import convert_payment_terms
+from list_converters.sales_tax_framework import process_sales_tax_framework
 
-# Initialize configuration object
+# -----------------------------------------------------------------------------
+# CONFIGURATION INITIALIZATION
+# -----------------------------------------------------------------------------
+
 config = Config()
 
-def main():
-    """
-    Main function to orchestrate the conversion of QuickBooks IIF files to GnuCash-compatible CSV files.
-    
-    Steps:
-    1. Load configuration settings.
-    2. Validate input and output directories.
-    3. Detect and process IIF files in the input directory.
-    4. Generate corresponding output files.
+# -----------------------------------------------------------------------------
+# FILE TYPE REGISTRY
+# -----------------------------------------------------------------------------
+# Each entry defines:
+# - A QBD or virtual key
+# - The conversion function
+# - Any dependencies
+# - The output file extension (csv, html, etc.)
+# - The GnuCash-friendly output file name
+# -----------------------------------------------------------------------------
 
-    Raises:
-        ValueError: If input or output directories are not set.
-    """
+file_type_registry = {
+    '!ACCNT': {
+        'description': 'Account file',
+        'process_function': convert_accounts,
+        'dependencies': [],
+        'output_ext': 'csv',
+        'output_name': 'Accounts.csv'
+    },
+    '!TERMS': {
+        'description': 'Payment Terms file',
+        'process_function': convert_payment_terms,
+        'dependencies': [],
+        'output_ext': 'html',
+        'output_name': 'Terms.html'
+    },
+    '!SALESTAXCODE': {
+        'description': 'Sales Tax Codes file',
+        'process_function': None,
+        'dependencies': [],
+        'output_ext': None,
+        'output_name': None
+    },
+    '!INVITEM': {
+        'description': 'Sales Tax Items file',
+        'process_function': None,
+        'dependencies': [],
+        'output_ext': None,
+        'output_name': None
+    },
+    '!SALESTAX_FRAMEWORK': {
+        'description': 'Combined tax code + item setup',
+        'process_function': process_sales_tax_framework,
+        'dependencies': ['!SALESTAXCODE', '!INVITEM'],
+        'output_ext': 'html',
+        'output_name': 'SalesTaxFramework.html'
+    },
+    '!CUST': {
+        'description': 'Customer file (placeholder)',
+        'process_function': None,
+        'dependencies': [],
+        'output_ext': 'csv',
+        'output_name': 'Customers.csv'
+    }
+}
+
+# -----------------------------------------------------------------------------
+# FUNCTION: extract_keys_from_iif(file_path)
+# PURPOSE: Normalize each header key (e.g., '!ACCNT'), ignore trailing labels
+# -----------------------------------------------------------------------------
+
+def extract_keys_from_iif(file_path):
+    keys_data = {}
+    with open(file_path, 'r') as file:
+        current_key = None
+        for line in file:
+            line = line.strip()
+            if line.startswith('!'):
+                normalized_key = line.split()[0]
+                current_key = normalized_key
+                if current_key not in keys_data:
+                    keys_data[current_key] = []
+            elif current_key:
+                keys_data[current_key].append(line)
+    return keys_data
+
+# -----------------------------------------------------------------------------
+# FUNCTION: build_key_registry(iif_files)
+# PURPOSE: Build a map of keys to the files in which they appear
+# -----------------------------------------------------------------------------
+
+def build_key_registry(iif_files):
+    key_registry = {}
+    for file_path in iif_files:
+        keys_data = extract_keys_from_iif(file_path)
+        for key in keys_data:
+            if key not in key_registry:
+                key_registry[key] = []
+            key_registry[key].append(file_path)
+    return key_registry
+
+# -----------------------------------------------------------------------------
+# FUNCTION: process_keys(key_registry)
+# PURPOSE: Run each conversion function once all dependencies are satisfied
+# -----------------------------------------------------------------------------
+
+def process_keys(key_registry):
+    print(f"\nDetected keys and associated files:")
+    for key, files in key_registry.items():
+        print(f"  {key}: {files}")
+
+    processed = set()
+
+    def can_process(key):
+        deps = file_type_registry[key]['dependencies']
+        return all(dep in processed for dep in deps)
+
+    keys_to_process = list(file_type_registry.keys())
+
+    while keys_to_process:
+        for key in keys_to_process[:]:
+            deps = file_type_registry[key]['dependencies']
+            if not can_process(key):
+                continue
+
+            process_func = file_type_registry[key]['process_function']
+            output_ext = file_type_registry[key].get('output_ext') or 'html'
+            output_name = file_type_registry[key].get('output_name')
+
+            # ---------------------------
+            # VIRTUAL or MULTI-KEY case
+            # ---------------------------
+            if key not in key_registry and deps and process_func:
+                if all(dep in key_registry for dep in deps):
+                    print(f"\nProcessing virtual key {key} from dependencies {deps}...")
+
+                    output_file = os.path.join(config.output_dir, output_name)
+
+                    input_files = [key_registry[dep][0] for dep in deps]  # Use first file for each
+
+                    if key == '!SALESTAX_FRAMEWORK':
+                        process_func(input_files[0], input_files[1], output_file)
+
+                    print(f"Processed {key} and wrote output to {output_file}")
+                    processed.add(key)
+                    keys_to_process.remove(key)
+                continue
+
+            # ---------------------------
+            # NORMAL 1:1 case
+            # ---------------------------
+            if key in key_registry and process_func:
+                for file_path in key_registry[key]:
+                    print(f"\nProcessing {key} from {os.path.basename(file_path)}...")
+
+                    output_file = os.path.join(config.output_dir, output_name)
+
+                    if key == '!ACCNT':
+                        baseline = os.path.join('mappings', 'account_mapping_baseline.json')
+                        specific = os.path.join(config.output_dir, 'specific_account_mapping.json')
+
+                        if not os.path.exists(baseline):
+                            print(f"Missing baseline mapping for {key}. Skipping.")
+                            continue
+
+                        process_func(file_path, output_file, baseline, specific)
+                    else:
+                        process_func(file_path, output_file)
+
+                    print(f"Processed {key} and wrote output to {output_file}")
+                processed.add(key)
+                keys_to_process.remove(key)
+
+            if not process_func:
+                print(f"\nSkipping {key}: no conversion function defined.")
+                processed.add(key)
+                keys_to_process.remove(key)
+
+# -----------------------------------------------------------------------------
+# FUNCTION: main()
+# PURPOSE: Entrypoint — Load config, find files, and start processing
+# -----------------------------------------------------------------------------
+
+def main():
     try:
-        # Load configuration settings (e.g., input/output directories)
         config.load_config()
 
-        # Validate that input and output directories are set
         if not config.input_dir or not config.output_dir:
             raise ValueError("Both input_dir and output_dir must be set in the configuration.")
-
-        # Define paths for baseline and specific mapping files
-        baseline_mapping_file = 'mappings/account_mapping_baseline.json'
-        specific_mapping_file = os.path.join(config.output_dir, 'account_mapping_specific.json')
 
         print(f"Input directory: {config.input_dir}")
         print(f"Output directory: {config.output_dir}")
 
-        # Ensure the output directory exists
         if not os.path.exists(config.output_dir):
             os.makedirs(config.output_dir)
 
-        # Identify all IIF files in the input directory
         iif_files = [
             os.path.join(config.input_dir, file_name)
             for file_name in os.listdir(config.input_dir)
@@ -49,53 +205,16 @@ def main():
 
         print(f"Found {len(iif_files)} IIF files")
 
-        # Process each IIF file based on its type
-        for file_path in iif_files:
-            print(f"Processing {file_path}")
-            with open(file_path, 'r') as file:
-                # Scan the file for the first relevant header
-                first_header = None
-                for line in file:
-                    line = line.strip()
-                    if line.startswith('!ACCNT') or line.startswith('!SALESTAXCODE') or line.startswith('!TERMS') or line.startswith('!CUST'):
-                        first_header = line
-                        break
+        key_registry = build_key_registry(iif_files)
 
-                if not first_header:
-                    print(f"File {file_path} does not contain a recognizable header. Skipping.")
-                    continue
-
-            # Match file type based on the header
-            if first_header.startswith('!ACCNT'):
-                output_csv_path = os.path.join(config.output_dir, 'accounts.csv')
-                convert_accounts(
-                    file_path,
-                    output_csv_path,
-                    baseline_mapping_file,
-                    specific_mapping_file
-                )
-                print(f"Accounts CSV output written to {output_csv_path}")
-
-            elif first_header.startswith('!SALESTAXCODE'):
-                sales_tax_output_file = os.path.join(config.output_dir, 'sales_tax_codes.txt')
-                convert_sales_tax_codes(file_path, sales_tax_output_file)
-                print(f"Sales Tax Codes output written to {sales_tax_output_file}")
-
-            elif first_header.startswith('!TERMS'):
-                payment_terms_output_file = os.path.join(config.output_dir, 'payment_terms.txt')
-                convert_payment_terms(file_path, payment_terms_output_file)
-                print(f"Payment Terms output written to {payment_terms_output_file}")
-
-            elif first_header.startswith('!CUST'):
-                print(f"Customer file detected: {file_path}. No processing function implemented yet. Skipping.")
-
-            else:
-                print(f"Unrecognized file type for {file_path}. Skipping.")
+        process_keys(key_registry)
 
     except Exception as e:
-        # Handle any errors that occur during processing
         handle_error(e)
 
+# -----------------------------------------------------------------------------
+# SCRIPT ENTRY POINT
+# -----------------------------------------------------------------------------
+
 if __name__ == '__main__':
-    # Entry point for the script
     main()

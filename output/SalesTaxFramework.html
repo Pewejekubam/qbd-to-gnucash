@@ -1,0 +1,22 @@
+
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Sales Tax Framework Setup Guide</title>
+                <style>
+                    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+                    h1, h2 { color: #2c3e50; }
+                    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                    table, th, td { border: 1px solid #ddd; }
+                    th, td { padding: 10px; text-align: left; }
+                    th { background-color: #f4f4f4; }
+                    ul { margin: 10px 0; padding-left: 20px; }
+                    .note { font-style: italic; color: #7f8c8d; }
+                </style>
+            </head>
+            <body>
+                <h1>Sales Tax Framework Setup Guide for GnuCash</h1>
+                <p>This guide provides step-by-step instructions for manually setting up the sales tax framework in GnuCash based on extracted data from QuickBooks IIF files.</p>
+            <h2>Step 1: Create Sales Tax Liability Accounts</h2><p>Follow these steps to create liability accounts for each tax jurisdiction:</p><ol><li>Open GnuCash and navigate to <strong>Accounts</strong>.</li><li>Create a new account under <strong>Liabilities</strong> for each tax jurisdiction.</li></ol><table><thead><tr><th>Tax Jurisdiction</th><th>Account Name</th><th>Account Type</th></tr></thead><tbody><tr><td>Assessment</td><td>Liabilities:Sales Tax:Assessment</td><td>Liability</td></tr><tr><td>"County, San Thomas"</td><td>Liabilities:Sales Tax:"County, San Thomas"</td><td>Liability</td></tr><tr><td>Out of State</td><td>Liabilities:Sales Tax:Out of State</td><td>Liability</td></tr><tr><td>San Domingo</td><td>Liabilities:Sales Tax:San Domingo</td><td>Liability</td></tr><tr><td>"County, San Thomas"</td><td>Liabilities:Sales Tax:"County, San Thomas"</td><td>Liability</td></tr><tr><td>Assessment</td><td>Liabilities:Sales Tax:Assessment</td><td>Liability</td></tr></tbody></table><h2>Step 2: Set Up Tax Tables</h2><p>Define tax tables to link tax rates to the liability accounts:</p><ol><li>Navigate to <strong>Business &gt; Tax Tables</strong> in GnuCash.</li><li>Create a new tax table for each jurisdiction and assign the corresponding liability account.</li></ol><table><thead><tr><th>Tax Table Name</th><th>Tax Rate (%)</th><th>Linked Account</th></tr></thead><tbody><tr><td>Assessment Tax Table</td><td>San Thomas County - Earthquake assessment</td><td>Liabilities:Sales Tax:Assessment</td></tr><tr><td>"County, San Thomas" Tax Table</td><td>"CA sales tax, San Tomas County"</td><td>Liabilities:Sales Tax:"County, San Thomas"</td></tr><tr><td>Out of State Tax Table</td><td>"Out-of-state sale, exempt from sales tax"</td><td>Liabilities:Sales Tax:Out of State</td></tr><tr><td>San Domingo Tax Table</td><td>Sales Tax - San Domingo County Tax</td><td>Liabilities:Sales Tax:San Domingo</td></tr><tr><td>"County, San Thomas" Tax Table</td><td></td><td>Liabilities:Sales Tax:"County, San Thomas"</td></tr><tr><td>Assessment Tax Table</td><td></td><td>Liabilities:Sales Tax:Assessment</td></tr></tbody></table><h2>Step 3: Define Taxable vs. Non-Taxable Categories</h2><p>Classify items as taxable or non-taxable based on the sales tax codes:</p><ol><li>Review the sales tax codes extracted from the IIF files.</li><li>Assign each code to either <strong>Taxable</strong> or <strong>Non-Taxable</strong>.</li></ol><table><thead><tr><th>Sales Tax Code</th><th>Category</th></tr></thead><tbody><tr><td>Tax</td><td>Yes</td></tr><tr><td>LBR</td><td>No</td></tr><tr><td>Non</td><td>No</td></tr></tbody></table><p class="note">Note: If the sales tax items file is missing, log an entry and skip this setup.</p></body></html>
