@@ -1,357 +1,347 @@
 import csv
 import json
-import os
 import logging
+import os
+from utils.iif_parser import parse_iif_records
+from list_converters.account_tree import build_gnucash_accounts
 from utils.csv_writer import write_gnucash_csv
-from list_converters.mapping import load_mappings, handle_unmapped_account_types
 
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def load_mappings(baseline_mapping_file, specific_mapping_file):
+def parse_iif_section(file_path, key='!ACCNT', min_fields=12):
     """
-    Load and merge baseline and specific mappings from JSON files.
-    
-    Args:
-        baseline_mapping_file: Path to the baseline mapping JSON file
-        specific_mapping_file: Path to the specific mapping JSON file
-    
-    Returns:
-        dict: Merged mapping configuration
-    """
-    # Load the baseline mapping
-    try:
-        with open(baseline_mapping_file, 'r') as baseline_file:
-            baseline_mapping = json.load(baseline_file)
-    except (FileNotFoundError, json.JSONDecodeError) as e:
-        print(f"Error loading baseline mapping file: {e}")
-        return None
-
-    # Initialize or load specific mapping
-    if os.path.exists(specific_mapping_file):
-        try:
-            with open(specific_mapping_file, 'r') as specific_file:
-                specific_mapping = json.load(specific_file)
-        except json.JSONDecodeError as e:
-            print(f"Error loading specific mapping file: {e}")
-            specific_mapping = {"account_types": {}, "default_rules": baseline_mapping["default_rules"]}
-    else:
-        specific_mapping = {"account_types": {}, "default_rules": baseline_mapping["default_rules"]}
-
-    # Ensure the configuration has the required basic accounting type mappings
-    if "basic_accounting_types" not in baseline_mapping:
-        # Add the standard mapping as a fallback
-        baseline_mapping["basic_accounting_types"] = {
-            "ASSET": "Assets",
-            "LIABILITY": "Liabilities",
-            "EQUITY": "Equity", 
-            "INCOME": "Income",
-            "EXPENSE": "Expenses"
-        }
-
-    # Merge baseline and specific mappings
-    return {
-        "account_types": {**baseline_mapping.get("account_types", {}), **specific_mapping.get("account_types", {})},
-        "default_rules": specific_mapping.get("default_rules", {}),
-        "basic_accounting_types": baseline_mapping.get("basic_accounting_types", {})
-    }
-
-
-def extract_accounts_from_iif(iif_file_path):
-    """
-    Extract account data from a QuickBooks IIF file.
-
-    Args:
-        iif_file_path (str): Path to the QuickBooks IIF file.
+    Extracts and parses the specified section from an IIF file.
 
     Returns:
-        tuple: A tuple containing:
-            - accounts_data (dict): Dictionary of account details keyed by account name.
-            - account_types (dict): Dictionary of account types and their counts.
-            - accounts_by_type (dict): Dictionary grouping accounts by type.
+        accounts_data: { account_name: { type, code, description, hidden } }
+        account_types: { account_type: count }
     """
+    logging.debug("Entering parse_iif_section function.")
     accounts_data = {}
     account_types = {}
-    accounts_by_type = {}
-    
+    section = None
+
     try:
-        # Open and read the IIF file
-        with open(iif_file_path, 'r') as iif_file:
-            section = None
-            for line in iif_file:
-                # Clean up the line and determine the section
+        with open(file_path, 'r') as file:
+            for line in file:
                 line = line.strip().replace('"', '')
-                if line.startswith('!ACCNT'):
-                    section = 'ACCNT'
+                if line.startswith(key):
+                    section = key
                     continue
-                elif not line or line.startswith('!'):
+                if not line or line.startswith('!'):
                     section = None
                     continue
-                
-                # Process account data within the ACCNT section
-                if section == 'ACCNT' and line.startswith('ACCNT'):
-                    account_data = line.split('\t')
-                    if len(account_data) < 12:
-                        print(f"Warning: Invalid account data format: {line}")
+                if section and line.startswith('ACCNT'):
+                    parts = line.split('\t')
+                    if len(parts) < min_fields:
+                        logging.warning(f"Skipping short ACCNT line: {line}")
                         continue
-                    
-                    account_name = account_data[1]
-                    account_type = account_data[4]
-                    
-                    # Store account details
-                    accounts_data[account_name] = {
-                        'type': account_type,
-                        'code': account_data[7] if len(account_data) > 7 else '',
-                        'description': account_data[6] if len(account_data) > 6 and account_data[6] else '',
-                        'hidden': 'T' if len(account_data) > 11 and account_data[11] == 'Y' else 'F'
+                    name = parts[1]
+                    type_ = parts[4]
+                    accounts_data[name] = {
+                        'type': type_,
+                        'code': parts[7] if len(parts) > 7 else '',
+                        'description': parts[6] if len(parts) > 6 else '',
+                        'hidden': 'T' if len(parts) > 11 and parts[11] == 'Y' else 'F'
                     }
-                    
-                    # Track account types and their counts
-                    account_types[account_type] = account_types.get(account_type, 0) + 1
-                    
-                    # Group accounts by type
-                    if account_type not in accounts_by_type:
-                        accounts_by_type[account_type] = []
-                    accounts_by_type[account_type].append(account_name)
-                    
-        return accounts_data, account_types, accounts_by_type
+                    account_types[type_] = account_types.get(type_, 0) + 1
     except FileNotFoundError:
-        print(f"Error: IIF file not found: {iif_file_path}")
-        return {}, {}, {}
+        logging.error(f"IIF file not found: {file_path}")
+    return accounts_data, account_types
 
 
-def handle_unmapped_account_types(account_types, mapping, specific_mapping_file):
+def normalize_account_type(qb_type, mapping):
     """
-    Identify unmapped account types and update the mapping accordingly.
-    
+    Looks up the GnuCash account type and destination hierarchy
+    for a given QBD account type using a nested mapping structure.
+
     Args:
-        account_types: Dictionary of account types found in the IIF file
-        mapping: Current mapping configuration
-        specific_mapping_file: Path to the specific mapping JSON file
-    
-    Returns:
-        dict: Updated mapping configuration
-    """
-    # Define the five basic accounting types in GnuCash
-    basic_account_types = {
-        "ASSET": "Assets",
-        "LIABILITY": "Liabilities",
-        "EQUITY": "Equity", 
-        "INCOME": "Income",
-        "EXPENSE": "Expenses"
-    }
-    
-    # Get type mapping from configuration instead of hardcoding
-    account_type_to_basic = {}
-    
-    # Build the mapping from configuration
-    for qb_type, mapping_info in mapping["account_types"].items():
-        gnucash_type = mapping_info.get("gnucash_type", "ASSET")
-        # Map each QuickBooks type to its basic GnuCash type
-        account_type_to_basic[qb_type] = gnucash_type
-        # Also include the GnuCash type mapping to itself
-        account_type_to_basic[gnucash_type] = gnucash_type
-    
-    # Identify unmapped account types and update mapping with default rules
-    unmapped_types = {}
-    for account_type in account_types:
-        if account_type not in mapping["account_types"]:
-            # Use default rules from the JSON configuration for unmapped accounts
-            default_rule = mapping["default_rules"].get("unmapped_accounts", {
-                "gnucash_type": "ASSET",
-                "destination_hierarchy": "Assets:Uncategorized",
-                "placeholder": False
-            })
-            
-            # Ensure the default rule maps to one of the five basic types from config
-            default_gnucash_type = default_rule["gnucash_type"]
-            # If the type is in our derived mapping, use it; otherwise try the default type directly
-            basic_type = account_type_to_basic.get(default_gnucash_type, default_gnucash_type)
-            
-            # Validate against the basic accounting types from config
-            if basic_type not in mapping.get("basic_accounting_types", {}):
-                print(f"Warning: Default rule uses invalid GnuCash type '{default_gnucash_type}'. Using 'ASSET' instead.")
-                basic_type = "ASSET"
-                
-            # Make sure the destination hierarchy starts with the appropriate top-level
-            destination = default_rule["destination_hierarchy"]
-            top_level = mapping["basic_accounting_types"].get(basic_type, "Assets")
-            
-            if not destination.startswith(top_level):
-                # Adjust the destination to start with the correct top level
-                destination = f"{top_level}:{destination.split(':', 1)[1] if ':' in destination else 'Uncategorized'}"
-            
-            unmapped_types[account_type] = {
-                "gnucash_type": default_rule["gnucash_type"],  # Keep the original type
-                "destination_hierarchy": destination,  # Use the corrected destination
-                "placeholder": default_rule.get("placeholder", False)
-            }
-    
-    # Update specific mapping if we found unmapped types
-    if unmapped_types:
-        specific_mapping = {"account_types": {}, "default_rules": mapping["default_rules"]}
-        
-        # Load existing specific mapping if it exists
-        if os.path.exists(specific_mapping_file):
-            try:
-                with open(specific_mapping_file, 'r') as specific_file:
-                    specific_mapping = json.load(specific_file)
-            except json.JSONDecodeError:
-                pass
-        
-        specific_mapping["account_types"].update(unmapped_types)
-        try:
-            with open(specific_mapping_file, 'w') as specific_file:
-                json.dump(specific_mapping, specific_file, indent=4)
-            print(f"Specific mapping file updated with {len(unmapped_types)} unmapped account types.")
-        except IOError as e:
-            print(f"Warning: Could not write to specific mapping file: {e}")
-        
-        # Update the mapping with the newly added types
-        mapping["account_types"].update(unmapped_types)
-    
-    return mapping, mapping.get("basic_accounting_types", {})
+        qb_type (str): The QBD account type (e.g., "BANK", "EXP").
+        mapping (dict): The full merged mapping dictionary (including "account_types").
 
+    Returns:
+        tuple: (gnucash_type, destination_hierarchy) or None if invalid or unmapped.
+    """
+    account_types = mapping.get("account_types", {})
+    entry = account_types.get(qb_type)
+    if not entry:
+        return None
+
+    gnucash_type = entry.get("gnucash_type")
+    destination = entry.get("destination_hierarchy")
+
+    if not gnucash_type or gnucash_type.upper() == "PLACEHOLDER":
+        return None
+    if not destination or destination.upper() == "UNMAPPED":
+        return None
+
+    return gnucash_type, destination
+
+def add_account_to_tree(tree, path, info, gnucash_type):
+    """
+    Inserts an account into the tree and ensures all implied parent paths exist.
+
+    If any parent account (e.g. "Assets:Fixed Assets") does not exist, it will be added
+    as a placeholder. This avoids GnuCash import errors due to missing hierarchy.
+
+    Args:
+        tree (dict): Dictionary representing all accounts keyed by full path.
+        path (str): Colon-separated GnuCash-style path.
+        info (dict): Metadata for the leaf account.
+        gnucash_type (str): GnuCash account type (e.g., "ASSET", "EXPENSE").
+    """
+    parts = path.split(':')
+    current_path = ''
+    for i, part in enumerate(parts):
+        current_path = f"{current_path}:{part}" if current_path else part
+        is_leaf = (i == len(parts) - 1)
+
+        if current_path not in tree:
+            tree[current_path] = {
+                'Type': gnucash_type if is_leaf else '',
+                'Account Name': part,
+                'Account Code': info.get('code', '') if is_leaf else '',
+                'Description': info.get('description', '') if is_leaf else '',
+                'Hidden': info.get('hidden', 'F') if is_leaf else 'F',
+                'Placeholder': 'F' if is_leaf else 'T',
+                'Namespace': 'CURRENCY',
+                'Symbol': 'USD'
+            }
+        elif is_leaf:
+            # Overwrite metadata if this is the defined account (not auto-generated)
+            tree[current_path].update({
+                'Type': gnucash_type,
+                'Account Code': info.get('code', ''),
+                'Description': info.get('description', ''),
+                'Hidden': info.get('hidden', 'F'),
+                'Placeholder': 'F'
+            })
+
+
+def flatten_account_tree(tree):
+    """
+    Flattens and optionally normalizes the account tree.
+    Removes placeholder accounts with exactly one child IF that child is a leaf.
+    Promotes the child up one level.
+
+    Returns:
+        dict: Updated tree with singleton placeholder parents removed when safe.
+    """
+    from collections import defaultdict
+
+    # Build parent-to-children map
+    children_map = defaultdict(list)
+    for full_path in tree.keys():
+        if ':' in full_path:
+            parent = full_path.rsplit(':', 1)[0]
+            children_map[parent].append(full_path)
+
+    # Track changes
+    to_promote = []
+    to_remove = []
+
+    for parent, children in children_map.items():
+        if len(children) == 1:
+            parent_entry = tree.get(parent)
+            child_path = children[0]
+            child_entry = tree.get(child_path)
+
+            # Check: is the child a leaf (i.e. no children of its own)?
+            child_has_children = any(
+                k != child_path and k.startswith(f"{child_path}:") for k in tree
+            )
+
+            if (
+                parent_entry
+                and parent_entry.get('Placeholder') == 'T'
+                and child_entry
+                and child_entry.get('Placeholder') == 'F'
+                and not child_has_children
+            ):
+                to_promote.append((parent, child_path))
+                to_remove.append(parent)
+
+    # Promote child and remove placeholder parent
+    for parent, child in to_promote:
+        new_path = parent
+        child_data = tree.pop(child)
+        child_data['Placeholder'] = 'F'
+        tree[new_path] = child_data
+        to_remove.append(parent)
+
+    # Clean up placeholders
+    for path in to_remove:
+        if path in tree:
+            del tree[path]
+
+    return tree
 
 def build_gnucash_accounts(accounts_data, mapping):
+    import logging
+    logger = logging.getLogger(__name__)
+
+    mapped_accounts = []
+
+    # Load mapping rules
+    account_mappings = mapping.get("account_types", {})
+    default_mapping = mapping.get("default_rules", {}).get("unmapped_accounts", {})
+    basic_types = mapping.get("basic_accounting_types", {})
+
+    if not account_mappings:
+        logger.warning("No account type mappings found.")
+
+    for account in accounts_data:
+        qb_type = account.get("ACCNTTYPE", "").strip().upper()
+        name = account.get("NAME", "").strip()
+
+        mapping_info = account_mappings.get(qb_type)
+
+        if not mapping_info:
+            logger.warning(f"Unmapped QBD account type: '{qb_type}' for account '{name}'")
+            mapping_info = default_mapping
+
+        gnucash_type = mapping_info.get("gnucash_type", "ASSET")
+        destination = mapping_info.get("destination_hierarchy", "Unmapped")
+        placeholder = mapping_info.get("placeholder", False)
+
+        full_name = f"{destination}:{name}" if destination else name
+
+        mapped_accounts.append({
+            "Type": gnucash_type,
+            "Full Account Name": full_name,
+            "Account Name": name,
+            "Account Code": account.get("ACCNUM", ""),
+            "Description": account.get("DESC", ""),
+            "Account Color": "",
+            "Notes": "",
+            "Symbol": "USD",
+            "Namespace": "CURRENCY",
+            "Hidden": "F",
+            "Tax Info": "F",
+            "Placeholder": "T" if placeholder else "F"
+        })
+
+    return mapped_accounts
+
+
+def convert_accounts(iif_file_path, output_path, baseline_map_path, specific_map_path):
     """
-    Generate a GnuCash account structure from QuickBooks account data.
-
-    Args:
-        accounts_data (dict): Dictionary containing QuickBooks account data.
-        mapping (dict): Mapping configuration for account types.
-
-    Returns:
-        dict: GnuCash account structure.
+    Main entry for converting QBD accounts to GnuCash-compatible CSV.
+    - Parses IIF
+    - Applies mapping
+    - Builds flattened account tree
+    - Writes CSV output
     """
-    logging.basicConfig(level=logging.INFO)
-    gnucash_accounts = {}
-    
-    # Retrieve basic accounting types from the mapping configuration
-    basic_account_types = mapping.get("basic_accounting_types", {
-        "ASSET": "Assets",
-        "LIABILITY": "Liabilities",
-        "EQUITY": "Equity", 
-        "INCOME": "Income",
-        "EXPENSE": "Expenses"
-    })
-    
-    # Add top-level placeholder accounts for each basic type
-    for basic_type, account_name in basic_account_types.items():
-        gnucash_accounts[account_name] = {
-            'Type': basic_type,
-            'Account Name': account_name,
-            'Account Code': '',
-            'Description': f'Top-level {account_name} account',
-            'Hidden': 'F',
-            'Placeholder': 'T',
-            'Namespace': 'CURRENCY',
-            'Symbol': 'USD',
-        }
-    
-    # Process each account from the IIF file
-    for account_name, data in accounts_data.items():
-        try:
-            account_type = data['type']
-            mapping_entry = mapping["account_types"].get(account_type)
-            if not mapping_entry:
-                logging.warning(f"No mapping found for account type: {account_type}")
-                continue
-            
-            gnucash_type = mapping_entry.get('gnucash_type', 'ASSET')
-            destination = mapping_entry.get('destination_hierarchy', 'Uncategorized')
-            top_level = basic_account_types.get(gnucash_type, "Assets")
-            
-            # Ensure the destination hierarchy starts with the correct top-level account
-            if not destination.startswith(top_level):
-                destination = f"{top_level}:{destination.split(':', 1)[1]}" if ':' in destination else top_level
-            
-            # Construct the full account name and hierarchy
-            full_account_name = f"{destination}:{account_name}"
-            parts = full_account_name.split(':')
-            current_path = ""
-            
-            for i, part in enumerate(parts):
-                current_path = f"{current_path}:{part}" if current_path else part
-                if i == len(parts) - 1:
-                    # Add the final account
-                    gnucash_accounts[current_path] = {
-                        'Type': gnucash_type,
-                        'Account Name': part,
-                        'Account Code': data['code'],
-                        'Description': data['description'],
-                        'Hidden': data['hidden'],
-                        'Placeholder': 'F',
-                        'Namespace': 'CURRENCY',
-                        'Symbol': 'USD',
-                    }
-                elif current_path not in gnucash_accounts:
-                    # Add intermediate placeholder accounts
-                    gnucash_accounts[current_path] = {
-                        'Type': gnucash_type,
-                        'Account Name': part,
-                        'Account Code': '',
-                        'Description': f'Parent account for {part}',
-                        'Hidden': 'F',
-                        'Placeholder': 'T',
-                        'Namespace': 'CURRENCY',
-                        'Symbol': 'USD',
-                    }
-        except Exception as e:
-            logging.error(f"Error processing account '{account_name}': {e}", exc_info=True)
-    
-    # Remove redundant placeholders
-    for account in list(gnucash_accounts.keys()):
-        try:
-            if account not in gnucash_accounts:
-                continue
-            
-            if gnucash_accounts[account]['Placeholder'] == 'T':
-                # Check if the placeholder has exactly one child
-                children = [key for key in gnucash_accounts if key.startswith(f"{account}:")]
-                if len(children) == 1:
-                    child = children[0]
-                    # Promote the child and remove the placeholder
-                    gnucash_accounts[account] = gnucash_accounts.pop(child)
-        except Exception as e:
-            logging.error(f"Error processing placeholder '{account}': {e}", exc_info=True)
-    
-    return gnucash_accounts
 
+    logging.info(f"Converting accounts from: {iif_file_path}")
 
-def convert_accounts(iif_file_path, csv_file_path, baseline_mapping_file, specific_mapping_file):
-    """
-    Convert QuickBooks IIF account data to GnuCash CSV format.
+    # -----------------------------
+    # Load mapping
+    # -----------------------------
+    # Load baseline mapping first
+    with open(baseline_map_path, 'r') as f:
+        baseline_map = json.load(f)
 
-    Args:
-        iif_file_path (str): Path to the QuickBooks IIF file.
-        csv_file_path (str): Output path for the GnuCash CSV file.
-        baseline_mapping_file (str): Path to the baseline mapping JSON file.
-        specific_mapping_file (str): Path to the specific mapping JSON file (will be created if it doesn't exist).
-    """
-    # Step 1: Load configuration mappings
-    mapping = load_mappings(baseline_mapping_file, specific_mapping_file)
-    if mapping is None:
+    # Initialize combined mapping with baseline
+    combined_map = {
+        "account_types": baseline_map.get("account_types", {}),
+        "default_rules": baseline_map.get("default_rules", {}),
+        "basic_accounting_types": baseline_map.get("basic_accounting_types", {}),
+        "metadata": baseline_map.get("metadata", {})
+    }
+
+    # Merge specific mapping if it exists
+    if os.path.exists(specific_map_path):
+        with open(specific_map_path, 'r') as f:
+            specific_map = json.load(f)
+        combined_map["account_types"].update(specific_map.get("account_types", {}))
+        logging.info("Merged specific mapping into baseline.")
+    else:
+        logging.info(f"Specific mapping file not found: {specific_map_path} — will create if needed.")
+
+    # -----------------------------
+    # Parse IIF accounts section
+    # -----------------------------
+    records = parse_iif_records(iif_file_path, '!ACCNT')  # <--- MUST return list[dict]
+    logging.debug(f"Parsed {len(records)} records from IIF file.")
+    logging.debug(f"Parsed records: {records}")
+
+    if not records:
+        logging.error("No records found in IIF file for !ACCNT section.")
         return
-    
-    # Step 2: Extract account data from the IIF file
-    accounts_data, account_types, accounts_by_type = extract_accounts_from_iif(iif_file_path)
-    if not accounts_data:
-        return
-    
-    # Step 3: Handle unmapped account types
-    mapping, _ = handle_unmapped_account_types(account_types, mapping, specific_mapping_file)
-    
-    # Step 4: Build GnuCash account structure
-    gnucash_accounts = build_gnucash_accounts(accounts_data, mapping)
-    
-    # Step 5: Write the output to a CSV file
-    write_gnucash_csv(gnucash_accounts, csv_file_path)
 
+    # Normalize keys in parsed records
+    records = [
+        {k.upper(): v for k, v in row.items()}
+        for row in records
+    ]
 
-if __name__ == "__main__":
-    # Example usage
-    convert_accounts(
-        "accounts.iif",
-        "gnucash_accounts.csv",
-        "baseline_mapping.json",
-        "specific_mapping.json"
-    )
+    if not isinstance(records, list) or (records and not isinstance(records[0], dict)):
+        raise ValueError("Parsed IIF records must be a list of dictionaries.")
+
+    # -----------------------------
+    # Build structured account tree
+    # -----------------------------
+    tree = build_gnucash_accounts(records, combined_map)
+    logging.debug(f"Built account tree with {len(tree)} entries.")
+    logging.debug(f"Output path for CSV: {output_path}")
+
+    # Try logging first mapped account safely
+    try:
+        first_key = next(iter(tree))
+        logging.warning(f"First mapped account: {tree[first_key]}")
+    except StopIteration:
+        logging.warning("Tree is empty — no mapped accounts found.")
+    except Exception as e:
+        logging.error(f"Could not log first mapped account: {str(e)}")
+
+    # -----------------------------
+    # Detect unmapped types
+    # -----------------------------
+    qb_account_types = {row.get('ACCNTTYPE', '').strip().upper() for row in records}
+    mapped_types = set(combined_map.get("account_types", {}).keys())
+    unmapped = sorted(qb_account_types - mapped_types)
+
+    logging.debug(f"Unmapped types: {unmapped}")
+
+    if unmapped:
+        logging.error("Unmapped account types found. Please review and update the specific mapping file.")
+        with open(specific_map_path, 'w') as f:
+            json.dump({t: {
+                "gnucash_type": "PLACEHOLDER",
+                "destination_hierarchy": "Unmapped",
+                "placeholder": True
+            } for t in unmapped}, f, indent=4)
+        logging.info(f"A new specific mapping file has been created at {specific_map_path}.")
+        # Commented out to continue writing CSV for now
+        # return
+
+    # -----------------------------
+    # Write output CSV
+    # -----------------------------
+    write_gnucash_csv(tree, output_path)
+    logging.info(f"Successfully wrote accounts to {output_path}")
+
+# Commented out manual CSV writing logic
+# with open(output_path, 'w', newline='', encoding='utf-8') as f:
+#     writer = csv.writer(f)
+#     writer.writerow([
+#         "Type", "Full Account Name", "Account Name", "Account Code",
+#         "Description", "Account Color", "Notes", "Symbol", "Namespace",
+#         "Hidden", "Tax Info", "Placeholder"
+#     ])
+#     for path, acct in tree.items():
+#         writer.writerow([
+#             acct['Type'],
+#             path,
+#             acct['Account Name'],
+#             acct['Account Code'],
+#             acct['Description'],
+#             '',  # Account Color
+#             '',  # Notes
+#             acct['Symbol'],
+#             acct['Namespace'],
+#             acct['Hidden'],
+#             'F',  # Tax Info placeholder
+#             acct['Placeholder']
+#         ])

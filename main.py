@@ -1,9 +1,12 @@
 import os
+import logging
 from config import Config
 from utils.error_handler import handle_error
 from list_converters.accounts import convert_accounts
 from list_converters.payment_terms import convert_payment_terms
 from list_converters.sales_tax_framework import process_sales_tax_framework
+
+logging.info("Test log: Logging system is active.")
 
 # -----------------------------------------------------------------------------
 # CONFIGURATION INITIALIZATION
@@ -28,14 +31,14 @@ file_type_registry = {
         'process_function': convert_accounts,
         'dependencies': [],
         'output_ext': 'csv',
-        'output_name': 'Accounts.csv'
+        'output_name': 'accounts.csv'
     },
     '!TERMS': {
         'description': 'Payment Terms file',
         'process_function': convert_payment_terms,
         'dependencies': [],
         'output_ext': 'html',
-        'output_name': 'Terms.html'
+        'output_name': 'terms.html'
     },
     '!SALESTAXCODE': {
         'description': 'Sales Tax Codes file',
@@ -73,6 +76,8 @@ file_type_registry = {
 # -----------------------------------------------------------------------------
 
 def extract_keys_from_iif(file_path):
+    logging.debug("Entering extract_keys_from_iif function.")
+    logging.debug(f"File path: {file_path}")
     keys_data = {}
     with open(file_path, 'r') as file:
         current_key = None
@@ -85,6 +90,7 @@ def extract_keys_from_iif(file_path):
                     keys_data[current_key] = []
             elif current_key:
                 keys_data[current_key].append(line)
+    logging.debug("Exiting extract_keys_from_iif function.")
     return keys_data
 
 # -----------------------------------------------------------------------------
@@ -186,6 +192,18 @@ def process_keys(key_registry):
 
 def main():
     try:
+        # Remove any existing handlers first (especially if logging was initialized in imported modules)
+        for handler in logging.root.handlers[:]:
+            logging.root.removeHandler(handler)
+
+        # Reconfigure logging to only show INFO and above
+        logging.basicConfig(
+            level=logging.INFO,
+            format="%(asctime)s - %(levelname)s - %(message)s"
+        )
+
+        logging.debug("Starting main script execution.")
+        logging.info("Logging system initialized. This is a test log message.")
         config.load_config()
 
         if not config.input_dir or not config.output_dir:

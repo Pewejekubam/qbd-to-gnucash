@@ -1,8 +1,20 @@
 # Define source and target locations
 $source = (Get-Item -Path ".").FullName
 $targetRoot = (Get-Item -Path "\git-root").FullName
+
+# Get Git short commit hash (fallback to 'nogit' if git fails)
+try {
+    $commitHash = git rev-parse --short HEAD 2>$null
+    if (-not $commitHash) {
+        $commitHash = "nogit"
+    }
+} catch {
+    $commitHash = "nogit"
+}
+
+# Generate timestamp and archive name
 $timestamp = Get-Date -Format "yyyyMMddHHmm"
-$archiveName = "qbd-to-gnucash-archive-$timestamp.zip"
+$archiveName = "qbd-to-gnucash-$commitHash-$timestamp.zip"
 $target = Join-Path -Path $targetRoot -ChildPath $archiveName
 
 # Check if the source directory exists
@@ -35,6 +47,7 @@ try {
     # Output the results
     Write-Host "Archive Information:"
     Write-Host "-------------------"
+    Write-Host "Git Commit: $commitHash"
     Write-Host "Source Structure: $source"
     Write-Host "Folders: $folderCount"
     Write-Host "Files: $fileCount"
