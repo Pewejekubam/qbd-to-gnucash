@@ -1,3 +1,8 @@
+# -----------------------------------------------------------------------------
+# MODULE: Sales Tax Framework Parser
+# PURPOSE: Parse and process Sales Tax Codes and Items from QuickBooks IIF files
+# -----------------------------------------------------------------------------
+
 import os
 
 def parse_sales_tax_files(codes_file_path, items_file_path):

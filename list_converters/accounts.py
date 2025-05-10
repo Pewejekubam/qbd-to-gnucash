@@ -1,3 +1,8 @@
+# -----------------------------------------------------------------------------
+# MODULE: Accounts Converter
+# PURPOSE: Parse QuickBooks IIF files and convert account data to GnuCash format
+# -----------------------------------------------------------------------------
+
 import csv
 import json
 import logging
@@ -176,54 +181,6 @@ def flatten_account_tree(tree):
 
     return tree
 
-def build_gnucash_accounts(accounts_data, mapping):
-    import logging
-    logger = logging.getLogger(__name__)
-
-    mapped_accounts = []
-
-    # Load mapping rules
-    account_mappings = mapping.get("account_types", {})
-    default_mapping = mapping.get("default_rules", {}).get("unmapped_accounts", {})
-    basic_types = mapping.get("basic_accounting_types", {})
-
-    if not account_mappings:
-        logger.warning("No account type mappings found.")
-
-    for account in accounts_data:
-        qb_type = account.get("ACCNTTYPE", "").strip().upper()
-        name = account.get("NAME", "").strip()
-
-        mapping_info = account_mappings.get(qb_type)
-
-        if not mapping_info:
-            logger.warning(f"Unmapped QBD account type: '{qb_type}' for account '{name}'")
-            mapping_info = default_mapping
-
-        gnucash_type = mapping_info.get("gnucash_type", "ASSET")
-        destination = mapping_info.get("destination_hierarchy", "Unmapped")
-        placeholder = mapping_info.get("placeholder", False)
-
-        full_name = f"{destination}:{name}" if destination else name
-
-        mapped_accounts.append({
-            "Type": gnucash_type,
-            "Full Account Name": full_name,
-            "Account Name": name,
-            "Account Code": account.get("ACCNUM", ""),
-            "Description": account.get("DESC", ""),
-            "Account Color": "",
-            "Notes": "",
-            "Symbol": "USD",
-            "Namespace": "CURRENCY",
-            "Hidden": "F",
-            "Tax Info": "F",
-            "Placeholder": "T" if placeholder else "F"
-        })
-
-    return mapped_accounts
-
-
 def convert_accounts(iif_file_path, output_path, baseline_map_path, specific_map_path):
     """
     Main entry for converting QBD accounts to GnuCash-compatible CSV.
@@ -301,6 +258,7 @@ def convert_accounts(iif_file_path, output_path, baseline_map_path, specific_map
     qb_account_types = {row.get('ACCNTTYPE', '').strip().upper() for row in records}
     mapped_types = set(combined_map.get("account_types", {}).keys())
     unmapped = sorted(qb_account_types - mapped_types)
+    logging.warning(f"Unmapped account types detected: {unmapped}")
 
     logging.debug(f"Unmapped types: {unmapped}")
 
@@ -319,29 +277,8 @@ def convert_accounts(iif_file_path, output_path, baseline_map_path, specific_map
     # -----------------------------
     # Write output CSV
     # -----------------------------
+    logging.debug(f"Type of 'tree': {type(tree)}")
+    logging.debug(f"Content of 'tree': {list(tree.items())[:5]}" if isinstance(tree, dict) else f"Content of 'tree': {tree[:5]}")
     write_gnucash_csv(tree, output_path)
     logging.info(f"Successfully wrote accounts to {output_path}")
 
-# Commented out manual CSV writing logic
-# with open(output_path, 'w', newline='', encoding='utf-8') as f:
-#     writer = csv.writer(f)
-#     writer.writerow([
-#         "Type", "Full Account Name", "Account Name", "Account Code",
-#         "Description", "Account Color", "Notes", "Symbol", "Namespace",
-#         "Hidden", "Tax Info", "Placeholder"
-#     ])
-#     for path, acct in tree.items():
-#         writer.writerow([
-#             acct['Type'],
-#             path,
-#             acct['Account Name'],
-#             acct['Account Code'],
-#             acct['Description'],
-#             '',  # Account Color
-#             '',  # Notes
-#             acct['Symbol'],
-#             acct['Namespace'],
-#             acct['Hidden'],
-#             'F',  # Tax Info placeholder
-#             acct['Placeholder']
-#         ])

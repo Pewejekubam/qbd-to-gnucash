@@ -1,3 +1,8 @@
+# -----------------------------------------------------------------------------
+# MODULE: Payment Terms Converter
+# PURPOSE: Convert QuickBooks Payment Terms IIF files to HTML format
+# -----------------------------------------------------------------------------
+
 import os
 
 def convert_payment_terms(iif_file_path, output_file_path):

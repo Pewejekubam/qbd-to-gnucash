@@ -1,4 +1,7 @@
-# list_converters/mapping.py
+# -----------------------------------------------------------------------------
+# MODULE: Mapping Utilities
+# PURPOSE: Load, save, and merge account mapping configurations
+# -----------------------------------------------------------------------------
 
 import os
 import json

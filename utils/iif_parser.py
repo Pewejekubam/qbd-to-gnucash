@@ -1,9 +1,7 @@
-"""
-IIF Parser Utility
-
-This module provides a utility function to extract structured records from
-QuickBooks IIF files, filtering by a specific header (e.g., !ACCNT, !TERMS).
-"""
+# -----------------------------------------------------------------------------
+# MODULE: IIF Parser Utility
+# PURPOSE: Extract structured records from QuickBooks IIF files
+# -----------------------------------------------------------------------------
 
 import logging
 
@@ -48,13 +46,22 @@ def parse_iif_records(file_path, target_key):
                 # If we're capturing data rows, map values to headers
                 if capture and not line.startswith('!'):
                     values = [v.strip() for v in line.split('\t')]
-                    record = dict(zip(headers, values))
-                    records.append(record)
+                    record = {h: values[i] if i < len(values) else '' for i, h in enumerate(headers)}
+                    # Map to expected output keys for downstream compatibility
+                    mapped_record = {
+                        "NAME": record.get("NAME", ""),
+                        "ACCNTTYPE": record.get("ACCNTTYPE", ""),
+                        "DESC": record.get("DESC", ""),
+                        "ACCNUM": record.get("ACCNUM", ""),
+                        "HIDDEN": "T" if record.get("HIDDEN", "N") == "Y" else "F"
+                    }
+                    records.append(mapped_record)
 
         logging.debug(f"Parsed {len(records)} records under key '{target_key}' from file: {file_path}")
         if records:
             logging.debug(f"Sample record: {records[0]}")
         logging.debug(f"Captured records: {records}")
+        logging.debug(f"First 5 records: {records[:5]}")
 
     except FileNotFoundError:
         logging.error(f"IIF file not found: {file_path}")
@@ -63,5 +70,8 @@ def parse_iif_records(file_path, target_key):
 
     logging.debug(f"Parsed records: {records}")
     logging.debug("Exiting parse_iif_records function.")
+
+    assert isinstance(records, list) and all(isinstance(record, dict) for record in records), "parse_iif_records must return a list of dictionaries."
+    logging.debug(f"First 5 parsed records: {records[:5]}")
 
     return records

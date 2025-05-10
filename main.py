@@ -1,10 +1,17 @@
 import os
 import logging
+import sys
 from config import Config
 from utils.error_handler import handle_error
 from list_converters.accounts import convert_accounts
 from list_converters.payment_terms import convert_payment_terms
 from list_converters.sales_tax_framework import process_sales_tax_framework
+
+# Ensure the project root is in PYTHONPATH
+project_root = os.path.dirname(os.path.abspath(__file__))
+if project_root not in sys.path:
+    sys.path.append(project_root)
+    os.environ['PYTHONPATH'] = project_root
 
 logging.info("Test log: Logging system is active.")
 

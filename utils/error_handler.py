@@ -1,3 +1,8 @@
+# -----------------------------------------------------------------------------
+# MODULE: Error Handler
+# PURPOSE: Log and handle errors during script execution
+# -----------------------------------------------------------------------------
+
 import logging
 
 def handle_error(error):
