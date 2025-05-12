@@ -83,6 +83,29 @@ The output includes:
   - `sales_tax_codes.html`: A formatted HTML file listing all Sales Tax Codes for easy manual entry into GnuCash.
   - `payment_terms.html`: A formatted HTML file listing all Payment Terms for easy manual entry into GnuCash.
 
+---
+
+### ⚠️ Accounts Receivable / Payable Special Handling
+
+GnuCash uses `RECEIVABLE` and `PAYABLE` as special internal account types for its business modules (customers, vendors, invoices).
+
+To avoid import issues and GUI errors:
+
+* This tool maps:
+
+  * `AR` accounts to `ASSET`
+  * `AP` accounts to `LIABILITY`
+* The names and hierarchy are preserved (e.g., `Assets:Accounts Receivable`)
+
+**After import:**
+
+1. Open your GnuCash file
+2. Enable business features via the *Business* menu
+3. Manually edit the `Accounts Receivable` and `Accounts Payable` accounts
+4. Change their type to `RECEIVABLE` or `PAYABLE` as appropriate
+
+---
+
 ## External References
 This project aligns with the GnuCash CSV import logic, as detailed in the [GnuCash source code](https://github.com/Gnucash/gnucash/blob/stable/gnucash/import-export/csv-imp/assistant-csv-account-import.c). Key considerations include:
 - **Commodity Validation**: Ensuring valid commodities (e.g., `USD`) are associated with accounts.

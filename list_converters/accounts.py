@@ -84,101 +84,131 @@ def normalize_account_type(qb_type, mapping):
 
 def add_account_to_tree(tree, path, info, gnucash_type):
     """
-    Inserts an account into the tree and ensures all implied parent paths exist.
-
-    If any parent account (e.g. "Assets:Fixed Assets") does not exist, it will be added
-    as a placeholder. This avoids GnuCash import errors due to missing hierarchy.
-
-    Args:
-        tree (dict): Dictionary representing all accounts keyed by full path.
-        path (str): Colon-separated GnuCash-style path.
-        info (dict): Metadata for the leaf account.
-        gnucash_type (str): GnuCash account type (e.g., "ASSET", "EXPENSE").
+    Ensures that all levels in a hierarchical account path are added to the tree,
+    inserting placeholders for intermediate parents if missing, and populating the
+    leaf account with full metadata.
     """
-    parts = path.split(':')
-    current_path = ''
+    parts = path.split(":")
+    current_path = ""
+    
     for i, part in enumerate(parts):
         current_path = f"{current_path}:{part}" if current_path else part
-        is_leaf = (i == len(parts) - 1)
+        is_leaf = i == len(parts) - 1
 
         if current_path not in tree:
             tree[current_path] = {
-                'Type': gnucash_type if is_leaf else '',
-                'Account Name': part,
-                'Account Code': info.get('code', '') if is_leaf else '',
-                'Description': info.get('description', '') if is_leaf else '',
-                'Hidden': info.get('hidden', 'F') if is_leaf else 'F',
-                'Placeholder': 'F' if is_leaf else 'T',
-                'Namespace': 'CURRENCY',
-                'Symbol': 'USD'
+                "Type": gnucash_type if is_leaf else "",
+                "Account Name": part,
+                "Account Code": info.get("ACCNUM", "") if is_leaf else "",
+                "Description": info.get("DESC", "") if is_leaf else "",
+                "Account Color": "",
+                "Notes": "",
+                "Symbol": "USD",
+                "Namespace": "CURRENCY",
+                "Hidden": "F",
+                "Tax Info": "F",
+                "Placeholder": "F" if is_leaf else "T",
             }
+
         elif is_leaf:
-            # Overwrite metadata if this is the defined account (not auto-generated)
+            # If the leaf was already inserted as a placeholder earlier, update it with real info
             tree[current_path].update({
-                'Type': gnucash_type,
-                'Account Code': info.get('code', ''),
-                'Description': info.get('description', ''),
-                'Hidden': info.get('hidden', 'F'),
-                'Placeholder': 'F'
+                "Type": gnucash_type,
+                "Account Code": info.get("ACCNUM", ""),
+                "Description": info.get("DESC", ""),
+                "Placeholder": "F",
             })
 
 
 def flatten_account_tree(tree):
     """
-    Flattens and optionally normalizes the account tree.
-    Removes placeholder accounts with exactly one child IF that child is a leaf.
-    Promotes the child up one level.
-
-    Returns:
-        dict: Updated tree with singleton placeholder parents removed when safe.
+    Enforce the "1-child rule":
+    - If a placeholder has exactly one child and that child is a leaf (not a placeholder and has no children),
+      promote the child into the parent's position and remove the original placeholder and the redundant child.
     """
+    import logging
     from collections import defaultdict
 
-    # Build parent-to-children map
-    children_map = defaultdict(list)
-    for full_path in tree.keys():
-        if ':' in full_path:
-            parent = full_path.rsplit(':', 1)[0]
-            children_map[parent].append(full_path)
+    # Step 1: Build a child map: parent path → [child paths]
+    child_map = defaultdict(list)
+    for full_name in tree:
+        parts = full_name.split(":")
+        if len(parts) > 1:
+            parent = ":".join(parts[:-1])
+            child_map[parent].append(full_name)
 
-    # Track changes
+    # Step 2: Find parent placeholders with a single child
     to_promote = []
-    to_remove = []
+    for parent, children in child_map.items():
+        if len(children) != 1:
+            continue
 
-    for parent, children in children_map.items():
-        if len(children) == 1:
-            parent_entry = tree.get(parent)
-            child_path = children[0]
-            child_entry = tree.get(child_path)
+        child = children[0]
+        parent_entry = tree.get(parent)
+        child_entry = tree.get(child)
 
-            # Check: is the child a leaf (i.e. no children of its own)?
-            child_has_children = any(
-                k != child_path and k.startswith(f"{child_path}:") for k in tree
+        if not parent_entry or not child_entry:
+            continue
+
+        is_placeholder = parent_entry.get("Placeholder") == "T"
+        child_is_leaf = (
+            child_entry.get("Placeholder") == "F" and
+            not any(
+                other != child and other.startswith(f"{child}:")
+                for other in tree
             )
+        )
 
-            if (
-                parent_entry
-                and parent_entry.get('Placeholder') == 'T'
-                and child_entry
-                and child_entry.get('Placeholder') == 'F'
-                and not child_has_children
-            ):
-                to_promote.append((parent, child_path))
-                to_remove.append(parent)
+        if is_placeholder and child_is_leaf:
+            to_promote.append((parent, child))
 
-    # Promote child and remove placeholder parent
+    # Step 3: Promote child into parent, remove both original entries
     for parent, child in to_promote:
-        new_path = parent
-        child_data = tree.pop(child)
-        child_data['Placeholder'] = 'F'
-        tree[new_path] = child_data
-        to_remove.append(parent)
+        logging.debug(f"Promoting single child '{child}' to replace placeholder parent '{parent}'")
 
-    # Clean up placeholders
-    for path in to_remove:
-        if path in tree:
-            del tree[path]
+        # Promote the child into the parent's slot
+        child_data = tree[child].copy()
+        child_data["Placeholder"] = "F"
+        tree[parent] = child_data
 
+        # Remove the original nested child
+        if child in tree:
+            del tree[child]
+
+    return tree
+
+def ensure_all_parents_exist(tree):
+    """
+    Ensures all intermediate parent accounts are present in the tree as placeholders.
+    """
+    new_entries = {}
+
+    all_required_parents = set()
+    for full_name in tree.keys():
+        parts = full_name.split(":")
+        for i in range(1, len(parts)):
+            parent_path = ":".join(parts[:i])
+            all_required_parents.add(parent_path)
+
+    for parent_path in all_required_parents:
+        if parent_path not in tree and parent_path not in new_entries:
+            part = parent_path.split(":")[-1]
+            new_entries[parent_path] = {
+                "Type": "",
+                "Account Name": part,
+                "Account Code": "",
+                "Description": "",
+                "Account Color": "",
+                "Notes": "",
+                "Symbol": "USD",
+                "Namespace": "CURRENCY",
+                "Hidden": "F",
+                "Tax Info": "F",
+                "Placeholder": "T",
+            }
+
+    if new_entries:
+        tree.update(new_entries)
     return tree
 
 def convert_accounts(iif_file_path, output_path, baseline_map_path, specific_map_path):
@@ -240,6 +270,9 @@ def convert_accounts(iif_file_path, output_path, baseline_map_path, specific_map
     # Build structured account tree
     # -----------------------------
     tree = build_gnucash_accounts(records, combined_map)
+    tree = ensure_all_parents_exist(tree)  # Ensure all intermediate parents exist
+    tree = flatten_account_tree(tree)
+    logging.info("Flattened account tree using 1-child rule.")
     logging.debug(f"Built account tree with {len(tree)} entries.")
     logging.debug(f"Output path for CSV: {output_path}")
 
