@@ -320,9 +320,10 @@ logging.basicConfig(
 - Input files are unmodified QuickBooks `.IIF` exports.
 - Output files include:
   - `accounts.csv` (GnuCash-compatible, with full hierarchy).
-  - HTML files for sales tax codes and payment terms.
-  - Optionally, a `specific_mapping.json` for unmapped types.
+  - HTML files for sales tax codes and payment terms (future roadmap).
+  - Optionally, a `account_mapping_specific.json` for unmapped types.
 - Reads and writes files using UTF-8 encoding.
+- Non UTF-8 character in input files are stripped and not replaced.
 - Assumes the working directory or configured paths are writable and accessible.
 
 ### Working Directory & Config Handling
@@ -344,12 +345,11 @@ logging.basicConfig(
 
 - Does not process executable code or macros from input files.
 - Only reads and writes plain text files (CSV, JSON, HTML).
-- No explicit handling of sensitive data, but assumes input files do not contain confidential information.
+- No explicit handling of sensitive data, but assumes input files may contain confidential information.
 
 ### User Experience & Automation
 
 - Provides clear instructions and error messages for manual steps (e.g., editing mapping files, post-import GnuCash actions).
-- Generates HTML files for easier manual entry of sales tax codes and payment terms.
 - Supports iterative workflow: user can refine mappings and re-run the script.
 - Output files are formatted for easy import into GnuCash and for human readability.
 
@@ -445,7 +445,7 @@ def write_accounts_csv(rows: List[Dict], output_path: str) -> None:
 
 ## 8. Configuration & Environment
 
-- **Config Precedence:** Environment variables override config file values. If neither is set, use hardcoded defaults.
+- **Config Precedence:** If environment variables are set, they will be detected by the code and used. Otherwise, hard-coded paths will be used. This ensures that users can override defaults via environment variables, but the tool will always function with built-in fallback paths if none are set.
 - **Config/Env Keys:**
   - `QBD_INPUT_PATH` (default: `input/sample-qbd-accounts.IIF`)
   - `GNC_OUTPUT_PATH` (default: `output/accounts.csv`)
@@ -493,9 +493,6 @@ def write_accounts_csv(rows: List[Dict], output_path: str) -> None:
 - **Validation Failure Surfacing:**
   - Errors and warnings are printed to stderr and logged to `output/qbd-to-gnucash.log`.
   - Exit code signals error type for automation.
-- **How to Run Tests:**
-  - Place test IIF files in `input/`.
-  - Run: `python -m unittest discover` (tests should be in `tests/` directory, not yet present).
 
 ---
 
@@ -547,7 +544,36 @@ def write_accounts_csv(rows: List[Dict], output_path: str) -> None:
           "destination_hierarchy": "Assets:Current Assets:Bank",
           "placeholder": false
         },
-        ...
+        "EQUITY": {
+          "gnucash_type": "EQUITY",
+          "destination_hierarchy": "Equity",
+          "placeholder": false
+        },
+        "CCARD": {
+          "gnucash_type": "LIABILITY",
+          "destination_hierarchy": "Liabilities:Credit Cards",
+          "placeholder": false
+        },
+        "AR": {
+          "gnucash_type": "RECEIVABLE",
+          "destination_hierarchy": "Assets:Accounts Receivable",
+          "placeholder": false
+        },
+        "AP": {
+          "gnucash_type": "PAYABLE",
+          "destination_hierarchy": "Liabilities:Accounts Payable",
+          "placeholder": false
+        },
+        "EXP": {
+          "gnucash_type": "EXPENSE",
+          "destination_hierarchy": "Expenses",
+          "placeholder": false
+        },
+        "OEXP": {
+          "gnucash_type": "EXPENSE",
+          "destination_hierarchy": "Expenses:Other",
+          "placeholder": false
+        }
       },
       "default_rules": {
         "unmapped_accounts": {
@@ -562,31 +588,47 @@ def write_accounts_csv(rows: List[Dict], output_path: str) -> None:
 
 ---
 
-## 14. Appendix: Example Code Patterns
+## 13.1 Registry Dispatch and Fallback Logic
 
-### 14.1 Account Type Resolution
-```python
-def resolve_account_type(qb_type: str, baseline_mapping: Dict, specific_mapping: Dict, default_rule: Dict) -> Dict:
-    normalized_type = qb_type.strip().upper()
-    if normalized_type in specific_mapping:
-        return specific_mapping[normalized_type]
-    if normalized_type in baseline_mapping:
-        return baseline_mapping[normalized_type]
-    return default_rule
-```
+- Registry dispatches per-key (e.g., `!ACCNT`, `!TRNS`).
+- Keys must be unique per module.
+- If two modules claim the same key, a `RegistryKeyConflictError` is raised.
+- Module registration occurs in `main.py` via the `registry.dispatch()` call.
+- If a key is not registered, a structured error is raised and logged.
 
-### 14.2 Validation Suite
+---
+
+## 13.2 Declarative Error Categories Table
+
+A declarative error category structure is used for code generation, test scaffolding, and documentation:
+
 ```python
-class AccountValidationSuite:
-    def validate_iif_record(self, record: dict) -> bool: ...
-    def validate_mapping(self, qb_type: str, mapping: dict) -> bool: ...
-    def validate_account_tree(self, tree: dict) -> bool: ...
-    def validate_flattened_tree(self, tree: dict) -> bool: ...
-    def validate_csv_row(self, row: dict) -> bool: ...
-    def run_all(self, records, mapping, tree, csv_rows): ...
+ERROR_CATEGORIES = {
+    "Parsing": ["Missing header", "Tab mismatch", "Invalid UTF-8"],
+    "Mapping": ["Unknown account type", "No destination hierarchy defined"],
+    "Tree Construction": ["Missing parent", "Failed 1-child promotion", "Circular paths"],
+    "Output": ["File write permission denied", "CSV malformed"],
+    "Registry": ["Unregistered key", "Key conflict", "Fallback loop"]
+}
 ```
 
 ---
 
-**This PRD is now maximally actionable for agentic AI programmers, with explicit file contracts, API signatures, config/environment details, error handling, testing, onboarding, extensibility, and concrete examples from the workspace.**
+## 13.3 Unicode Normalization and Logging
 
+- All input files are read as UTF-8. If non-UTF-8 characters are encountered, they are stripped.
+- To avoid silent data loss, the tool logs a warning each time a character is stripped or replaced during normalization.
+- Example implementation:
+
+```python
+def safe_decode(line, file_path):
+    try:
+        return line.encode('utf-8').decode('utf-8')
+    except UnicodeDecodeError as e:
+        logging.warning(f"Unicode decode error in {file_path}: {e}. Stripping invalid characters.")
+        return line.encode('utf-8', errors='ignore').decode('utf-8', errors='ignore')
+```
+
+- All normalization and stripping events are logged with file name and line number for traceability.
+
+---
