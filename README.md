@@ -1,115 +1,248 @@
-# QuickBooks to GnuCash Converter
 
-This project converts QuickBooks IIF files into GnuCash-compatible CSV files and generates formatted HTML files for manual data entry of Sales Tax Codes and Payment Terms. It uses modular JSON mappings to map QuickBooks account types to GnuCash-compatible hierarchies and attributes.
+# QBD to GnuCash Conversion Tool
 
-## Features
+A CLI utility for converting QuickBooks Desktop (QBD) financial data into GnuCash-compatible CSVs, beginning with the Chart of Accounts.
 
-- **IIF File Parsing**: Extracts account data from QuickBooks IIF files.
-- **Modular JSON Mapping**: Maps QuickBooks account types to GnuCash-compatible structures using baseline and specific mapping files.
-- **Dynamic Mapping Updates**: Automatically identifies unmapped account types and updates the specific mapping file.
-- **Hierarchy Validation**: Ensures parent accounts are created before child accounts to maintain a valid GnuCash hierarchy.
-- **Placeholder Optimization**: Removes redundant placeholder accounts with only one child and promotes the child to the parent level.
-- **CSV Export**: Generates a GnuCash-compatible CSV file with all processed accounts.
-- **HTML Export for Sales Tax Codes and Payment Terms**: Converts Sales Tax Codes and Payment Terms into well-formatted HTML files to make manual data entry into GnuCash less of a pain.
+---
 
-## Why HTML for Sales Tax Codes and Payment Terms?
+## 🚀 Overview
 
-Manually entering Sales Tax Codes and Payment Terms into GnuCash can be tedious and error-prone. To alleviate this, the project generates HTML files that are formatted for easy readability. These files allow users to quickly reference the data and reduce the frustration of manual entry.
+This tool automates the migration of account data from proprietary `.IIF` exports from QuickBooks Desktop into clean, structured `accounts.csv` files that GnuCash can import.
 
-## Workflow Overview
+Designed for:
+- Technical operators, accountants, and developers
+- Agentic AI compatibility (modular, declarative, config-driven)
+- Future extensibility (Customers, Vendors, Transactions, etc.)
 
-1. **Load Configuration**:
-   - The `main.py` script loads configuration settings, including the input and output directories, from environment variables or a configuration file.
+---
 
-2. **Identify Input Files**:
-   - The script scans the input directory for `.iif` files to process.
+## ✅ Features
 
-3. **Load Baseline Mapping**:
-   - The baseline mapping file (`mappings/account_mapping_baseline.json`) is loaded. This file contains predefined mappings for common QuickBooks account types to GnuCash-compatible structures.
+- Converts QBD Chart of Accounts to GnuCash CSV format
+- Preserves account hierarchy and type mapping
+- Generates diff files for unmapped QBD types
+- Logs each processing phase for traceability
+- Modular design with clean CLI integration
 
-4. **Check for Specific Mapping File**:
-   - The script checks if the specific mapping file (`account_mapping_specific.json`) exists in the output directory:
-     - **If the file exists**:
-       - It is loaded and merged with the baseline mapping to complete the account type mappings.
-     - **If the file does not exist**:
-       - The script identifies all unmapped account types from the input IIF file.
-       - A new specific mapping file is created, containing these unmapped account types with default placeholders.
-       - The script stops execution to allow the user to review and modify the specific mapping file.
+---
 
-5. **Process Accounts**:
-   - The script processes the accounts in the IIF file:
-     - It maps each account to its GnuCash-compatible structure using the merged mapping.
-     - If an account type is not found in the mapping, the default rules from the baseline mapping are applied.
-     - Redundant placeholder accounts with only one child are removed, and the child is promoted to the parent level.
+## 📦 Directory Structure
 
-6. **Generate Accounts CSV**:
-   - The processed accounts are written to an `accounts.csv` file in the output directory.
-   - The accounts are sorted to ensure parent accounts are written before child accounts, maintaining a valid hierarchy.
+```plaintext
+.
+├── input/                # QBD IIF exports
+├── output/               # GnuCash CSVs and mapping diffs
+├── intermediate/         # Debug/visualization artifacts
+├── registry/             # Mapping logic and dispatch rules
+├── modules/              # Per-domain converters (accounts, vendors, etc.)
+├── utils/                # Shared logic: parsing, writing, validation
+└── main.py               # Entrypoint CLI orchestrator
+```
 
-7. **Generate HTML for Sales Tax Codes and Payment Terms**:
-   - Sales Tax Codes and Payment Terms are converted into formatted HTML files (`sales_tax_codes.html` and `payment_terms.html`) for easy manual entry into GnuCash.
+---
 
-8. **Iterative Workflow**:
-   - The user can modify the specific mapping file to refine the mappings.
-   - The script can be re-run to generate an updated `accounts.csv` file based on the modified mappings.
+## 🧩 Supported Inputs
 
-## Example Usage
+- QuickBooks Desktop `.IIF` files containing `!ACCNT` entries only
+- Output: `accounts.csv` formatted for GnuCash import
+- Mapping files:
+  - `mappings/account_mapping_baseline.json`
+  - `output/accounts_mapping_specific.json` (user override)
+  - `output/accounts_mapping_diff.json` (auto-generated)
 
-1. Place your QuickBooks `.iif` files in the input directory.
-2. Run the script:
+---
+
+## 🛠️ Getting Started
+
+### Requirements
+
+- Python 3.8–3.12
+- No external dependencies (stdlib only)
+
+### Installation
+
+```bash
+git clone <repo-url>
+cd qbd-to-gnucash
+```
+
+### Running the Tool
+
+1. Place your `.IIF` file in `input/`
+2. Run the converter:
    ```bash
    python main.py
    ```
-3. Review the generated `account_mapping_specific.json` file (if created) and update it as needed.
-4. Re-run the script to generate the final `accounts.csv` file and HTML files for Sales Tax Codes and Payment Terms.
-
-## Output
-The output includes:
-- **Accounts CSV**: A GnuCash-compatible CSV file containing the following fields:
-  - `Type`: GnuCash account type.
-  - `Full Account Name`: Full hierarchical name of the account.
-  - `Account Name`: Name of the account.
-  - `Account Code`: Code associated with the account.
-  - `Description`: Description of the account.
-  - `Account Color`: (Optional) Color for the account.
-  - `Notes`: (Optional) Additional notes for the account.
-  - `Symbol`: Currency symbol (e.g., `USD`).
-  - `Namespace`: Namespace for the account (e.g., `CURRENCY`).
-  - `Hidden`: Whether the account is hidden.
-  - `Tax Info`: Tax-related information.
-  - `Placeholder`: Whether the account is a placeholder.
-
-- **HTML Files**:
-  - `sales_tax_codes.html`: A formatted HTML file listing all Sales Tax Codes for easy manual entry into GnuCash.
-  - `payment_terms.html`: A formatted HTML file listing all Payment Terms for easy manual entry into GnuCash.
+3. Inspect output:
+   - `output/accounts.csv`
+   - `output/accounts_mapping_diff.json` (if unmapped types found)
+   - `output/qbd-to-gnucash.log` for diagnostics
 
 ---
 
-### ⚠️ Accounts Receivable / Payable Special Handling
+## 🔁 Mapping Workflow
 
-GnuCash uses `RECEIVABLE` and `PAYABLE` as special internal account types for its business modules (customers, vendors, invoices).
+1. Tool reads `baseline` mapping.
+2. Applies `specific` overrides (if present).
+3. Writes `diff` file for any unmapped QBD account types.
+4. User updates `specific` and reruns.
 
-To avoid import issues and GUI errors:
+Mapping files use the following structure:
 
-* This tool maps:
-
-  * `AR` accounts to `ASSET`
-  * `AP` accounts to `LIABILITY`
-* The names and hierarchy are preserved (e.g., `Assets:Accounts Receivable`)
-
-**After import:**
-
-1. Open your GnuCash file
-2. Enable business features via the *Business* menu
-3. Manually edit the `Accounts Receivable` and `Accounts Payable` accounts
-4. Change their type to `RECEIVABLE` or `PAYABLE` as appropriate
+```json
+{
+  "account_types": {
+    "BANK": {
+      "gnucash_type": "ASSET",
+      "destination_hierarchy": "Assets:Current Assets:Bank",
+      "placeholder": false
+    },
+    ...
+  },
+  "default_rules": {
+    "unmapped_accounts": {
+      "gnucash_type": "ASSET",
+      "destination_hierarchy": "Assets:Uncategorized",
+      "placeholder": false
+    }
+  }
+}
+```
 
 ---
 
-## External References
-This project aligns with the GnuCash CSV import logic, as detailed in the [GnuCash source code](https://github.com/Gnucash/gnucash/blob/stable/gnucash/import-export/csv-imp/assistant-csv-account-import.c). Key considerations include:
-- **Commodity Validation**: Ensuring valid commodities (e.g., `USD`) are associated with accounts.
-- **Namespace Mapping**: Using `CURRENCY` as the namespace for currencies like `USD`.
-- **Account Hierarchy**: Defining parent accounts before child accounts to maintain a valid hierarchy.
+## 📁 Sample Input
 
-These principles are implemented in the `convert_accounts` function to ensure compatibility with GnuCash.
+```text
+!ACCNT	NAME	ACCNTTYPE	DESC	ACCNUM	HIDDEN
+ACCNT	Checking	BANK	Main checking account	1000	N
+ACCNT	Accounts Receivable	AR		1100	N
+ACCNT	Accounts Payable	AP		2000	N
+```
+
+### Output (`accounts.csv`)
+```csv
+Type,Full Account Name,Account Name,Account Code,...
+ASSET,Assets:Current Assets:Bank:Checking,Checking,1000,...
+ASSET,Assets:Accounts Receivable,Accounts Receivable,1100,...
+LIABILITY,Liabilities:Accounts Payable,Accounts Payable,2000,...
+```
+
+---
+
+## 🧪 Validation Suite
+
+The system includes staged validators for:
+
+| Stage              | Method                        |
+|--------------------|-------------------------------|
+| IIF Parsing        | `validate_iif_record()`       |
+| Mapping            | `validate_mapping()`          |
+| Tree Construction  | `validate_account_tree()`     |
+| Flattening         | `validate_flattened_tree()`   |
+| CSV Output         | `validate_csv_row()`          |
+
+---
+
+## ⚙️ Configuration
+
+The following environment variables can override default paths:
+
+| Key                    | Default Path                         |
+|------------------------|--------------------------------------|
+| `QBD_INPUT_PATH`       | `input/sample-qbd-accounts.IIF`      |
+| `GNC_OUTPUT_PATH`      | `output/accounts.csv`                |
+| `MAPPING_BASELINE_PATH`| `mappings/account_mapping_baseline.json` |
+| `MAPPING_SPECIFIC_PATH`| `output/accounts_mapping_specific.json` |
+| `MAPPING_DIFF_PATH`    | `output/accounts_mapping_diff.json`  |
+
+Example:
+
+```python
+import os
+QBD_INPUT_PATH = os.getenv('QBD_INPUT_PATH', 'input/sample-qbd-accounts.IIF')
+```
+
+---
+
+## 🧱 Registry & Dispatch
+
+- Each module registers a handler keyed to its list type (e.g., `!ACCNT`)
+- Keys must be unique or raise `RegistryKeyConflictError`
+- If a key is missing, a structured error is logged and raised
+
+---
+
+## 🛡️ Error Handling & Logging
+
+- All critical operations log to `output/qbd-to-gnucash.log`
+- Errors include parsing failures, unmapped types, and invalid trees
+- Unicode decode issues are stripped and logged with file/line details
+
+Example:
+
+```python
+def safe_decode(line, file_path):
+    try:
+        return line.encode('utf-8').decode('utf-8')
+    except UnicodeDecodeError as e:
+        logging.warning(f"Unicode decode error in {file_path}: {e}")
+        return line.encode('utf-8', errors='ignore').decode('utf-8', errors='ignore')
+```
+
+---
+
+## 🔒 Security Notes
+
+- Tool only reads/writes plain text (CSV, JSON)
+- Does not execute macros or scripts from input
+- Logs and config files may contain confidential data — secure them appropriately
+
+---
+
+## 🧩 Extending the Tool
+
+To add support for other QBD list types:
+
+1. Create `modules/<type>.py`
+2. Register the key and handler in `main.py`
+3. Follow the same parse → map → flatten → write pipeline
+
+---
+
+## 🧪 Testing (Planned)
+
+- Place test `.IIF` files in `input/`
+- Run:  
+  ```bash
+  python -m unittest discover
+  ```
+- Test cases will validate malformed files, unmapped types, and tree flattening
+
+---
+
+## 📚 References
+
+- [GnuCash CSV Import Guide](https://www.gnucash.org/viewdoc.phtml?rev=5&lang=C&doc=guide)
+- [GnuCash Accounts Hierarchy Docs](https://www.gnucash.org/docs/)
+
+---
+
+## 🧠 Notes on Accounting Types
+
+GnuCash recognizes **five core account types**:
+
+- `ASSET`
+- `LIABILITY`
+- `EQUITY`
+- `INCOME`
+- `EXPENSE`
+
+All mappings must ultimately reduce to one of these. `RECEIVABLE` and `PAYABLE` are internal subtypes used only by GnuCash’s business features.
+
+---
+
+## 👥 Authors & Licensing
+
+This project is maintained by internal migration teams seeking vendor lock-in removal.  
+Open-source licensing to be determined.
