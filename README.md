@@ -1,18 +1,16 @@
-
 # QBD to GnuCash Conversion Tool
 
-A CLI utility for converting QuickBooks Desktop (QBD) financial data into GnuCash-compatible CSVs, beginning with the Chart of Accounts.
+**Version:** 2.7.2  
+**Date:** 2025-05-14  
 
 ---
 
 ## 🚀 Overview
 
-This tool automates the migration of account data from proprietary `.IIF` exports from QuickBooks Desktop into clean, structured `accounts.csv` files that GnuCash can import.
+This tool delivers a command-line utility for migrating financial data from QuickBooks Desktop (QBD) into GnuCash using structured `.csv` files. The initial focus is on the QBD Chart of Accounts (`!ACCNT`), with support for parsing IIF exports, mapping account types, reconstructing hierarchies, and generating GnuCash-compatible output. The tool enforces strict validation, logging, and deterministic behavior for account hierarchy construction, type inference, and placeholder promotion.
 
-Designed for:
-- Technical operators, accountants, and developers
-- Agentic AI compatibility (modular, declarative, config-driven)
-- Future extensibility (Customers, Vendors, Transactions, etc.)
+> **Architectural Constraint:**
+> All account nodes — real or placeholder — exist beneath one of five canonical root types: ASSET, LIABILITY, INCOME, EXPENSE, or EQUITY. Account types are determined exclusively by tracing upward to the nearest typed ancestor. Sibling, child, or majority-based inference is forbidden. Fallbacks to mapping default rules are deprecated. This is a structural invariant.
 
 ---
 
@@ -23,6 +21,8 @@ Designed for:
 - Generates diff files for unmapped QBD types
 - Logs each processing phase for traceability
 - Modular design with clean CLI integration
+- Strict enforcement of field names and type inheritance rules
+- All placeholder accounts are structurally complete and validated
 
 ---
 
@@ -41,12 +41,12 @@ Designed for:
 
 ---
 
-## 🧩 Supported Inputs
+## 🧩 Supported Inputs & Outputs
 
-- QuickBooks Desktop `.IIF` files containing `!ACCNT` entries only
+- Input: QuickBooks Desktop `.IIF` files containing `!ACCNT` entries only
 - Output: `accounts.csv` formatted for GnuCash import
 - Mapping files:
-  - `mappings/account_mapping_baseline.json`
+  - `registry/mapping/account_mapping_baseline.json`
   - `output/accounts_mapping_specific.json` (user override)
   - `output/accounts_mapping_diff.json` (auto-generated)
 
@@ -82,10 +82,10 @@ cd qbd-to-gnucash
 
 ## 🔁 Mapping Workflow
 
-1. Tool reads `baseline` mapping.
-2. Applies `specific` overrides (if present).
-3. Writes `diff` file for any unmapped QBD account types.
-4. User updates `specific` and reruns.
+1. Tool reads the baseline mapping.
+2. Applies specific overrides (if present).
+3. Writes a diff file for any unmapped QBD account types.
+4. User updates the specific mapping and reruns.
 
 Mapping files use the following structure:
 
@@ -109,10 +109,13 @@ Mapping files use the following structure:
 }
 ```
 
+**Note:** Fallback to `default_rules` for placeholder typing is deprecated as of v2.7.2. All placeholder types must be resolved by upward inheritance only.
+
 ---
 
-## 📁 Sample Input
+## 📁 Sample Input & Output
 
+**Sample Input:**
 ```text
 !ACCNT	NAME	ACCNTTYPE	DESC	ACCNUM	HIDDEN
 ACCNT	Checking	BANK	Main checking account	1000	N
@@ -120,12 +123,12 @@ ACCNT	Accounts Receivable	AR		1100	N
 ACCNT	Accounts Payable	AP		2000	N
 ```
 
-### Output (`accounts.csv`)
+**Sample Output (`accounts.csv`):**
 ```csv
-Type,Full Account Name,Account Name,Account Code,...
-ASSET,Assets:Current Assets:Bank:Checking,Checking,1000,...
-ASSET,Assets:Accounts Receivable,Accounts Receivable,1100,...
-LIABILITY,Liabilities:Accounts Payable,Accounts Payable,2000,...
+Type,Full Account Name,Account Name,Account Code,Description,Account Color,Notes,Symbol,Namespace,Hidden,Tax Info,Placeholder
+ASSET,Assets:Current Assets:Bank:Checking,Checking,1000,Main checking account,,,,USD,CURRENCY,F,F,F
+ASSET,Assets:Accounts Receivable,Accounts Receivable,1100,,,,USD,CURRENCY,F,F,F
+LIABILITY,Liabilities:Accounts Payable,Accounts Payable,2000,,,,USD,CURRENCY,F,F,F
 ```
 
 ---
@@ -142,6 +145,8 @@ The system includes staged validators for:
 | Flattening         | `validate_flattened_tree()`   |
 | CSV Output         | `validate_csv_row()`          |
 
+All field names are enforced as exported from QBD (`NAME`, `ACCNTTYPE`, etc.). No inferred or lowercase aliases are permitted.
+
 ---
 
 ## ⚙️ Configuration
@@ -152,7 +157,7 @@ The following environment variables can override default paths:
 |------------------------|--------------------------------------|
 | `QBD_INPUT_PATH`       | `input/sample-qbd-accounts.IIF`      |
 | `GNC_OUTPUT_PATH`      | `output/accounts.csv`                |
-| `MAPPING_BASELINE_PATH`| `mappings/account_mapping_baseline.json` |
+| `MAPPING_BASELINE_PATH`| `registry/mapping/account_mapping_baseline.json` |
 | `MAPPING_SPECIFIC_PATH`| `output/accounts_mapping_specific.json` |
 | `MAPPING_DIFF_PATH`    | `output/accounts_mapping_diff.json`  |
 
@@ -178,6 +183,7 @@ QBD_INPUT_PATH = os.getenv('QBD_INPUT_PATH', 'input/sample-qbd-accounts.IIF')
 - All critical operations log to `output/qbd-to-gnucash.log`
 - Errors include parsing failures, unmapped types, and invalid trees
 - Unicode decode issues are stripped and logged with file/line details
+- On validation errors, the tool exits with code 2; on critical errors, with code 1
 
 Example:
 
@@ -210,7 +216,7 @@ To add support for other QBD list types:
 
 ---
 
-## 🧪 Testing (Planned)
+## 🧪 Testing
 
 - Place test `.IIF` files in `input/`
 - Run:  
@@ -238,7 +244,7 @@ GnuCash recognizes **five core account types**:
 - `INCOME`
 - `EXPENSE`
 
-All mappings must ultimately reduce to one of these. `RECEIVABLE` and `PAYABLE` are internal subtypes used only by GnuCash’s business features.
+All mappings must ultimately reduce to one of these. `RECEIVABLE` and `PAYABLE` are internal subtypes used only by GnuCash’s business features. All account nodes must trace upward to one of these canonical root types.
 
 ---
 

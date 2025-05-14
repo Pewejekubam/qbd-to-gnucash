@@ -1,4 +1,7 @@
 # PRD: QuickBooks Desktop to GnuCash Conversion Tool
+**Version:** 2.7.3
+**Date:** 2025-05-14  
+**State:** Under Review
 
 ## 1. Introduction
 
@@ -19,7 +22,6 @@ This project is CLI-only; no graphical user interface will be developed or suppo
 - Output: GnuCash-compatible `accounts.csv`
 - Core engine to handle:
   - Parsing of IIF data
-  - Mapping of account types and hierarchy
   - Generation of structured GnuCash import format
 - Modular design for reusability across future conversion types
 
@@ -141,6 +143,7 @@ These user stories and use cases reflect real-world pressures faced by organizat
   3. Write a new `diff` if unresolved mappings remain.
 - This process allows incremental refinement of account mappings.
 - This pattern generalizes to other future modules.
+> The presence of all three stages (baseline load, specific overlay, diff write) must be enforced in the pipeline with log assertions or debug-mode checkpoints.
 
 ---
 
@@ -317,14 +320,22 @@ logging.basicConfig(
 
 ### File I/O Assumptions
 
-- Input files are unmodified QuickBooks `.IIF` exports.
+- Input files are **immutable exports from QuickBooks Desktop (.IIF)**.
+- No part of the pipeline may modify, clean, preprocess, or restructure these files.
+- The tool must adapt to the raw input format exactly as exported.
+- The parser must:
+  - Skip any irrelevant list headers (`!HDR`, `!TRNS`, etc.) before reaching `!ACCNT`.
+  - Activate only when the relevant section (`!ACCNT`) is encountered.
+  - Raise `IIFParseError` if relevant data (e.g., `ACCNT` lines) appear before the matching header.
+  - Ignore unrelated headers and sections without failure.
 - Output files include:
-  - `accounts.csv` (GnuCash-compatible, with full hierarchy).
-  - HTML files for sales tax codes and payment terms (future roadmap).
-  - Optionally, a `account_mapping_specific.json` for unmapped types.
+  - `accounts.csv` (GnuCash-compatible, with full hierarchy)
+  - Optionally, `accounts_mapping_diff.json` for unmapped types
 - Reads and writes files using UTF-8 encoding.
-- Non UTF-8 character in input files are stripped and not replaced.
-- Assumes the working directory or configured paths are writable and accessible.
+- Non UTF-8 characters in input files are stripped and not replaced (lossy decode).
+- The tool must ensure all necessary output subdirectories (`output/`, `intermediate/`) exist at runtime.
+- These directories should be created automatically (`os.makedirs(..., exist_ok=True)`) before any file I/O occurs.
+- Logging must not assume the prior existence of the log path — directory creation is the tool’s responsibility.
 
 ### Working Directory & Config Handling
 
@@ -389,20 +400,16 @@ logging.basicConfig(
 
   ```csv
   Type,Full Account Name,Account Name,Account Code,Description,Account Color,Notes,Symbol,Namespace,Hidden,Tax Info,Placeholder
-  ASSET,Assets:Current Assets:Bank:Checking,Checking,1000,Main checking account,,,,USD,CURRENCY,F,F,F
-  ASSET,Assets:Current Assets:Bank:Savings,Savings,1001,Savings account,,,,USD,CURRENCY,F,F,F
-  ASSET,Assets:Accounts Receivable,Accounts Receivable,1100,,,,USD,CURRENCY,F,F,F
-  LIABILITY,Liabilities:Accounts Payable,Accounts Payable,2000,,,,USD,CURRENCY,F,F,F
   ```
 
 - **File Naming Conventions:**
   - Input: Any files with the `.IIF` extension in the `input/` directory.
-  - Output: `output/accounts.csv`
   - Mapping: `mappings/account_mapping_baseline.json`, `output/accounts_mapping_specific.json`, `output/accounts_mapping_diff.json`
 
 - **CSV Field Order:**
   - Required: `Type,Full Account Name,Account Name,Account Code,Description,Account Color,Notes,Symbol,Namespace,Hidden,Tax Info,Placeholder`
   - Optional fields may be left blank but must be present in the header.
+> A test must validate that the output CSV includes all expected headers, even if the data is blank.
 
 ---
 
@@ -416,30 +423,431 @@ def parse_iif(filepath: str) -> List[Dict[str, str]]:
     """Parses IIF file and returns list of account records. Raises IIFParseError on malformed input."""
 ```
 
-### 7.2 `list_converters/mapping.py`
-```python
-def load_mapping(baseline_path: str, specific_path: Optional[str] = None) -> Dict:
-    """Loads and merges baseline and specific mapping files. Raises MappingLoadError on failure."""
-```
+### 7.2 Validation Rules for Parsed Records
+
+Validation logic must operate on field names as exported from QuickBooks Desktop. These are **case-sensitive and match the `.IIF` header exactly**.
+
+#### Required fields for `!ACCNT` records:
+- `NAME` — must be non-empty
+- `ACCNTTYPE` — must be non-empty, and must map to a GnuCash account type via the baseline mapping file
+
+#### Validation Requirements:
+- Use `record.get("FIELDNAME")` to ensure graceful handling of missing keys
+- Strip all string values of leading/trailing whitespace and quotation marks
+- If any required field is missing or empty, raise a structured validation issue
+- Validation must log each issue with enough context (record number, key, offending value)
+
+#### Common Errors to Detect:
+- `Missing required field: NAME`
+- `Empty account type (ACCNTTYPE)`
+- `Unmapped account type: OCASSET` (trigger diff output)
+
+---
+
+#### 🔒 Field Name Enforcement Across Pipeline
+
+All downstream modules must reference parsed IIF records using the **original QBD-exported field names only**. This includes (but is not limited to):
+
+- Account tree construction
+- Type mapping and hierarchy flattening
+- CSV row composition
+- Logging and debugging tools
+
+The following rules apply:
+- No inferred or lowercase versions (`name`, `accnttype`, `type`) may be used once records are parsed
+- Field access must use exact keys: `NAME`, `ACCNTTYPE`, `DESC`, `ACCNUM`, etc.
+- If intermediate fields (e.g., `full_account_name`) are computed, they must be derived explicitly from QBD-native fields and documented in the corresponding module
 
 ### 7.3 `list_converters/account_tree.py`
 ```python
 class AccountTree:
     def __init__(self, records: List[Dict[str, str]], mapping: Dict): ...
-    def build_tree(self) -> Dict: ...
-    def flatten_tree(self) -> List[Dict]: ...
-    def ensure_all_parents_exist(self): ...
     def validate(self) -> List[str]: ...
 ```
 
-### 7.4 `utils/csv_writer.py`
+### 7.4 `exporters/account_csv.py`
+
 ```python
-def write_accounts_csv(rows: List[Dict], output_path: str) -> None:
-    """Writes account rows to CSV in GnuCash format. Raises IOError on failure."""
+def write_accounts_csv(rows: List[Dict[str, str]], output_path: str) -> None:
+    """
+    """
 ```
 
+**Purpose:**  
+Handles CSV output for GnuCash Accounts import. Responsible for formatting, field ordering, and consistent encoding across all account exports.
+
+**Inputs:**  
+- `rows`: List of dictionaries with normalized GnuCash-ready keys.
+- `output_path`: Target filepath for `accounts.csv`.
+
+**Field Requirements:**  
+Each row must include the following fields, in this order:
+```
+Type  
+Full Account Name  
+Account Name  
+Account Code  
+Description  
+Account Color  
+Notes  
+Symbol  
+Namespace  
+Hidden  
+Tax Info  
+Placeholder
+```
+
+**Encoding and Format:**  
+- Output must be UTF-8 encoded (without BOM).
+- CSV quoting must be enabled for **all fields** (`csv.QUOTE_ALL`).
+- A header row must be written explicitly, in the field order listed above.
+
+**Failure Modes:**  
+- Raises `CSVExportError` on any failure to write the CSV file.
+- Logs the number of rows written and the output path.
+- Logs a warning if zero rows are passed in.
+
 ### 7.5 Error Handling
-- All modules should raise custom exceptions defined in `utils/error_handler.py` (e.g., `IIFParseError`, `MappingLoadError`, `AccountTreeError`).
+
+All modules must raise custom exceptions defined in `utils/error_handler.py`. This ensures consistent, structured error management across the tool and supports automated logging, debugging, and exit-code handling.
+
+#### 📌 Required Exception Classes
+
+The following exception classes must be **explicitly implemented** in `utils/error_handler.py`:
+
+```python
+class IIFParseError(Exception):
+    """Raised when the IIF file is malformed or unreadable."""
+    pass
+
+class MappingLoadError(Exception):
+    """Raised when mapping files fail to load or are invalid."""
+    pass
+
+class AccountTreeError(Exception):
+    """Raised when account tree construction or flattening fails."""
+    pass
+
+class RegistryKeyConflictError(Exception):
+    """Raised when two modules register the same IIF key."""
+    pass
+
+class UnregisteredKeyError(Exception):
+    """Raised when no module is registered to handle a given IIF key."""
+    pass
+```
+
+These classes are referenced in `main.py`, `accounts.py`, and validation routines. Their presence should be verified before orchestration logic is implemented. This prevents missing-import runtime errors and ensures consistent fallback behavior.
+
+#### 🔁 Usage Guidelines
+
+- Each exception should be caught and logged with full context (`file`, `line`, `key`, `step`)
+- Critical errors (e.g., unreadable input, unresolvable mappings) must trigger exit with code 1
+- Validation-triggered errors (e.g., unmapped account types) must trigger exit with code 2
+- Structured error messages should support both console output and machine-readable logs
+
+#### 🧪 Optional Unit Test
+
+To enforce the presence of required exceptions, a test case may be added:
+
+```python
+# tests/test_error_handler.py
+
+import utils.error_handler as eh
+
+def test_defined_exceptions():
+    assert hasattr(eh, 'IIFParseError')
+    assert hasattr(eh, 'MappingLoadError')
+    assert hasattr(eh, 'AccountTreeError')
+    assert hasattr(eh, 'RegistryKeyConflictError')
+    assert hasattr(eh, 'UnregisteredKeyError')
+```
+
+This ensures alignment between declared usage and actual implementation.
+
+---
+
+> All listed exceptions must be physically present in `utils/error_handler.py`. Their presence should be **verifiable by static test** (e.g., via `hasattr()` or `importlib`). No exception should be referenced without definition.
+
+### 7.6 Module Contracts
+
+#### Module: accounts.py
+
+**Purpose:**  
+Orchestrates the full processing pipeline for the `!ACCNT` list type:
+- Parsing → Mapping → Tree Construction → Validation → CSV Output
+
+**Inputs:**  
+- `.IIF` filepath containing a `!ACCNT` section
+- Mapping files:
+  - `account_mapping_baseline.json` (required)
+  - `accounts_mapping_specific.json` (optional override)
+- Output target path (e.g., `output/accounts.csv`)
+
+**Outputs:**  
+- GnuCash-compatible CSV (`accounts.csv`)
+- Optional diff file for unmapped types (`accounts_mapping_diff.json`)
+- Logs for all key pipeline steps
+
+**Invariants:**  
+- All input records must be parsed using original QBD field names (e.g., `NAME`, `ACCNTTYPE`) — case-sensitive
+- Intermediate fields (e.g., `full_account_name`) must be derived explicitly and consistently
+- Account records must pass validation before CSV generation
+- Logging must track pipeline stages and critical error points
+
+**Failure Modes:**  
+- Raises `MappingLoadError`, `AccountTreeError`, or validation exceptions on failure
+- Logs structured messages for all validation issues
+- Halts pipeline if critical steps fail (e.g., mapping or tree invalid)
+
+#### Module: validation.py
+
+**Purpose:**  
+Implements a validation suite for parsed records. Enforces structure, field presence, and mapping integrity before output generation.
+
+**Inputs:**  
+- Parsed record list (from the IIF parser, typically `!ACCNT`)
+- Mapping dictionary (baseline + overrides) for account type resolution
+- Optional context metadata for logging/debugging
+
+**Outputs:**  
+- Logs structured validation warnings and errors
+- Raises exceptions if fatal structural violations are detected
+
+**Invariants:**  
+- All field names must match the original QBD `.IIF` headers exactly (e.g., `NAME`, `ACCNTTYPE`)
+- No inferred or lowercase aliases may be used (e.g., `name`, `type`)
+- All required fields must be present and non-empty
+- All types must either map cleanly or trigger the diff capture
+
+**Failure Modes:**  
+- Logs validation issues with record number and offending key/value
+- Fails pipeline early if required fields or mappings are missing
+- Returns structured validation report (if used programmatically)
+
+#### Module: iif_parser.py
+
+**Purpose:**  
+Parses `.IIF` files exported from QuickBooks Desktop, extracting structured records from the requested list section (e.g., `!ACCNT`) only.
+
+**Inputs:**  
+- Filepath to `.IIF` file
+- Target key (e.g., `!ACCNT`, `!VEND`, etc.)
+
+**Outputs:**  
+- List of normalized records (one `dict` per line, using field names from the corresponding `!<KEY>` header)
+
+**Invariants:**  
+- Ignores all other headers (`!HDR`, `!TRNS`, etc.) until the specified `!KEY` is found
+- Extracts only data rows matching that key (e.g., `ACCNT`)
+- Retains original QuickBooks field names (case-sensitive)
+- Raises `IIFParseError` if data lines appear before a matching header or if no data lines are found
+
+**Failure Modes:**  
+- Structured exception with file name and line number
+- Logs parsing state transitions (header found, records counted, errors)
+
+#### Module: account_tree.py
+
+**Purpose:**  
+Builds and flattens the account hierarchy for GnuCash import, including placeholder insertion and 1-child pruning.
+
+**Inputs:**  
+- Parsed list of account records (from `!ACCNT`)
+- Mapping dictionary to resolve account type and hierarchy path
+
+**Outputs:**  
+- Flat list of normalized GnuCash-ready accounts
+- Optional derived fields (e.g., `full_account_name`, placeholder flags)
+
+**Invariants:**  
+- Operates on QBD field names only (e.g., `NAME`, `ACCNTTYPE`)
+- Constructs full paths using colon-delimited names
+- Ensures all parent accounts exist (inserts placeholders as needed)
+- Removes placeholder-only branches with a single child (1-child promotion)
+- All inserted placeholder accounts must include valid `NAME`, `Full Account Name`, and `ACCNTTYPE` fields
+
+**Failure Modes:**  
+- Raises `AccountTreeError` if the hierarchy cannot be resolved
+- Logs tree depth, placeholder insertions, and flattening results
+
+#### Module: `exporters/account_csv.py`
+
+**Purpose:**
+Handles CSV output of flattened GnuCash-ready account records. Converts normalized dictionaries into a standards-compliant GnuCash `accounts.csv` file.
+
+**Inputs:**
+- `rows`: List of dictionaries, each representing a GnuCash account row. All dictionaries must contain the full field set expected by GnuCash.
+- `output_path`: Filepath to which the CSV should be written (e.g., `output/accounts.csv`).
+
+**Outputs:**
+- UTF-8 encoded CSV file at the specified path, with the correct field headers and format for GnuCash import.
+
+**Invariants:**
+- CSV must include **exactly these fields**, in this order:
+  - `Type`
+  - `Full Account Name`
+  - `Account Name`
+  - `Account Code`
+  - `Description`
+  - `Account Color`
+  - `Notes`
+  - `Symbol`
+  - `Namespace`
+  - `Hidden`
+  - `Tax Info`
+  - `Placeholder`
+
+**All Rows:**
+- All rows must use consistent quoting (`csv.QUOTE_ALL`)
+
+**Output Encoding:**
+- Must create written using UTF-8 encoding (without BOM)
+
+**Directory Handling:**
+- Must create parent directories for `output_path` if they do not exist
+
+**Failure Modes:**
+- Raises `CSVExportError` (defined in `utils/error_handler.py`) on:
+  - File write errors (e.g., permissions, disk full)
+  - Incomplete row data (missing required columns)
+  - Any unhandled I/O exception during export
+
+**Logging:**
+- Logs all export attempts, file size, and row count
+- Logs full stack trace on exception
+
+#### Placeholder Construction Requirements
+
+Placeholder accounts are inserted during hierarchy construction when intermediate path segments are missing from the original QuickBooks export.
+
+Each placeholder **must be a structurally complete account record** and must meet the following requirements:
+
+- `NAME`: The **final segment** of the account path (e.g., `Travel` from `Expenses:Travel`)
+- `Full Account Name`: The **entire colon-delimited path** to that placeholder (e.g., `Expenses:Travel`)
+- `ACCNTTYPE`: Inherited from the nearest real child account, or logically derived by tracing upward to the closest known valid type (must map to a valid GnuCash type)
+- `placeholder`: Optional field with value `'T'` to mark synthetic records (for traceability only)
+
+These fields must be present on all placeholder accounts so that they:
+- Pass validation with no exceptions
+- Are written cleanly to the GnuCash-compatible CSV
+- Can be used to resolve hierarchy rollups in GnuCash post-import
+
+Placeholder accounts are **not exempt from any structural rules** applied to real accounts.
+
+#### Module: mapping.py
+
+**Purpose:**  
+Loads, merges, and validates account type mapping files. Provides lookup services for resolving QBD types to GnuCash account types and hierarchy paths.
+
+**Inputs:**  
+- Baseline mapping JSON (required)
+- Specific mapping JSON (optional override)
+
+**Outputs:**  
+- Combined dictionary of `account_types` and `default_rules`
+- Optional diff map of unmapped types (for export)
+
+**Invariants:**  
+- Input mapping files must follow expected schema
+- All lookups must use exact QBD keys (e.g., `BANK`, `OCASSET`, `AR`)
+- Fallback behavior is defined by `default_rules`
+
+**Failure Modes:**  
+- Raises `MappingLoadError` if required files are missing or unreadable
+- Logs all key loads, fallbacks, and mapping mismatches
+
+#### Module: main.py
+
+**Purpose:**  
+Entry point for the CLI tool. Loads configuration, initializes logging, and dispatches processing to the correct module based on IIF section key.
+
+**Inputs:**  
+- CLI arguments or config (input file paths, keys)
+- Registry of handlers for each list type (e.g., `!ACCNT` → `accounts.py`)
+
+**Outputs:**  
+- Runs the selected processing pipeline and logs output
+- Exits with structured return codes (0 = success, 1 = critical error, 2 = diff triggered)
+
+**Invariants:**  
+- Must create `output/` and other directories if missing
+- Must configure logging before pipeline begins
+- Must catch and route all structured exceptions to appropriate exit codes
+
+**Failure Modes:**  
+- Raises `UnregisteredKeyError` for unhandled keys
+- Handles all structured errors via `error_handler.py`
+- Writes full run log to file and stderr stream
+
+### 7.7 Placeholder Typing Phase
+
+**Purpose:**  
+This phase ensures that all placeholder accounts inserted during hierarchy construction are assigned a valid `ACCNTTYPE` and GnuCash `Type`. It is executed *after* tree construction and *before* flattening. Placeholder accounts must meet all structural and semantic requirements for CSV export and validation. No placeholder may proceed untyped.
+
+**Context:**  
+GnuCash account hierarchies require each account — including inserted placeholders — to have a valid `Type`. Since placeholder accounts are not present in the original IIF export, their type must be derived in a deterministic, rule-driven way. This phase implements that logic.
+
+---
+
+#### Step 1: Detect Mapping-Declared Paths
+
+Before placeholder type inheritance is applied, each node in the account tree must be checked against the declared `destination_hierarchy` values in the merged account type mapping.
+
+If a node’s `Full Account Name` exactly matches one of these declared paths:
+
+- It must be treated as a real, declared account — not a placeholder.
+- Its `ACCNTTYPE` and `Type` must be assigned using the mapping entry associated with that path.
+- It must be marked:
+  - `placeholder = 'F'`
+  - `type_resolution = 'mapping'`
+  - `inferred_from = <mapping key>` (e.g., `'BANK'`)
+
+This override takes precedence over any upward inheritance or synthetic typing logic.
+
+**Validation Constraint:**  
+If multiple mapping entries reference the same `destination_hierarchy` but resolve to **different GnuCash types**, this constitutes a configuration error. It must be detected during mapping load and halt the pipeline with a structured validation failure.
+
+---
+
+#### Step 2: Inherit Type from Parent
+
+For any remaining placeholder nodes not matched by a declared path:
+
+- Traverse upward to the nearest ancestor with a valid `ACCNTTYPE`.
+- Inherit the ancestor’s `ACCNTTYPE`, and resolve the GnuCash `Type` using the mapping.
+- Set:
+  - `type_resolution = 'inherited'`
+  - `inferred_from = <ancestor path>`
+
+**Validation Rule:**  
+If no typed ancestor can be found (e.g., the entire lineage is synthetic or incomplete), this violates the PRD’s structural guarantee that all trees originate from a known top-level type. The pipeline must:
+
+- Raise a structured validation error:  
+  `"Unresolved placeholder type — no valid ancestor."`
+- Halt execution with exit code 2.
+- Log the affected placeholder path and all inspected ancestors.
+
+Fallback to `default_rules` is explicitly disallowed under this model.
+
+---
+
+#### Step 3: Record Type Resolution Metadata
+
+Each placeholder account, after typing, must include the following diagnostic metadata fields:
+
+- `type_resolution`: One of:
+  - `'mapping'` (if declared path match)
+  - `'inherited'` (if type was inherited upward)
+  - `'error'` (if resolution failed; this is terminal)
+- `inferred_from`: The mapping key or parent path that supplied the type
+
+These fields are retained in intermediate outputs and logs to support debugging, auditing, and agent-based diagnostics.
+
+---
+
+**Outcome:**  
+After this phase completes, all nodes in the account tree (real and placeholder) have valid, validated type assignments. The tree is now safe to flatten and export to `accounts.csv`.
 
 ---
 
@@ -476,6 +884,8 @@ def write_accounts_csv(rows: List[Dict], output_path: str) -> None:
   - 0: Success
   - 1: Critical failure (e.g., unreadable input, invalid mapping)
   - 2: Validation errors (e.g., unmapped types, missing parents)
+  > All exit codes must be tested via CLI or subprocess-based test that verifies `sys.exit()` was called with the correct code.
+
 - **Behavior:**
   - On validation errors, tool writes details to log and exits with code 2.
   - On critical errors, tool logs and exits with code 1.
@@ -493,6 +903,8 @@ def write_accounts_csv(rows: List[Dict], output_path: str) -> None:
 - **Validation Failure Surfacing:**
   - Errors and warnings are printed to stderr and logged to `output/qbd-to-gnucash.log`.
   - Exit code signals error type for automation.
+  - **Missing `output/` directory**: Tool should auto-create it without crashing and initialize the log file.
+
 
 ---
 
@@ -541,44 +953,36 @@ def write_accounts_csv(rows: List[Dict], output_path: str) -> None:
       "account_types": {
         "BANK": {
           "gnucash_type": "ASSET",
-          "destination_hierarchy": "Assets:Current Assets:Bank",
           "placeholder": false
         },
         "EQUITY": {
           "gnucash_type": "EQUITY",
-          "destination_hierarchy": "Equity",
           "placeholder": false
         },
         "CCARD": {
           "gnucash_type": "LIABILITY",
-          "destination_hierarchy": "Liabilities:Credit Cards",
           "placeholder": false
         },
         "AR": {
           "gnucash_type": "RECEIVABLE",
-          "destination_hierarchy": "Assets:Accounts Receivable",
           "placeholder": false
         },
         "AP": {
           "gnucash_type": "PAYABLE",
-          "destination_hierarchy": "Liabilities:Accounts Payable",
           "placeholder": false
         },
         "EXP": {
           "gnucash_type": "EXPENSE",
-          "destination_hierarchy": "Expenses",
           "placeholder": false
         },
         "OEXP": {
           "gnucash_type": "EXPENSE",
-          "destination_hierarchy": "Expenses:Other",
           "placeholder": false
         }
       },
       "default_rules": {
         "unmapped_accounts": {
           "gnucash_type": "ASSET",
-          "destination_hierarchy": "Assets:Uncategorized",
           "placeholder": false
         }
       }
