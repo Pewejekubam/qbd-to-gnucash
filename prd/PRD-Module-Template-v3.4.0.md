@@ -23,20 +23,24 @@ Brief description of the module, its purpose, and its role in the system.
 ### 4.1 Public Functions/Classes
 - [ ] For each function/class, specify:
   - Name
-  - Arguments (names and types)
-  - Return type
+  - Arguments (names and types, using Python typing)
+  - Return type (using Python typing)
   - Exceptions raised
-  - Example call
+  - Docstring/description (1-2 lines)
+  - Example call (see below)
 
 #### Example:
 ```
 def parse_iif_accounts(iif_path: str) -> List[Dict[str, Any]]
-Raises: IIFParseError
-Example: records = parse_iif_accounts('input/sample.iif')
+    """Parse an IIF file and return a list of account records."""
+    Raises: IIFParseError
+    Example: records = parse_iif_accounts('input/sample.iif')
 ```
 
 ### 4.2 Data Structures
 - [ ] Document any custom data structures or expected input/output formats.
+- [ ] Specify types using Python typing (e.g., List[Dict[str, Any]], Optional[str]).
+- [ ] For custom structures, list all fields with their types and a brief description.
 
 ## 5. Error Handling and Logging
 - [ ] This module must comply with all requirements in [Logging Framework module PRD v1.0.0](logging/module-prd-logging-v1.0.0.md) and [core PRD section 7.12](core-prd-v3.2.0.md#712-logging-and-error-handling).
@@ -48,7 +52,7 @@ Example: records = parse_iif_accounts('input/sample.iif')
 - [ ] Update all relevant documentation and test cases upon interface change.
 
 ## 7. Test Cases and Examples
-- [ ] Provide example calls and test cases for each public function/interface.
+- [ ] For every public function/class, provide a realistic example call that matches the documented signature and reflects a real use case.
 
 ## 8. Checklist
 - [ ] All function signatures are explicitly documented.

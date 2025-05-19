@@ -1,5 +1,5 @@
 # Logging Framework Module PRD: QuickBooks Desktop to GnuCash Conversion Tool
-**Version:** 1.0.0
+**Version:** 1.0.2
 **Date:** 2025-05-19  
 **State:** Initial Release
 
@@ -84,13 +84,56 @@ This module defines the centralized logging framework for all modules in the QBD
 
 - The logging framework must expose a setup function:
   ```python
-  def setup_logging(log_path: str = None, log_level: str = "INFO") -> None
+  def setup_logging(log_path: Optional[str] = None, log_level: str = "INFO") -> None
+      """Initializes logging with the specified path and level. Ensures log directory exists and applies the standard format."""
   ```
-  - Initializes logging with the specified path and level.
-  - Ensures log directory exists.
-  - Applies the standard format.
+  - Arguments:
+      - log_path: Optional[str] — Path to the log file (default: None, uses config/env or default path)
+      - log_level: str — Logging level (default: "INFO")
+  - Return type: None
+  - Exceptions raised: OSError (if log directory cannot be created)
+  - Example call:
+    ```python
+    setup_logging(log_path='output/qbd-to-gnucash.log', log_level='DEBUG')
+    ```
 - All modules must call `setup_logging()` before any logging occurs.
 - All error logging must use the centralized logger.
+
+## Data Structure Definitions (Agentic AI Compatibility)
+
+### Log Event Structure (Python Typing)
+```python
+from typing import TypedDict, Optional
+class LogEvent(TypedDict):
+    timestamp: str
+    level: str
+    module: str
+    function: str
+    message: str
+    context: Optional[dict]
+```
+### Error Category Structure (Python Typing)
+```python
+from typing import Dict, List
+ErrorCategories = Dict[str, List[str]]
+```
+
+## Example Calls for Public Functions/Classes
+
+### setup_logging
+```python
+# Normal case
+setup_logging(log_path='output/qbd-to-gnucash.log', log_level='DEBUG')
+# Edge case: log directory does not exist (should be created automatically)
+setup_logging(log_path='output/nonexistent-dir/qbd-to-gnucash.log', log_level='INFO')
+```
+
+## Summary Table: Functions, Data Structures, Schemas, and Example Calls
+
+| Function/Class   | Data Structure/Schema         | Example Call Location         |
+|-----------------|-------------------------------|------------------------------|
+| setup_logging   | LogEvent (Python Typing)      | Example Calls section         |
+| ErrorCategories | ErrorCategories (Python Typing)| Data Structure Definitions    |
 
 ## 5. Error Handling and Logging Checklist
 
@@ -108,3 +151,5 @@ This module defines the centralized logging framework for all modules in the QBD
 ## 7. Version History
 
 - v1.0.0 (2025-05-19): Initial release, extracted and centralized all logging requirements from core and module PRDs.
+- v1.0.1 (2025-05-19): Normalize function signature documentation in Interface Contract, refine data structure typing, and clarify example call.
+- v1.0.2 (2025-05-19): Add explicit Python typing for log event structure and error category structure. Add comprehensive example calls for setup_logging, including edge cases. Reference schemas and examples in the interface contract. Add a summary table mapping functions/data structures to their schema and example call location.
