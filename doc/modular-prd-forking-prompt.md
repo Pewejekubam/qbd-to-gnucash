@@ -1,5 +1,4 @@
-```
-# Modular PRD Forking Session — Rehydration Prompt
+# Modular PRD Forking Session
 
 ## Project Overview
 
@@ -7,7 +6,7 @@ You are engaged in a modularization and structural refinement effort for a techn
 
 ## Project Goals
 
-- Fork the monolithic `PRD-2.7.3.md` into a modular architecture beginning with `core-prd-v3.0.0.md`.
+- Fork the monolithic `PRD-2.7.3.md` into a modular architecture beginning with `core-prd-v3.0.0.md`.  The document shall be created and stored in the `./prd` directory alongside module-specific directories.
 - Extract all embedded module contracts (e.g., accounts, mapping, validation) into separate `module-prd-*` documents.
 - Preserve 100% of semantic content while permitting structural reflow and formatting normalization.
 - Make all documents downstream-compatible with agentic AI and code generation tools.
@@ -24,7 +23,7 @@ The following rules apply to all PRD documents:
 
 ## Core PRD Document Structure
 
-The core PRD document (`core-prd-v3.0.0.md`) must adhere to the following structure:
+The core PRD document (`./prd/core-prd-v3.0.0.md`) must adhere to the following structure:
 * Start with a version block.
 * Inject a **compatibility matrix** immediately after the version block.
 * Append a **History Block** to track the transition from monolithic to modular architecture.
@@ -44,7 +43,7 @@ Vendor List | (TBD) | v3.0.0
 ### History Block Example
 History  
 v2.7.3: Final monolithic PRD before modularization.  
-v3.0.0: Core PRD established as the root of a modular PRD system. All module-specific logic to be extracted into versioned standalone files in ./prd/.
+v3.0.0: Core PRD established as the root of a modular PRD system. All module-specific logic to be extracted into versioned standalone files in `./prd/{module}/`.
 
 ## Module PRD Structure
 
@@ -66,7 +65,3 @@ Extract all embedded module declarations and contracts from `PRD-2.7.3.md`, incl
 * All markdown must be clean, copy-pasteable, and preserve structure.
 * Do not summarize or emit large blocks until explicitly requested.
 
-## Session Ready Trigger
-
-The session may begin once `PRD-2.7.3.md` is re-uploaded.
-```
