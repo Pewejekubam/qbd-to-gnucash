@@ -14,7 +14,7 @@ To ensure that all PRD changes:
 
 ### ✅ Authorized Update Behavior
 
-When proposing a PRD section update during diagnostics, the AI Agent must:
+When proposing a PRD section update, the AI Agent must:
 
 1. **Insert Only the New Logic**  
    - Add the new rule, clause, or logic **only where the directive or issue requires**

@@ -1,9 +1,0 @@
-2025-05-14 12:15:46 [INFO] main.main: Starting qbd-to-gnucash CLI tool
-2025-05-14 12:15:46 [INFO] main.main: Input file: input/sample-qbd-accounts.IIF
-2025-05-14 12:15:46 [INFO] main.main: Output CSV: output/accounts.csv
-2025-05-14 12:15:46 [INFO] main.main: Mapping baseline: registry/mapping/account_mapping_baseline.json
-2025-05-14 12:15:46 [INFO] main.main: Mapping specific: output/accounts_mapping_specific.json
-2025-05-14 12:15:46 [INFO] main.main: Mapping diff: output/accounts_mapping_diff.json
-2025-05-14 12:15:46 [INFO] accounts.process_accounts: Starting accounts pipeline: input/sample-qbd-accounts.IIF
-2025-05-14 12:15:46 [ERROR] accounts.process_accounts: IIF parsing failed: Malformed ACCNT line at 110: QB ONLINE	Checking	9901	112200049	0661001235	567551234	CHECKING	Y	Y	Y	Y
-2025-05-14 12:15:46 [ERROR] main.main: Critical error: Malformed ACCNT line at 110: QB ONLINE	Checking	9901	112200049	0661001235	567551234	CHECKING	Y	Y	Y	Y

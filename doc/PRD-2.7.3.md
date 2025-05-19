@@ -422,25 +422,59 @@ For each module, the main functions/classes, signatures, and exceptions are as f
 def parse_iif(filepath: str) -> List[Dict[str, str]]:
     """Parses IIF file and returns list of account records. Raises IIFParseError on malformed input."""
 ```
+---
 
 ### 7.2 Validation Rules for Parsed Records
 
-Validation logic must operate on field names as exported from QuickBooks Desktop. These are **case-sensitive and match the `.IIF` header exactly**.
+Validation logic must operate on field names exactly as exported from QuickBooks Desktop. These are **case-sensitive** and must not be inferred or transformed.
 
-#### Required fields for `!ACCNT` records:
-- `NAME` — must be non-empty
-- `ACCNTTYPE` — must be non-empty, and must map to a GnuCash account type via the baseline mapping file
+---
 
-#### Validation Requirements:
-- Use `record.get("FIELDNAME")` to ensure graceful handling of missing keys
-- Strip all string values of leading/trailing whitespace and quotation marks
-- If any required field is missing or empty, raise a structured validation issue
-- Validation must log each issue with enough context (record number, key, offending value)
+#### ✅ Validation Rule: Required Fields
 
-#### Common Errors to Detect:
-- `Missing required field: NAME`
-- `Empty account type (ACCNTTYPE)`
-- `Unmapped account type: OCASSET` (trigger diff output)
+Each parsed record must contain the following fields with non-empty values:
+
+- `NAME` — must not be blank
+- `ACCNTTYPE` — must be present and must match a supported QBD → GnuCash type mapping
+
+If either is missing or blank, the parser must raise `IIFParseError`.
+
+---
+
+#### ✅ Validation Rule: Field Count Match
+
+The number of fields in each `ACCNT` record must match the number of fields in the detected `!ACCNT` header. This must be enforced as follows:
+
+- If a line has **fewer fields** than the header: raise `IIFParseError`
+- If a line has **more fields** than the header: raise `IIFParseError`
+
+Each record must be zipped with the header to create a `Dict[str, str]` map of values.
+
+---
+
+#### ✅ Validation Rule: Type Mapping Must Resolve
+
+Every `ACCNTTYPE` value must map to a GnuCash account type as defined in the combined mapping file (`baseline` + `specific`). If a mapping is missing:
+
+- The unmapped `ACCNTTYPE` must be added to the `diff` dictionary
+- The program must terminate with exit code `2`
+- A complete mapping diff must be written to `output/accounts_mapping_diff.json`
+
+---
+
+#### ✅ Validation Rule: Record Line Prefix Enforcement (Added in PRD v2.7.3)
+
+After detecting a `!ACCNT` section header, the parser must validate that all subsequent records intended for processing begin with the literal prefix `ACCNT`.
+
+If a line does not start with `ACCNT`:
+- It must be skipped without raising an error
+- It must not be parsed, validated, or included in the output
+- It may be logged at debug level for traceability
+
+This rule prevents malformed or non-record lines (e.g., junk footer rows, misformatted data) from triggering `IIFParseError` exceptions.
+
+**Rationale:**
+QuickBooks `.IIF` files may contain footer rows, comments, or misaligned data after `!ACCNT`. These should be explicitly excluded from structured parsing.
 
 ---
 
@@ -457,6 +491,8 @@ The following rules apply:
 - No inferred or lowercase versions (`name`, `accnttype`, `type`) may be used once records are parsed
 - Field access must use exact keys: `NAME`, `ACCNTTYPE`, `DESC`, `ACCNUM`, etc.
 - If intermediate fields (e.g., `full_account_name`) are computed, they must be derived explicitly from QBD-native fields and documented in the corresponding module
+
+---
 
 ### 7.3 `list_converters/account_tree.py`
 ```python
@@ -599,6 +635,10 @@ Orchestrates the full processing pipeline for the `!ACCNT` list type:
 - Raises `MappingLoadError`, `AccountTreeError`, or validation exceptions on failure
 - Logs structured messages for all validation issues
 - Halts pipeline if critical steps fail (e.g., mapping or tree invalid)
+- **Note:** The `mapping` returned by `load_and_merge_mappings()` must be unpacked before being used. Callers must extract the mapping dictionary and diff as follows:
+  ```python
+  mapping, diff = load_and_merge_mappings(...)
+  ```
 
 #### Module: validation.py
 
@@ -779,6 +819,39 @@ Entry point for the CLI tool. Loads configuration, initializes logging, and disp
 - Raises `UnregisteredKeyError` for unhandled keys
 - Handles all structured errors via `error_handler.py`
 - Writes full run log to file and stderr stream
+
+#### Module: `list_converters/mapping.py`
+
+This module provides mapping services to resolve QBD `ACCNTTYPE` values and hierarchical category overrides based on one or more mapping files. It must be reusable across all list types that support mapping input.
+
+---
+
+### ✅ Required Function: `load_and_merge_mappings`
+
+**Signature:**
+`def load_and_merge_mappings(baseline_path: str, specific_path: Optional[str]) -> Tuple[Dict, Dict]`
+
+**Description:**
+- Loads the baseline and specific mapping JSON files.
+- Merges them into a single mapping dictionary.
+- Computes a `diff` of unmapped `ACCNTTYPE` values based on parsed input.
+
+**Return Value:**
+A tuple containing:
+1. `mapping: Dict` — merged mapping dictionary in the format:
+   `{ "account_types": { "BANK": { "type": "ASSET", "gnc_type": "BANK" }, ... } }`
+2. `diff: Dict` — unmapped QBD types to be written to `accounts_mapping_diff.json` if non-empty.
+
+**Contract Enforcement:**
+- Callers **must unpack** the return value using:
+  `mapping, diff = load_and_merge_mappings(...)`
+- Passing the full tuple downstream is a contract violation.
+
+**Failure Modes:**
+- Raises `MappingLoadError` if files are missing or invalid.
+- Logs duplicate keys or conflicts during merge.
+
+---
 
 ### 7.7 Placeholder Typing Phase
 
