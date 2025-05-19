@@ -58,6 +58,6 @@ If the prompt is ambiguous or there is no clear insertion point for new logic, t
 
 ### 📎 Context
 
-This protocol is now in effect for all update prompts associated with PRD v2.7.3 and all subsequent versions under development during this session.
+This protocol is now in effect for all update prompts associated with PRD v3.0.0 and all subsequent versions under development during this session.
 
 ---
