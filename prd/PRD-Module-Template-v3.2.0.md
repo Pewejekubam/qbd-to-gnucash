@@ -2,7 +2,7 @@
 
 ## Module Name: 
 
-## Version: 
+## Version:
 
 ## Author(s): 
 
@@ -39,11 +39,8 @@ Example: records = parse_iif_accounts('input/sample.iif')
 - [ ] Document any custom data structures or expected input/output formats.
 
 ## 5. Error Handling and Logging
-- [ ] All errors and exceptions must be logged to the designated log file before process termination.
-- [ ] Logging must be synchronous and flushed before exit.
-- [ ] Log entries must include timestamp, error type, message, and context.
-- [ ] Fatal errors must be logged and flushed before exit.
-- [ ] Custom exceptions should be used and caught at the top level for logging and cleanup.
+- [ ] This module must comply with all requirements in [Logging Framework module PRD v1.0.0](logging/module-prd-logging-v1.0.0.md) and [core PRD section 7.12](core-prd-v3.2.0.md#712-logging-and-error-handling).
+- [ ] Remove module-specific logging/error handling requirements; see the centralized logging module for details.
 
 ## 6. Change Management
 - [ ] Any change to a shared interface must be reflected in this PRD and communicated to all dependent modules.
@@ -56,7 +53,8 @@ Example: records = parse_iif_accounts('input/sample.iif')
 ## 8. Checklist
 - [ ] All function signatures are explicitly documented.
 - [ ] All interface contracts are complete and clear.
-- [ ] Error handling and logging requirements are met.
+- [ ] Error handling and logging requirements are met via the centralized logging module.
+- [ ] Error Logging and Graceful Exit: All errors and exceptions are logged and flushed before process exit, as per core PRD section 7.12 and the logging module.
 - [ ] Change management process is defined.
 - [ ] Test cases/examples are provided.
 
