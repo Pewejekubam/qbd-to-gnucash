@@ -1,27 +1,28 @@
 <!-- filepath: c:\git-root\qbd-to-gnucash\prd\core-prd-v3.0.0.md -->
-````markdown
 # Core PRD: QuickBooks Desktop to GnuCash Conversion Tool
-**Version:** 3.0.1
+**Version:** 3.1.0
 **Date:** 2025-05-19  
 **State:** Modular Fork
 
 ## 1. Compatibility Matrix
 
 Compatibility Matrix  
-Module Name | PRD Version | Compatible With Core PRD  
-------------|-------------|---------------------------  
-Chart of Accounts | (TBD) | v3.0.0  
-Sales Tax Code Lists | (TBD) | v3.0.0  
-Item List | (TBD) | v3.0.0  
-Customer List | (TBD) | v3.0.0  
-Vendor List | (TBD) | v3.0.0  
-(roadmap modules) | (see roadmap list) | (future)  
+| Module Name         | PRD Version | Compatible With Core PRD |
+|---------------------|-------------|-------------------------|
+| Chart of Accounts   | v1.0.2      | v3.1.0                  |
+| Sales Tax Code List | (TBD)       | v3.1.0                  |
+| Item List           | (TBD)       | v3.1.0                  |
+| Customer List       | (TBD)       | v3.1.0                  |
+| Vendor List         | (TBD)       | v3.1.0                  |
+| (roadmap modules)   | (see roadmap list) | (future)         |
 
 ## 2. History
 
 History  
 v2.7.3: Final monolithic PRD before modularization.  
-v3.0.0: Core PRD established as the root of a modular PRD system. All module-specific logic to be extracted into versioned standalone files in `./prd/{module}/`.
+v3.0.0: Core PRD established as the root of a modular PRD system. All module-specific logic to be extracted into versioned standalone files in `./prd/{module}/`.  
+v3.0.1: Minor clarifications and error handling improvements.  
+v3.1.0: Mandated explicit function signatures and interface contracts for all module boundaries.
 
 ## 3. Introduction
 
@@ -302,6 +303,25 @@ for row in csv_rows:
 | Parent Existence     | `validate_account_tree`     |
 | Flattening           | `validate_flattened_tree`   |
 | CSV Output           | `validate_csv_row`          |
+
+---
+
+### 6.8 Interface Contracts and Function Signatures
+
+- All module boundaries must have clearly documented function signatures in the PRD.
+  - This includes function name, argument names and types, return type, and exceptions raised.
+  - Example format:
+    ```
+    def parse_iif_accounts(iif_path: str) -> List[Dict[str, Any]]
+    ```
+- For each module, the PRD must include an "Interface Contract" section that specifies:
+  - All public functions/classes intended for use by other modules.
+  - Expected input and output types.
+  - Error/exception handling expectations.
+- Any change to a shared interface must be reflected in the PRD and communicated to all dependent modules.
+- The PRD requires a review process for interface changes, including updating all relevant documentation and test cases.
+- Code reviews must check for conformance to the documented contracts.
+- Example calls and test cases should be included in the PRD to clarify correct usage.
 
 ---
 
@@ -588,4 +608,3 @@ def safe_decode(line, file_path):
 - All normalization and stripping events are logged with file name and line number for traceability.
 
 ---
-````
