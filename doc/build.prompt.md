@@ -1,6 +1,6 @@
 You are an AI engineer implementing a modular Python CLI tool for converting QuickBooks Desktop (.IIF) exports into GnuCash-compatible CSVs. Only the Chart of Accounts (`!ACCNT`) is in scope.
 
-🧾 A complete PRD (v2.7.2) is provided. It includes:
+🧾 A complete PRD (v3.0.0) is provided. It includes:
 - File layout and module responsibilities
 - Input/output format contracts
 - Mapping and config logic

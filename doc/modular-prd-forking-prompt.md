@@ -6,7 +6,7 @@ You are engaged in a modularization and structural refinement effort for a techn
 
 ## Project Goals
 
-- Fork the monolithic `PRD-2.7.3.md` into a modular architecture beginning with `core-prd-v3.0.0.md`.  The document shall be created and stored in the `./prd` directory alongside module-specific directories.
+- Fork the monolithic `PRD-2.7.3.md` into a modular architecture beginning with `core-prd-v3.0.0.md`.  The document shall be created and stored in the `./prd` directory alongside module-specific directories which you shall also create under `./prd/`.
 - Extract all embedded module contracts (e.g., accounts, mapping, validation) into separate `module-prd-*` documents.
 - Preserve 100% of semantic content while permitting structural reflow and formatting normalization.
 - Make all documents downstream-compatible with agentic AI and code generation tools.
@@ -48,7 +48,7 @@ v3.0.0: Core PRD established as the root of a modular PRD system. All module-spe
 ## Module PRD Structure
 
 * Each module PRD document must be stored in a separate file under `./prd/{module}/`.
-* Module PRDs must link to the core PRD document using **versioned, relative links**.
+* Module PRDs must link to the core PRD document using a relative link, with the link text being the filename of the core PRD document (e.g., `core-prd-v3.0.0.md`) and the link URL being the relative path to the core PRD document (e.g., `../core-prd-v3.0.0.md`).
 * Module PRDs must declare compatibility with the core PRD document.
 
 ## Module Extraction Order
@@ -64,4 +64,3 @@ Extract all embedded module declarations and contracts from `PRD-2.7.3.md`, incl
 * Each output file must be formatted for easy readability and preservation of structure.
 * All markdown must be clean, copy-pasteable, and preserve structure.
 * Do not summarize or emit large blocks until explicitly requested.
-
