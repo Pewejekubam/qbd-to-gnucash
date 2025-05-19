@@ -1,6 +1,9 @@
 ````markdown
 # Module PRD: Mapping
 
+## Version
+v1.0.0
+
 [core-prd-v3.0.0.md](../core-prd-v3.0.0.md)
 
 ## Compatibility

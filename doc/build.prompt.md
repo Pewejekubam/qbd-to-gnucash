@@ -25,13 +25,13 @@ These are low-level, reusable components needed by `accounts.py`, which will coo
 
 📌 Do not implement GUI support, QIF workflows, or list types beyond `!ACCNT`.
 
-Let me know once those are complete and ready for the next phase (`account_tree.py`, validation suite, and `accounts.py` orchestration).
+Let me know once those changes in the #codebase are complete and ready for the next phase (`account_tree.py`, validation suite, and `accounts.py` orchestration).
 
 
 
 ---
 
-Great. Now proceed with the next phase as defined in the PRD.
+Great. Now proceed with the next phase as defined in the PRD in the #codebase.
 
 Please generate the following modules:
 

@@ -1,7 +1,7 @@
 <!-- filepath: c:\git-root\qbd-to-gnucash\prd\core-prd-v3.0.0.md -->
 ````markdown
 # Core PRD: QuickBooks Desktop to GnuCash Conversion Tool
-**Version:** 3.0.0
+**Version:** 3.0.1
 **Date:** 2025-05-19  
 **State:** Modular Fork
 
@@ -479,10 +479,12 @@ logging.basicConfig(
    python --version
    ```
 3. Place your exported QBD IIF file in the `input/` directory.
-4. Run the conversion:
+4. Run the conversion (no arguments required or supported):
    ```pwsh
    python main.py
    ```
+   **Note:**  
+   Do not supply any command-line arguments or options. The tool is designed for maximum user-friendliness and will ignore any additional CLI input.
 5. Review `output/accounts.csv` and logs in `output/qbd-to-gnucash.log`.
 
 ### 12.2 References
