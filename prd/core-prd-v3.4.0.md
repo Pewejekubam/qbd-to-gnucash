@@ -130,22 +130,46 @@ These user stories and use cases reflect real-world pressures faced by organizat
 ### 6.2 Directory Layout
 
 ```plaintext
-.
-├── input/                # User-provided IIF files  
-├── output/               # Final GnuCash files (accounts.csv, customers.csv, etc.)  
-│   └── accounts_mapping_specific.json   # User-managed override mappings  
-│   └── accounts_mapping_diff.json       # Auto-generated unmapped entries  
-├── intermediate/         # Debug JSON/HTML outputs, tree visualizations  
-├── registry/             # Dispatcher logic and key-based config hooks  
-│   └── mapping/          # JSON mapping files (baseline only) 
-├── modules/              # Conversion modules by domain  
-│   ├── accounts.py  
-│   ├── customers.py  
-│   ├── vendors.py  
-│   ├── transactions.py  
-│   └── ...  
-├── utils/                # Shared utilities (parsing, diagnostics, output writers)  
-└── main.py               # Entrypoint: orchestrates dispatch and phase flow  
+.                                  # Project root
+├── input/                        # User-provided IIF files
+│   ├── sample-qbd-accounts.IIF   # Example Chart of Accounts export
+│   ├── sample-qbd-customers.IIF  # Example Customers export
+│   ├── sample-qbd-items.IIF      # Example Items export
+│   ├── sample-qbd-payment-terms.IIF # Example Payment Terms export
+│   └── sample-qbd-sales-tax-codes.IIF # Example Sales Tax Codes export
+├── output/                       # Generated output files and logs
+│   └── qbd-to-gnucash.log        # Main log file for conversion runs
+├── prd/                          # Product Requirements Documents (PRDs)
+│   ├── core-prd-v3.4.0.md        # Core PRD (this document)
+│   ├── PRD-Module-Template-v3.4.0.md # PRD template for new modules
+│   ├── accounts/                 # Accounts module PRD and docs
+│   │   ├── module-prd-accounts-v1.0.5.md # Accounts module PRD
+│   │   └── README.md             # Accounts module readme
+│   ├── logging/                  # Logging module PRD and docs
+│   │   ├── module-prd-logging-v1.0.2.md # Logging module PRD
+│   │   └── README.md             # Logging module readme
+│   └── mapping/                  # Mapping module PRD and docs
+│       ├── module-prd-mapping-v1.0.4.md # Mapping module PRD
+│       └── README.md             # Mapping module readme
+├── src/                          # Source code for conversion tool
+│   ├── list_converters/          # List conversion logic (account tree, mapping)
+│   │   ├── account_tree.py       # Account tree builder
+│   │   └── mapping.py            # Mapping logic
+│   ├── modules/                  # Domain-specific modules
+│   │   └── accounts.py           # Accounts conversion logic
+│   ├── registry/                 # Registry and config hooks
+│   │   └── mapping/              # Mapping registry
+│   │       └── account_mapping_baseline.json # Baseline mapping config
+│   ├── utils/                    # Shared utilities
+│   │   ├── error_handler.py      # Error handling utilities
+│   │   ├── iif_parser.py         # IIF file parser
+│   │   ├── logging.py            # Logging utilities
+│   │   └── validation.py         # Validation logic
+│   └── validation/               # Validation module PRD and docs
+│       ├── module-prd-validation-v1.0.4.md # Validation module PRD
+│       └── README.md             # Validation module readme
+├── main.py                       # Entrypoint: orchestrates dispatch and phase flow
+└── README.md                     # Project overview and instructions
 ```
 
 ---
