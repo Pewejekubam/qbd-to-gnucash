@@ -1,15 +1,14 @@
-````markdown
 # Module PRD: Validation
 
-## Version
+## 1. Version
 v1.0.4
 
 [core-prd-v3.2.0.md](../core-prd-v3.2.0.md)
 
-## Compatibility
+## 2. Compatibility
 Compatible with: core-prd-v3.2.0.md
 
-## Module Contract: validation.py
+## 3. Module Contract: validation.py
 
 **Purpose:**
 Implements a validation suite for parsed records. Enforces structure, field presence, and mapping integrity before output generation.
@@ -67,9 +66,9 @@ Implements a validation suite for parsed records. Enforces structure, field pres
   }
   ```
 
-## Data Structure Definitions (Agentic AI Compatibility)
+## 5. Data Structure Definitions (Agentic AI Compatibility)
 
-### Account Record (Python Typing)
+### 5.1 Account Record (Python Typing)
 ```python
 from typing import TypedDict, Optional
 class AccountRecord(TypedDict):
@@ -79,3 +78,32 @@ class AccountRecord(TypedDict):
     PARENT: Optional[str]
     # ...other QBD fields as needed
 ```
+
+## 6. Example Calls for Public Functions/Classes
+
+### 6.1 AccountValidationSuite
+```python
+validator = AccountValidationSuite(mapping)
+# Normal case
+ok = validator.run_all(records, tree, flat, csv_rows)
+# Edge case: missing required field
+bad_record = {"ACCNTTYPE": "BANK"}  # Missing NAME
+assert not validator.validate_iif_record(bad_record)
+```
+
+## 7. Summary Table: Functions, Data Structures, Schemas, and Example Calls
+
+| Function/Class         | Data Structure/Schema                | Example Call Location         |
+|-----------------------|--------------------------------------|------------------------------|
+| AccountValidationSuite | AccountRecord, ValidationError       | Example Calls section         |
+| AccountRecord         | AccountRecord (Python Typing)        | Data Structure Definitions    |
+| ValidationError       | ValidationError (Python Typing)      | Data Structure Definitions    |
+
+## 8. Error Logging and Graceful Exit
+- This module must comply with all requirements in [Logging Framework module PRD v1.0.2](../logging/module-prd-logging-v1.0.2.md) and [core PRD section 10.12](../core-prd-v3.4.0.md#1012-logging-and-error-handling).
+- Remove all module-specific logging/error handling requirements from this document; see the centralized logging module for details.
+
+## 9. Version History
+
+- v1.0.0 (2025-05-19): Initial release, extracted and centralized all validation module requirements from core PRD.
+- v1.0.4 (2025-05-19): Align with PRD-base v3.4.0, update interface contracts and data structure definitions for agentic AI compatibility.

@@ -1,17 +1,18 @@
 # Accounts Module
 
-**Version:** 1.0.5  
+## 1. Version
+1.0.5  
 **Date:** 2025-05-19  
 
 ---
 
-## Overview
+## 2. Overview
 
 This module implements the QBD Chart of Accounts to GnuCash conversion logic. It parses QBD IIF `!ACCNT` records, applies mapping and hierarchy rules, and generates a GnuCash-compatible `accounts.csv` file. The module enforces strict validation, logging, and deterministic account type inheritance, and is fully agentic AI-compatible.
 
 ---
 
-## Features
+## 3. Features
 
 - Parses QBD Chart of Accounts (`!ACCNT`) from IIF files
 - Applies mapping and hierarchy rules to produce GnuCash-compatible output
@@ -23,7 +24,7 @@ This module implements the QBD Chart of Accounts to GnuCash conversion logic. It
 
 ---
 
-## Usage
+## 4. Usage
 
 - Place your `.IIF` file in `input/`
 - Run the main tool (see project root README)
@@ -32,26 +33,26 @@ This module implements the QBD Chart of Accounts to GnuCash conversion logic. It
 
 ---
 
-## Data Structures
+## 5. Data Structures
 
 - See `module-prd-accounts-v1.0.5.md` for explicit JSON Schema and Python typing for all major data structures (account record, mapping files, validation errors).
 
 ---
 
-## Example Calls
+## 6. Example Calls
 
 See the "Example Calls for Public Functions/Classes" section in `module-prd-accounts-v1.0.5.md` for realistic usage and edge cases.
 
 ---
 
-## Version History
+## 7. Version History
 
 - v1.0.0 (2025-05-19): Initial release, extracted and modularized from core PRD.
 - v1.0.5 (2025-05-19): Align with PRD-base v3.4.0, update interface contracts and data structure definitions for agentic AI compatibility.
 
 ---
 
-## References
+## 8. References
 
 - [module-prd-accounts-v1.0.5.md](module-prd-accounts-v1.0.5.md): Canonical contract and requirements for the accounts module.
 - [../core-prd-v3.4.0.md](../core-prd-v3.4.0.md): Core PRD for the modular system.

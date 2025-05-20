@@ -1,6 +1,6 @@
 <!-- filepath: c:\git-root\qbd-to-gnucash\prd\core-prd-v3.0.0.md -->
 # Core PRD: QuickBooks Desktop to GnuCash Conversion Tool
-**Version:** 3.4.0
+**Version:** 3.4.0  
 **Date:** 2025-05-19  
 **State:** Agentic AI Compatibility Enhancement
 
@@ -468,21 +468,21 @@ assert not validator.validate_iif_record(bad_record)
 
 ---
 
-## 7. Non-Functional Requirements
+## 10. Non-Functional Requirements
 
-### 7.1 Performance & Scalability
+### 10.1 Performance & Scalability
 
 - Must scale to at least thousands of account entries per file.
 - Should process large `.IIF` files efficiently without excessive memory or CPU usage.
 
-### 7.2 Error Handling
+### 10.2 Error Handling
 
 - Must not crash on partial or malformed input files.
 - Should gracefully skip or log malformed records and continue processing.
 - Stops execution if unmapped account types are detected and a new mapping file is generated.
 - Raises clear exceptions for critical errors (e.g., missing required files, invalid data structures).
 
-### 7.3 Logging Strategy
+### 10.3 Logging Strategy
 
 - Should generate logging output for:
   - Unmapped account types.
@@ -501,7 +501,7 @@ logging.basicConfig(
 )
 ```
 
-### 7.4 File I/O Assumptions
+### 10.4 File I/O Assumptions
 
 - Input files are **immutable exports from QuickBooks Desktop (.IIF)**.
 - No part of the pipeline may modify, clean, preprocess, or restructure these files.
@@ -520,13 +520,13 @@ logging.basicConfig(
 - These directories should be created automatically (`os.makedirs(..., exist_ok=True)`) before any file I/O occurs.
 - Logging must not assume the prior existence of the log path — directory creation is the tool’s responsibility.
 
-### 7.5 Working Directory & Config Handling
+### 10.5 Working Directory & Config Handling
 
 - Loads configuration (input/output directories, mapping file paths) from environment variables or a config file.
 - Ensures the project root is in `PYTHONPATH` for module imports.
 - Supports `.env` or config file for cross-platform path management (future enhancement).
 
-### 7.6 Hierarchy Construction
+### 10.6 Hierarchy Construction
 
 - GnuCash hierarchy is determined by colon-delimited account paths (e.g., `Expenses:Travel:Airfare`).
 - Each account's **full path** determines its position in the hierarchy, but its `Account Name` field (used for display/reference) includes **only the final segment** (e.g., `Airfare`), not the full path.
@@ -535,35 +535,35 @@ logging.basicConfig(
 - During flattening, placeholder accounts with only one real child are removed, and their child is promoted to preserve a clean hierarchy.
 - Hierarchy integrity and naming rules are validated against GnuCash import rules ([GnuCash Guide: Accounts](https://www.gnucash.org/viewdoc.phtml?rev=5&lang=C&doc=guide)).
 
-### 7.7 Security Concerns
+### 10.7 Security Concerns
 
 - Does not process executable code or macros from input files.
 - Only reads and writes plain text files (CSV, JSON, HTML).
 - No explicit handling of sensitive data, but assumes input files may contain confidential information.
 
-### 7.8 User Experience & Automation
+### 10.8 User Experience & Automation
 
 - Provides clear instructions and error messages for manual steps (e.g., editing mapping files, post-import GnuCash actions).
 - Supports iterative workflow: user can refine mappings and re-run the script.
 - Output files are formatted for easy import into GnuCash and for human readability.
 
-### 7.9 Automation & Extensibility
+### 10.9 Automation & Extensibility
 
 - Modular design allows for future automation (e.g., batch processing, dry-run mode, preview/report mode).
 - Designed for easy extension to other QuickBooks list types or additional output formats.
 
-### 7.10 Assumptions
+### 10.10 Assumptions
 
 - Only the `!ACCNT` list type is handled by the accounts module.
 - Account names are consistently delimited by `:` for hierarchy.
 - Input files are expected to be well-formed QuickBooks exports unless otherwise noted.
 
-### 7.11 External References & Compatibility
+### 10.11 External References & Compatibility
 
 - Aligns with GnuCash CSV import logic and requirements.
 - Ensures output matches GnuCash's expectations for commodity, namespace, and account hierarchy.
 
-### 7.12 Logging and Graceful Error Handling
+### 10.12 Logging and Graceful Error Handling
 
 - All modules must ensure that any error, exception, or abnormal termination is logged to the designated log file before the process exits.
 - Logging must occur synchronously, and log handlers must be flushed to disk before any process termination (including `os._exit`, `sys.exit`, or unhandled exceptions).
@@ -578,7 +578,7 @@ logging.basicConfig(
 
 ---
 
-## 8. Configuration & Environment
+## 11. Configuration & Environment
 
 - **Config Precedence:** If environment variables are set, they will be detected by the code and used. Otherwise, hard-coded paths will be used. This ensures that users can override defaults via environment variables, but the tool will always function with built-in fallback paths if none are set.
 - **Config/Env Keys:**
@@ -597,7 +597,7 @@ logging.basicConfig(
 
 ---
 
-## 9. Validation & Error Handling
+## 12. Validation & Error Handling
 
 - **Error Codes/Messages:** Define as constants in `utils/error_handler.py`:
   ```python
@@ -619,7 +619,7 @@ logging.basicConfig(
 
 ---
 
-## 10. Testing & Acceptance
+## 13. Testing & Acceptance
 
 - **Minimal Test Cases:**
   - Empty input file
@@ -634,16 +634,16 @@ logging.basicConfig(
 
 ---
 
-## 11. Dependencies & Versioning
+## 14. Dependencies & Versioning
 
 - **Python Version:** 3.8–3.12 supported. Use `python --version` to check.
 - **No external dependencies** beyond the Python standard library.
 
 ---
 
-## 12. Documentation & Onboarding
+## 15. Documentation & Onboarding
 
-### 12.1 Getting Started
+### 15.1 Getting Started
 
 1. Clone the repository:
    ```pwsh
@@ -663,20 +663,23 @@ logging.basicConfig(
    Do not supply any command-line arguments or options. The tool is designed for maximum user-friendliness and will ignore any additional CLI input.
 5. Review `output/accounts.csv` and logs in `output/qbd-to-gnucash.log`.
 
-### 12.2 References
+### 15.2 References
 - [GnuCash CSV Import Guide](https://www.gnucash.org/viewdoc.phtml?rev=5&lang=C&doc=guide)
 - [GnuCash CSV Import Source (C implementation)](https://github.com/Gnucash/gnucash/blob/stable/gnucash/import-export/csv-imp/assistant-csv-account-import.c)
 - [Sample Input/Output Files](input/sample-qbd-accounts.IIF, output/accounts.csv)
 
 ---
 
-## 13. Clarify Extensibility Points
+## 16. Clarify Extensibility Points
 
-- **Extension Hooks:**
-  - To add a new module (e.g., Vendors), create a new file in `modules/` (e.g., `vendors.py`) following the pattern in `accounts.py`.
+### 16.1 Extension Hooks
+
+- To add a new module (e.g., Vendors), create a new file in `modules/` (e.g., `vendors.py`) following the pattern in `accounts.py`.
   - Register the module in `main.py` dispatch logic.
-- **Mapping File Structure:**
-  - All mapping files are JSON, with the following structure:
+
+### 16.2 Mapping File Structure
+
+- All mapping files are JSON, with the following structure:
     ```json
     {
       "account_types": {
@@ -719,9 +722,7 @@ logging.basicConfig(
     ```
   - New mapping files should be placed in `registry/mapping/` or `output/` as appropriate and referenced in config.
 
----
-
-## 13.1 Registry Dispatch and Fallback Logic
+### 16.3 Registry Dispatch and Fallback Logic
 
 - Registry dispatches per-key (e.g., `!ACCNT`, `!TRNS`).
 - Keys must be unique per module.
@@ -729,9 +730,7 @@ logging.basicConfig(
 - Module registration occurs in `main.py` via the `registry.dispatch()` call.
 - If a key is not registered, a structured error is raised and logged.
 
----
-
-## 13.2 Declarative Error Categories Table
+### 16.4 Declarative Error Categories Table
 
 A declarative error category structure is used for code generation, test scaffolding, and documentation:
 
@@ -745,9 +744,7 @@ ERROR_CATEGORIES = {
 }
 ```
 
----
-
-## 13.3 Unicode Normalization and Logging
+### 16.5 Unicode Normalization and Logging
 
 - All input files are read as UTF-8. If non-UTF-8 characters are encountered, they are stripped.
 - To avoid silent data loss, the tool logs a warning each time a character is stripped or replaced during normalization.

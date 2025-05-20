@@ -1,5 +1,5 @@
 # Logging Framework Module PRD: QuickBooks Desktop to GnuCash Conversion Tool
-**Version:** 1.0.2
+**Version:** 1.0.2  
 **Date:** 2025-05-19  
 **State:** Initial Release
 
@@ -99,7 +99,7 @@ This module defines the centralized logging framework for all modules in the QBD
 - All modules must call `setup_logging()` before any logging occurs.
 - All error logging must use the centralized logger.
 
-## Data Structure Definitions (Agentic AI Compatibility)
+## 5. Data Structure Definitions (Agentic AI Compatibility)
 
 ### Log Event Structure (Python Typing)
 ```python
@@ -118,7 +118,7 @@ from typing import Dict, List
 ErrorCategories = Dict[str, List[str]]
 ```
 
-## Example Calls for Public Functions/Classes
+## 6. Example Calls for Public Functions/Classes
 
 ### setup_logging
 ```python
@@ -128,14 +128,14 @@ setup_logging(log_path='output/qbd-to-gnucash.log', log_level='DEBUG')
 setup_logging(log_path='output/nonexistent-dir/qbd-to-gnucash.log', log_level='INFO')
 ```
 
-## Summary Table: Functions, Data Structures, Schemas, and Example Calls
+## 7. Summary Table: Functions, Data Structures, Schemas, and Example Calls
 
 | Function/Class   | Data Structure/Schema         | Example Call Location         |
 |-----------------|-------------------------------|------------------------------|
 | setup_logging   | LogEvent (Python Typing)      | Example Calls section         |
 | ErrorCategories | ErrorCategories (Python Typing)| Data Structure Definitions    |
 
-## 5. Error Handling and Logging Checklist
+## 8. Error Handling and Logging Checklist
 
 - [x] All errors and exceptions are logged before process exit.
 - [x] Log handlers are flushed before exit.
@@ -143,12 +143,12 @@ setup_logging(log_path='output/nonexistent-dir/qbd-to-gnucash.log', log_level='I
 - [x] Error categories and codes are used consistently.
 - [x] Logging is agent-compatible and includes context.
 
-## 6. References
+## 9. References
 
-- [Core PRD v3.2.0, Section 7.12](../core-prd-v3.2.0.md#712-logging-and-graceful-error-handling)
+- [Core PRD v3.4.0, Section 10.12](../core-prd-v3.4.0.md#1012-logging-and-error-handling)
 - [Python logging documentation](https://docs.python.org/3/library/logging.html)
 
-## 7. Version History
+## 10. Version History
 
 - v1.0.0 (2025-05-19): Initial release, extracted and centralized all logging requirements from core and module PRDs.
 - v1.0.1 (2025-05-19): Normalize function signature documentation in Interface Contract, refine data structure typing, and clarify example call.

@@ -1,17 +1,18 @@
 # Logging Framework Module
 
-**Version:** 1.0.2  
+## 1. Version
+1.0.2  
 **Date:** 2025-05-19  
 
 ---
 
-## 1. Overview
+## 2. Overview
 
 This module provides the logging framework for the QBD-to-GnuCash conversion tool. It standardizes log formats, error categories, log flushing, and error handling requirements to ensure consistency, traceability, and agentic AI compatibility across the system.
 
 ---
 
-## 2. Features
+## 3. Features
 
 - Centralized logging setup for all modules
 - Standard log format and log file location
@@ -22,7 +23,7 @@ This module provides the logging framework for the QBD-to-GnuCash conversion too
 
 ---
 
-## 3. Usage
+## 4. Usage
 
 - Import and call `setup_logging()` before any logging occurs in your module:
 
@@ -37,7 +38,7 @@ setup_logging(log_path='output/qbd-to-gnucash.log', log_level='INFO')
 
 ---
 
-## 4. Data Structures
+## 5. Data Structures
 
 - LogEvent (Python Typing):
 ```python
@@ -58,7 +59,7 @@ ErrorCategories = Dict[str, List[str]]
 
 ---
 
-## 5. Example Calls
+## 6. Example Calls
 
 ```python
 # Normal case
@@ -69,7 +70,7 @@ setup_logging(log_path='output/nonexistent-dir/qbd-to-gnucash.log', log_level='I
 
 ---
 
-## 6. Version History
+## 7. Version History
 
 - v1.0.0 (2025-05-19): Initial release, extracted and centralized all logging requirements from core and module PRDs.
 - v1.0.1 (2025-05-19): Normalize function signature documentation in Interface Contract, refine data structure typing, and clarify example call.
@@ -77,7 +78,7 @@ setup_logging(log_path='output/nonexistent-dir/qbd-to-gnucash.log', log_level='I
 
 ---
 
-## 7. References
+## 8. References
 
 - [module-prd-logging-v1.0.2.md](module-prd-logging-v1.0.2.md): Canonical contract and requirements for the logging module.
 - [../core-prd-v3.4.0.md](../core-prd-v3.4.0.md): Core PRD for the modular system.

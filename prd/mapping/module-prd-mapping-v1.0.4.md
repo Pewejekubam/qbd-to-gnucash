@@ -1,14 +1,14 @@
 # Module PRD: Mapping
 
-## Version
+## 1. Version
 v1.0.4
 
 [core-prd-v3.2.0.md](../core-prd-v3.2.0.md)
 
-## Compatibility
+## 2. Compatibility
 Compatible with: core-prd-v3.2.0.md
 
-## Module Contract: mapping.py
+## 3. Module Contract: mapping.py
 
 **Purpose:**
 Loads, merges, and validates account type mapping files. Provides lookup services for resolving QBD types to GnuCash account types and hierarchy paths.
@@ -65,9 +65,9 @@ Loads, merges, and validates account type mapping files. Provides lookup service
   }
   ```
 
-## Data Structure Definitions (Agentic AI Compatibility)
+## 5. Data Structure Definitions (Agentic AI Compatibility)
 
-### Mapping File (accounts_mapping_specific.json, account_mapping_baseline.json)
+### 5.1 Mapping File (accounts_mapping_specific.json, account_mapping_baseline.json)
 ```json
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
@@ -93,15 +93,15 @@ Loads, merges, and validates account type mapping files. Provides lookup service
 }
 ```
 
-### Mapping Structure (Python Typing)
+### 5.2 Mapping Structure (Python Typing)
 ```python
 from typing import Dict, Any
 MappingType = Dict[str, Any]
 ```
 
-## Example Calls for Public Functions/Classes
+## 6. Example Calls for Public Functions/Classes
 
-### load_mapping
+### 6.1 load_mapping
 ```python
 # Normal case
 mapping = load_mapping('output/accounts_mapping_specific.json')
@@ -112,7 +112,7 @@ except MappingLoadError as e:
     print(e)
 ```
 
-### find_unmapped_types
+### 6.2 find_unmapped_types
 ```python
 # Normal case
 unmapped = find_unmapped_types(records, mapping)
@@ -121,7 +121,7 @@ unmapped = find_unmapped_types([], mapping)
 assert unmapped == []
 ```
 
-## Summary Table: Functions, Data Structures, Schemas, and Example Calls
+## 7. Summary Table: Functions, Data Structures, Schemas, and Example Calls
 
 | Function/Class       | Data Structure/Schema                | Example Call Location         |
 |---------------------|---------------------------------------|-------------------------------|
@@ -129,11 +129,11 @@ assert unmapped == []
 | find_unmapped_types | Mapping Structure (Python Typing)     | Example Calls section         |
 | Mapping Files       | Mapping File (JSON Schema)            | Data Structure Definitions    |
 
-## 5. Error Logging and Graceful Exit
-- This module must comply with all requirements in [Logging Framework module PRD v1.0.0](../logging/module-prd-logging-v1.0.0.md) and [core PRD section 7.12](../core-prd-v3.2.0.md#712-logging-and-error-handling).
+## 8. Error Logging and Graceful Exit
+- This module must comply with all requirements in [Logging Framework module PRD v1.0.2](../logging/module-prd-logging-v1.0.2.md) and [core PRD section 10.12](../core-prd-v3.4.0.md#1012-logging-and-error-handling).
 - Remove all module-specific logging/error handling requirements from this document; see the centralized logging module for details.
 
-## Version History
+## 9. Version History
 
 - v1.0.0 (2025-05-19): Initial release, extracted and centralized all mapping module requirements from core PRD.
 - v1.0.2 (2025-05-19): Add explicit JSON Schema and Python typing for all major data structures. Add comprehensive example calls for public functions/classes, including edge cases. Reference schemas and examples in the interface contract. Add a summary table mapping functions/data structures to their schema and example call location.

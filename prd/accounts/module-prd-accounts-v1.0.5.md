@@ -1,14 +1,14 @@
 # Module PRD: Accounts
 
-## Version
+## 1. Version
 v1.0.5
 
 [core-prd-v3.2.0.md](../core-prd-v3.2.0.md)
 
-## Compatibility
+## 2. Compatibility
 Compatible with: core-prd-v3.2.0.md
 
-## Module Contract: accounts.py
+## 3. Module Contract: accounts.py
 
 **Purpose:**
 Orchestrates the full processing pipeline for the `!ACCNT` list type:
@@ -71,9 +71,9 @@ Orchestrates the full processing pipeline for the `!ACCNT` list type:
 - All file paths are of type `str`.
 - Example mapping structure: `Dict[str, Any]` as loaded from JSON.
 
-## Data Structure Definitions (Agentic AI Compatibility)
+## 5. Data Structure Definitions (Agentic AI Compatibility)
 
-### Mapping File (accounts_mapping_specific.json, account_mapping_baseline.json)
+### 5.1 Mapping File (accounts_mapping_specific.json, account_mapping_baseline.json)
 ```json
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
@@ -99,7 +99,7 @@ Orchestrates the full processing pipeline for the `!ACCNT` list type:
 }
 ```
 
-### Account Record (Python Typing)
+### 5.2 Account Record (Python Typing)
 ```python
 from typing import TypedDict, Optional
 class AccountRecord(TypedDict):
@@ -110,7 +110,7 @@ class AccountRecord(TypedDict):
     # ...other QBD fields as needed
 ```
 
-### Validation Error Structure (Python Typing)
+### 5.3 Validation Error Structure (Python Typing)
 ```python
 class ValidationError(TypedDict):
     record: dict
@@ -118,9 +118,9 @@ class ValidationError(TypedDict):
     stage: str
 ```
 
-## Example Calls for Public Functions/Classes
+## 6. Example Calls for Public Functions/Classes
 
-### run_accounts_pipeline
+### 6.1 run_accounts_pipeline
 ```python
 # Normal case
 run_accounts_pipeline(
@@ -143,7 +143,7 @@ except MappingLoadError as e:
     print(e)
 ```
 
-## Summary Table: Functions, Data Structures, Schemas, and Example Calls
+## 7. Summary Table: Functions, Data Structures, Schemas, and Example Calls
 
 | Function/Class         | Data Structure/Schema                | Example Call Location         |
 |-----------------------|--------------------------------------|------------------------------|
@@ -152,11 +152,11 @@ except MappingLoadError as e:
 | AccountRecord         | AccountRecord (Python Typing)        | Data Structure Definitions    |
 | ValidationError       | ValidationError (Python Typing)      | Data Structure Definitions    |
 
-## 5. Error Logging and Graceful Exit
-- This module must comply with all requirements in [Logging Framework module PRD v1.0.0](../logging/module-prd-logging-v1.0.0.md) and [core PRD section 7.12](../core-prd-v3.2.0.md#712-logging-and-error-handling).
+## 8. Error Handling and Logging
+- This module must comply with all requirements in [Logging Framework module PRD v1.0.2](../logging/module-prd-logging-v1.0.2.md) and [core PRD section 10.12](../core-prd-v3.4.0.md#1012-logging-and-error-handling).
 - Remove all module-specific logging/error handling requirements from this document; see the centralized logging module for details.
 
-## Version History
+## 9. Version History
 
 - v1.0.0 (2025-05-19): Initial release, extracted and centralized all accounts module requirements from core PRD.
 - v1.0.1 (2025-05-19): Add explicit JSON Schema and Python typing for all major data structures. Add comprehensive example calls for public functions/classes, including edge cases. Reference schemas and examples in the interface contract. Add a summary table mapping functions/data structures to their schema and example call location.
