@@ -1,4 +1,0 @@
-2025-05-19 15:16:49,764 INFO Starting conversion: input\sample-qbd-accounts.IIF
-2025-05-19 15:16:49,765 INFO Dispatching to !ACCNT handler
-2025-05-19 15:16:49,765 INFO Starting !ACCNT pipeline
-2025-05-19 15:16:49,765 ERROR IIF parse error: parse_iif_accounts() takes 1 positional argument but 2 were given

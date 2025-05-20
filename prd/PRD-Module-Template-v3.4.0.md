@@ -61,6 +61,7 @@ def parse_iif_accounts(iif_path: str) -> List[Dict[str, Any]]
 - [ ] Error Logging and Graceful Exit: All errors and exceptions are logged and flushed before process exit, as per core PRD section 7.12 and the logging module.
 - [ ] Change management process is defined.
 - [ ] Test cases/examples are provided.
+- [ ] A README.md document is created for this module, summarizing its purpose, usage, and version history.
 
 ---
 

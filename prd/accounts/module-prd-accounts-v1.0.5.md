@@ -1,4 +1,3 @@
-````markdown
 # Module PRD: Accounts
 
 ## Version
@@ -156,4 +155,9 @@ except MappingLoadError as e:
 ## 5. Error Logging and Graceful Exit
 - This module must comply with all requirements in [Logging Framework module PRD v1.0.0](../logging/module-prd-logging-v1.0.0.md) and [core PRD section 7.12](../core-prd-v3.2.0.md#712-logging-and-error-handling).
 - Remove all module-specific logging/error handling requirements from this document; see the centralized logging module for details.
-````
+
+## Version History
+
+- v1.0.0 (2025-05-19): Initial release, extracted and centralized all accounts module requirements from core PRD.
+- v1.0.1 (2025-05-19): Add explicit JSON Schema and Python typing for all major data structures. Add comprehensive example calls for public functions/classes, including edge cases. Reference schemas and examples in the interface contract. Add a summary table mapping functions/data structures to their schema and example call location.
+- v1.0.5 (2025-05-19): Align with PRD-base v3.4.0, update interface contracts and data structure definitions for agentic AI compatibility.

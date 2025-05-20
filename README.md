@@ -1,7 +1,7 @@
 # QBD to GnuCash Conversion Tool
 
-**Version:** 2.7.2  
-**Date:** 2025-05-14  
+**Version:** 3.4.0  
+**Date:** 2025-05-19  
 
 ---
 
@@ -23,6 +23,8 @@ This tool delivers a command-line utility for migrating financial data from Quic
 - Modular design with clean CLI integration
 - Strict enforcement of field names and type inheritance rules
 - All placeholder accounts are structurally complete and validated
+- Agentic AI-compatible PRD and module documentation
+- Explicit JSON Schema and Python typing for all major data structures
 
 ---
 
@@ -36,6 +38,7 @@ This tool delivers a command-line utility for migrating financial data from Quic
 ├── registry/             # Mapping logic and dispatch rules
 ├── modules/              # Per-domain converters (accounts, vendors, etc.)
 ├── utils/                # Shared logic: parsing, writing, validation
+├── prd/                  # PRD-base and module PRDs
 └── main.py               # Entrypoint CLI orchestrator
 ```
 
@@ -61,7 +64,7 @@ This tool delivers a command-line utility for migrating financial data from Quic
 
 ### Installation
 
-```bash
+```pwsh
 git clone <repo-url>
 cd qbd-to-gnucash
 ```
@@ -70,7 +73,7 @@ cd qbd-to-gnucash
 
 1. Place your `.IIF` file in `input/`
 2. Run the converter:
-   ```bash
+   ```pwsh
    python main.py
    ```
 3. Inspect output:
@@ -109,7 +112,7 @@ Mapping files use the following structure:
 }
 ```
 
-**Note:** Fallback to `default_rules` for placeholder typing is deprecated as of v2.7.2. All placeholder types must be resolved by upward inheritance only.
+**Note:** Fallback to `default_rules` for placeholder typing is deprecated as of v3.4.0. All placeholder types must be resolved by upward inheritance only.
 
 ---
 
@@ -184,6 +187,7 @@ QBD_INPUT_PATH = os.getenv('QBD_INPUT_PATH', 'input/sample-qbd-accounts.IIF')
 - Errors include parsing failures, unmapped types, and invalid trees
 - Unicode decode issues are stripped and logged with file/line details
 - On validation errors, the tool exits with code 2; on critical errors, with code 1
+- Logging is agentic AI-compatible and follows the centralized logging module PRD
 
 Example:
 
@@ -213,24 +217,16 @@ To add support for other QBD list types:
 1. Create `modules/<type>.py`
 2. Register the key and handler in `main.py`
 3. Follow the same parse → map → flatten → write pipeline
-
----
-
-## 🧪 Testing
-
-- Place test `.IIF` files in `input/`
-- Run:  
-  ```bash
-  python -m unittest discover
-  ```
-- Test cases will validate malformed files, unmapped types, and tree flattening
+4. Add or update the module PRD in `prd/<module>/`
 
 ---
 
 ## 📚 References
 
 - [GnuCash CSV Import Guide](https://www.gnucash.org/viewdoc.phtml?rev=5&lang=C&doc=guide)
+- [GnuCash CSV Import Source (C implementation)](https://github.com/Gnucash/gnucash/blob/stable/gnucash/import-export/csv-imp/assistant-csv-account-import.c)
 - [GnuCash Accounts Hierarchy Docs](https://www.gnucash.org/docs/)
+- [Sample Input/Output Files](input/sample-qbd-accounts.IIF, output/accounts.csv)
 
 ---
 
