@@ -3,7 +3,7 @@
 **Document Version:** v1.0.4 
 **Module Identifier:** logging.py  
 **System Context:** QuickBooks Desktop to GnuCash Conversion Tool  
-**Author:** PJ  
+**Author:** Pewe Jekubam
 **Last Updated:** 2025-05-21  
 
 ---
@@ -67,7 +67,7 @@ This module defines the centralized logging framework for all modules in the QBD
 
 ## 6. Interface & Integration  
 
-### 6.1 API Contracts  
+### 6.1 Module Contracts  
 
 #### `setup_logging()`  
 ```python

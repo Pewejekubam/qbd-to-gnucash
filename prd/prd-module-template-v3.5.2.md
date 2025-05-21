@@ -2,7 +2,7 @@
 **Document Version:** v[version]  
 **Module Identifier:** [module_filename.py]  
 **System Context:** QuickBooks Desktop to GnuCash Conversion Tool  
-**Author:** [Author or Team Name]  
+**Author:** Pewe Jekubam 
 **Last Updated:** [YYYY-MM-DD]  
 
 ---
@@ -49,12 +49,32 @@
 
 ## 6. Interface & Integration  
 
-### 6.1 API Contracts  
-[List public functions/classes with arguments, return types, exceptions, and descriptions.]
+### 6.1 Module Contract: [module_name]
+[List Purpose, Inputs, Outputs, Invariants, Failure Modes, public functions/classes with arguments, return types, exceptions, descriptions and example call.]
 
-### 6.2 Dependencies  
+### 6.2 Interface Contracts: [function_name]
+[List Purpose, public functions/classes with arguments, return types, exceptions, descriptions and example calls.]
+
+### 6.3 Dependencies  
 [List module dependencies, references to other PRDs or system components.]
 
+### 6.4 Data Structure Definitions
+- **Internal Modules:**
+  - List internal modules and their purposes.
+
+- **External Requirements:**
+  - List external requirements and references to other PRDs or system components.
+  - Example: Conforms to logging/error handling policies in:
+    - [Logging Framework PRD v1.0.4](../logging/module-prd-logging-v1.0.4.md)
+    - [Core PRD v3.5.2](../core-prd-v3.5.2.md#7.2-Error-Handling)
+
+- **External Data Format Contracts:**
+  - List external data format contracts.
+  - Example: JSON mapping schema (for `accounts_mapping_specific.json`, `account_mapping_baseline.json`).
+
+
+
+#### 6.4.1 [structured file]
 ---
 
 ## 7. Validation & Error Handling  
@@ -98,18 +118,9 @@
 
 ---
 
-## 12. Example Calls for Public Functions/Classes  
 
-### 12.1 [Function/Class Name]  
-```python
-# Example usage  
-[Example code snippet]  
-```
-
----
-
-## 13. Appendix (Optional)
-### 13.1 Data Schemas or Additional References
+## 12. Appendix (Optional)
+### 12.1 Data Schemas or Additional References
 
 ```
 [JSON schemas, typing hints, protocol descriptions, or other technical appendices.]

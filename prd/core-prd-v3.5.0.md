@@ -1,21 +1,24 @@
 <!-- filepath: c:\git-root\qbd-to-gnucash\prd\core-prd-v3.5.0.md -->
 # Core PRD: QuickBooks Desktop to GnuCash Conversion Tool
 
-**Version:** 3.5.0  
-**Date:** 2025-05-20
+**Document Version:** 3.5.1  
 **State:** Domain Logic Compartmentalization
+**Author:** Pewe Jekubam
+
+---
 
 ## 1. Compatibility Matrix
 
 Compatibility Matrix  
 | Module Name         | PRD Version | Compatible With Core PRD |
 |---------------------|-------------|--------------------------|
-| Chart of Accounts   | v1.0.7      | v3.5.0                   |
+| Chart of Accounts   | v1.0.9      | v3.5.0                   |
 | Sales Tax Code List | (TBD)       | v3.5.0                   |
 | Item List           | (TBD)       | v3.5.0                   |
 | Customer List       | (TBD)       | v3.5.0                   |
 | Vendor List         | (TBD)       | v3.5.0                   |
-| (roadmap modules)   | (see roadmap list) | (future)          |
+
+---
 
 ## 2. History
 
@@ -28,6 +31,8 @@ v3.3.1: Standardized terminology for mapping diff file, output file path, and ac
 v3.4.0: Added explicit JSON Schema and Python typing examples for all major data structures. Updated interface contracts and example calls for public functions/classes.
 v3.5.0: Finalized full extraction and compliance with separation of concerns and compartmentalization of domain-specific content.
 
+---
+
 ## 3. Introduction
 
 ### 3.1 Project Overview
@@ -35,8 +40,6 @@ v3.5.0: Finalized full extraction and compliance with separation of concerns and
 This project delivers a modular, command-line conversion tool for migrating financial data from QuickBooks Desktop (QBD) into GnuCash using structured import files. The core framework applies a consistent, extensible processing pipeline—input ingestion, parsing, mapping, and output generation—which is reused across all modules. Each domain module (e.g., Accounts, Vendors, Transactions, and others) is responsible for converting its respective QBD data into GnuCash-compatible formats, as defined in its own PRD. The core PRD defines the shared architecture, orchestration, and extension points for all modules.
 
 This project is CLI-only; no graphical user interface or CLI arguments will be developed or supported.
-
----
 
 ### 3.2 Scope
 
@@ -52,13 +55,9 @@ This project is CLI-only; no graphical user interface or CLI arguments will be d
 
 Domain modules (e.g., Accounts, Vendors, Transactions) maintain their own scoped responsibilities and define detailed data handling and format processing within their respective PRDs.
 
----
-
 ### 3.3 Target Audience
 
 This tool is intended for technical users — accountants, bookkeepers, or developers — performing structured financial data migration from QBD to GnuCash. Familiarity with the principles of double-entry accounting and GnuCash's account-type model is strongly recommended.
-
----
 
 ### 3.4 Background Context
 
@@ -82,13 +81,9 @@ Enable seamless and accurate conversion of QuickBooks Desktop (QBD) financial da
 ### 4.3 Background Context
 The ability to migrate financial records from QBD into GnuCash is essential for users transitioning to open-source or non-proprietary systems. GnuCash relies on strict double-entry accounting principles and requires precise data structuring during import. A conversion tool that meets these standards will allow users to retain control of their data while escaping licensing or platform lock-in. A clean, modular tool also provides the foundation for future modules (e.g., Transactions, Vendors, Customers), each using the same logic framework to extend the system.
 
----
-
 ### 4.4 Module Ownership and Directory Boundaries
 
 Each domain module owns its **full functional implementation**, including all subcomponents necessary for its logic, construction, and validation
-
----
 
 ### 4.5 Domain Module Naming Requirements
 
@@ -113,15 +108,12 @@ Each domain module owns its **full functional implementation**, including all su
 > **Creator's User Story:**  
 > As a technical team lead, I'm responsible for migrating our company's financial records from QuickBooks Desktop after Intuit's repeated subscription hikes — most recently from $142 to $163 *per seat*. With multiple users across departments, this translates into thousands of dollars per month. This tool is being developed to eliminate that recurring cost, free us from vendor lock-in, and preserve full access to our historical financial data in a stable, open-source system.
 
----
-
 ### 5.2 Use Cases
 
 - The core engine parses input files and dispatches data to the configured domain modules for processing.
 - The core engine loads and validates mapping configuration files to ensure consistent domain module behavior.
 - The core engine logs processing steps and errors in a structured format for downstream auditing and debugging.
 - The system supports dynamic module integration via configuration to extend supported data domains.
----
 
 ### 5.3 Background Context
 
@@ -179,9 +171,6 @@ These user stories and use cases reflect real-world pressures faced by organizat
 ```
 > For rules about domain ownership and why `accounts_tree.py` lives inside the `accounts` module, see Section 4.4.
 
-
----
-
 ### 6.2 Error Handling Strategy
 
 **Error Classifications**
@@ -225,8 +214,6 @@ These user stories and use cases reflect real-world pressures faced by organizat
 
 *Module PRDs must specify any additional feedback or logging requirements unique to their domain.*
 
----
-
 ### 6.3 Interface Contracts and Function Signatures
 
 - All module boundaries must have clearly documented function signatures in the PRD.
@@ -253,21 +240,22 @@ These user stories and use cases reflect real-world pressures faced by organizat
 - Example calls and test cases should be included in the PRD to clarify correct usage.
 
 ---
-## 10. Non-Functional Requirements
 
-### 10.1 Performance & Scalability
+## 7. Non-Functional Requirements
+
+### 7.1 Performance & Scalability
 
 - Must scale to at least thousands of account entries per file.
 - Should process large `.IIF` files efficiently without excessive memory or CPU usage.
 
-### 10.2 Error Handling
+### 7.2 Error Handling
 
 - Must not crash on partial or malformed input files.
 - Should gracefully skip or log malformed records and continue processing.
 - Stops execution if unmapped account types are detected and a new mapping file is generated.
 - Raises clear exceptions for critical errors (e.g., missing required files, invalid data structures).
 
-### 10.3 Logging Strategy
+### 7.3 Logging Strategy
 
 - Should generate logging output for:
   - Unmapped account types.
@@ -286,7 +274,7 @@ logging.basicConfig(
 )
 ```
 
-### 10.4 File I/O Assumptions
+### 7.4 File I/O Assumptions
 
 - All input files are treated as **immutable exports** from the source system (e.g., QuickBooks Desktop `.IIF` format).
 - The pipeline must not modify, clean, restructure, or preprocess input files in any way.
@@ -309,37 +297,37 @@ logging.basicConfig(
 > - The expected file naming conventions for outputs (e.g., `accounts.csv`).
 > - Any module-specific error types for input file structure violations (e.g., `IIFParseError`).
 
-### 10.5 Working Directory & Config Handling
+### 7.5 Working Directory & Config Handling
 
 - Loads configuration (input/output directories, mapping file paths) from environment variables or a config file.
 - Ensures the project root is in `PYTHONPATH` for module imports.
 - Supports `.env` or config file for cross-platform path management (future enhancement).
 
 
-### 10.6 Security Concerns
+### 7.6 Security Concerns
 
 - Does not process executable code or macros from input files.
 - Only reads and writes plain text files (CSV, JSON, HTML).
 - No explicit handling of sensitive data, but assumes input files may contain confidential information.
 
-### 10.7 User Experience & Automation
+### 7.7 User Experience & Automation
 
 - Provides clear instructions and error messages for manual steps (e.g., editing mapping files, post-import GnuCash actions).
 - Supports iterative workflow: user can refine mappings and re-run the script.
 - Output files are formatted for easy import into GnuCash and for human readability.
 
-### 10.8 Automation & Extensibility
+### 7.8 Automation & Extensibility
 
 - Modular design allows for future automation (e.g., batch processing, dry-run mode, preview/report mode).
 - Designed for easy extension to other QuickBooks list types or additional output formats.
 
 
-### 10.9 External References & Compatibility
+### 7.9 External References & Compatibility
 
 - Aligns with GnuCash CSV import logic and requirements.
 - Ensures output matches GnuCash's expectations for commodity, namespace, and account hierarchy.
 
-### 10.10 Logging and Graceful Error Handling
+### 7.10 Logging and Graceful Error Handling
 
 - All modules must ensure that any error, exception, or abnormal termination is logged to the designated log file before the process exits.
 - Logging must occur synchronously, and log handlers must be flushed to disk before any process termination (including `os._exit`, `sys.exit`, or unhandled exceptions).
@@ -352,7 +340,7 @@ logging.basicConfig(
 - If a fatal error is encountered (e.g., unmapped types, validation failure), the error must be logged, and the log must be flushed before exiting.
 - Where possible, modules should raise custom exceptions that are caught at the top level, ensuring logging and cleanup are performed.
 
-### 10.11 Validation & Error Handling
+### 7.11 Validation & Error Handling
 
 - **Error Code Index:**  
   A centralized index of all error codes and their associated messages shall be maintained as constants in `utils/error_handler.py`. This module acts as the authoritative reference for error definitions, ensuring consistency and ease of maintenance.
@@ -384,7 +372,7 @@ logging.basicConfig(
 
 ---
 
-## 13. Testing & Acceptance
+## 8. Testing & Acceptance
 
 - **Minimal Test Cases:**
   - Empty input file
@@ -399,17 +387,16 @@ logging.basicConfig(
 
 ---
 
-## 14. Dependencies & Versioning
+## 9. Dependencies & Versioning
 
 - **Python Version:** 3.8–3.12 supported. Use `python --version` to check.
 - **No external dependencies** beyond the Python standard library.
 
 ---
 
-## 15. Documentation & Onboarding
+## 10. Documentation & Onboarding
 
-### 15.1 Getting Started
-
+### 10.1 Getting Started
 1. Clone the repository:
    ```pwsh
    git clone <repo-url>
@@ -428,27 +415,27 @@ logging.basicConfig(
    Do not supply any command-line arguments or options. The tool is designed for maximum user-friendliness and will ignore any additional CLI input.
 5. Review `output/accounts.csv` and logs in `output/qbd-to-gnucash.log`.
 
-### 15.2 References
+### 10.2 References
 - [GnuCash CSV Import Guide](https://www.gnucash.org/viewdoc.phtml?rev=5&lang=C&doc=guide)
 - [GnuCash CSV Import Source (C implementation)](https://github.com/Gnucash/gnucash/blob/stable/gnucash/import-export/csv-imp/assistant-csv-account-import.c)
 - [Sample Input/Output Files](input/sample-qbd-accounts.IIF, output/accounts.csv)
 
 ---
 
-## 16. Clarify Extensibility Points
+## 11. Clarify Extensibility Points
 
-### 16.1 Extension Hooks
+### 11.1 Extension Hooks
 
 - To add a new module (e.g., Vendors), create a new file in `modules/` (e.g., `vendors.py`) following the pattern in `accounts.py`.
   - Register the module in `main.py` dispatch logic.
 
-### 16.2 Mapping File Structure
+### 11.2 Mapping File Structure
 
 - Each module PRD must define its own mapping file structure and conventions, as required by its domain.
 - All mapping files must be in JSON format and referenced via configuration.
 - The core PRD does not prescribe or exemplify domain-specific mapping structures; see the relevant module PRD for details.
 
-### 16.3 Registry Dispatch and Fallback Logic
+### 11.3 Registry Dispatch and Fallback Logic
 
 - Registry dispatches per-key (e.g., `!ACCNT`, `!TRNS`).
 - Keys must be unique per module.
@@ -456,7 +443,7 @@ logging.basicConfig(
 - Module registration occurs in `main.py` via the `registry.dispatch()` call.
 - If a key is not registered, a structured error is raised and logged.
 
-### 16.4 Declarative Error Categories Table
+### 11.4 Declarative Error Categories Table
 
 A declarative error category structure is used for code generation, test scaffolding, and documentation:
 
@@ -470,7 +457,7 @@ ERROR_CATEGORIES = {
 }
 ```
 
-### 16.5 Unicode Normalization and Logging
+### 11.5 Unicode Normalization and Logging
 
 - All input files are read as UTF-8. If non-UTF-8 characters are encountered, they are stripped.
 - To avoid silent data loss, the tool logs a warning each time a character is stripped or replaced during normalization.
