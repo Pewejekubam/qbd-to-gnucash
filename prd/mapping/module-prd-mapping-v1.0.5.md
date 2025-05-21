@@ -1,0 +1,168 @@
+# Product Requirements Document — Mapping Module
+**Document Version:** v1.0.5  
+**Module Identifier:** mapping.py  
+**System Context:** QuickBooks Desktop to GnuCash Conversion Tool  
+**Author:** Pewe Jekubam 
+**Last Updated:** 2025-05-20  
+
+---
+
+## 1. Purpose
+Loads, merges, and validates account type mapping files. Provides lookup services for resolving QBD types to GnuCash account types and hierarchy paths.
+
+---
+
+## 2. Scope
+This module is responsible for handling account type mappings and does not cover other conversion logic.
+
+---
+
+## 3. Inputs and Outputs
+
+### 3.1 Inputs
+- Baseline mapping JSON (required)
+- Specific mapping JSON (optional override)
+
+### 3.2 Outputs
+- Combined dictionary of `account_types` and `default_rules`
+- Optional mapping diff file for unmapped types (`accounts_mapping_diff.json`)
+
+---
+
+## 4. Functional Requirements
+
+### 4.1 Overview
+- Load and merge mapping files
+- Provide lookup services for QBD to GnuCash account types
+- Handle unmapped types and logging
+
+### 4.2 Detailed Behavior
+#### 4.2.1 Loading Mapping Files
+- Loads baseline and specific mapping JSON files
+- Merges the two files into a single dictionary
+
+#### 4.2.2 Lookup Services
+- Provides exact QBD key lookups (e.g., `BANK`, `OCASSET`, `AR`)
+- Fallback behavior is defined by `default_rules`
+
+#### 4.2.3 Unmapped Types
+- Returns a list of unmapped QBD account types
+- Logs all key loads, fallbacks, and mapping mismatches
+
+---
+
+## 5. Configuration & Environment
+
+### 5.1 Config Schema
+No specific config options are required.
+
+### 5.2 Environment Constraints
+- Input mapping files must follow expected schema
+- Module-specific logging/error handling requirements are handled by the centralized logging module
+
+---
+
+## 6. Interface & Integration
+
+### 6.1 API Contracts
+#### load_mapping
+- Arguments: `user_mapping_path: Optional[str]`
+- Return type: `Dict[str, Any]`
+- Exceptions raised: `MappingLoadError`
+- Description: Loads and merges mapping files for QBD to GnuCash account types.
+
+#### find_unmapped_types
+- Arguments: `records: List[Dict[str, Any]]`, `mapping: Dict[str, Any]`
+- Return type: `List[str]`
+- Exceptions raised: None
+- Description: Returns a list of unmapped QBD account types.
+
+### 6.2 Dependencies
+- [Logging Framework module PRD v1.0.2](../logging/module-prd-logging-v1.0.2.md)
+- [core PRD section 10.12](../core-prd-v3.4.0.md#1012-logging-and-error-handling)
+
+---
+
+## 7. Validation & Error Handling
+
+### 7.1 Validation Rules
+- Input mapping files must follow expected schema
+- All lookups must use exact QBD keys
+
+### 7.2 Error Classes & Exit Codes
+- `MappingLoadError` is raised if required files are missing or unreadable
+
+---
+
+## 8. Logging & Observability
+- This module complies with the centralized logging module requirements.
+
+---
+
+## 9. Versioning & Change Control
+
+### 9.1 Revision History
+| Version | Date       | Author     | Summary                  
+|---------|------------|------------|--------------------------
+| v1.0.0  | 2025-05-19 | PJ         | Initial release          
+| v1.0.2  | 2025-05-19 | PJ         | Add explicit JSON Schema 
+| v1.0.4  | 2025-05-19 | PJ         | Align with PRD-base v3.4.0
+| v1.0.5  | 2025-05-21 | PJ         | Full processing through PRD template v3.5.1
+### 9.2 Upstream/Downstream Impacts
+Changes to this module may affect other modules that rely on the mapping functionality.
+
+---
+
+## 10. Non-Functional Requirements
+No specific non-functional requirements are noted.
+
+---
+
+## 11. Open Questions / TODOs
+None noted.
+
+---
+
+## 12. Example Calls for Public Functions/Classes
+
+### 12.1 load_mapping
+
+```python
+# Normal case
+mapping = load_mapping('output/accounts_mapping_specific.json')
+# Edge case: missing file
+try:
+    mapping = load_mapping('output/missing.json')
+except MappingLoadError as e:
+    print(e)
+```
+
+---
+
+## 13. Appendix (Optional)
+### 13.1. Mapping File Schema
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "account_types": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "gnucash_type": {"type": "string"},
+          "hierarchy_path": {"type": "string"}
+        },
+        "required": ["gnucash_type", "hierarchy_path"]
+      }
+    },
+    "default_rules": {
+      "type": "object",
+      "additionalProperties": {"type": "string"}
+    }
+  },
+  "required": ["account_types", "default_rules"]
+}
+

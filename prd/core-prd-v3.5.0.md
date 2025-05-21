@@ -1,5 +1,6 @@
-<!-- filepath: c:\git-root\qbd-to-gnucash\prd\core-prd-v3.0.0.md -->
+<!-- filepath: c:\git-root\qbd-to-gnucash\prd\core-prd-v3.5.0.md -->
 # Core PRD: QuickBooks Desktop to GnuCash Conversion Tool
+
 **Version:** 3.5.0  
 **Date:** 2025-05-20
 **State:** Domain Logic Compartmentalization
@@ -89,6 +90,16 @@ Each domain module owns its **full functional implementation**, including all su
 
 ---
 
+### 4.5 Domain Module Naming Requirements
+
+- All submodules and files within a domain module must be named unambiguously to prevent cross-domain confusion and ensure clarity.
+- File and submodule names should, wherever practical, include the parent domain as a prefix or otherwise clearly indicate their domain ownership.
+- **Example:** Files in the `accounts` module should be named using the pattern `accounts_<submodule>.py` (e.g., `accounts_tree.py`, `accounts_utils.py`).
+- This naming requirement applies to all current and future domain modules and their subcomponents.
+- This rule is mandatory for governance compliance and supports extensibility, maintainability, and prevention of naming collisions across the codebase.
+
+---
+
 ## 5. User Stories & Use Cases
 
 ### 5.1 User Stories
@@ -149,12 +160,12 @@ These user stories and use cases reflect real-world pressures faced by organizat
 │   ├── modules/                  # Domain-specific modules
 │   │   └── accounts/             # Accounts module implementation
 │   │       ├── accounts.py       # Accounts conversion logic
-│   │       └── account_tree.py   # Account tree builder (domain-owned)
+│   │       └── accounts_tree.py   # Account tree builder (domain-owned)
 │   ├── list_converters/          # Other list conversion logic (non-domain-specific)
 │   │   └── mapping.py            # Mapping logic
 │   ├── registry/                 # Registry and config hooks
 │   │   └── mapping/              # Mapping registry
-│   │       └── account_mapping_baseline.json # Baseline mapping config
+│   │       └── accounts_mapping_baseline.json # Baseline mapping config
 │   ├── utils/                    # Shared utilities
 │   │   ├── error_handler.py      # Error handling utilities
 │   │   ├── iif_parser.py         # IIF file parser
@@ -166,7 +177,7 @@ These user stories and use cases reflect real-world pressures faced by organizat
 ├── main.py                       # Entrypoint: orchestrates dispatch and phase flow
 └── README.md                     # Project overview and instructions
 ```
-> For rules about domain ownership and why `account_tree.py` lives inside the `accounts` module, see Section 4.2.
+> For rules about domain ownership and why `accounts_tree.py` lives inside the `accounts` module, see Section 4.4.
 
 
 ---
@@ -222,10 +233,14 @@ These user stories and use cases reflect real-world pressures faced by organizat
   - This includes function name, argument names and types (using Python typing), return type, exceptions raised, and a 1-2 line docstring/description.
   - Example format:
     ```python
-    def parse_iif_accounts(iif_path: str) -> List[Dict[str, Any]]
+    def parse_iif_accounts(iif_path: str) -> List[Dict[str, Any]]:
         """Parse an IIF file and return a list of account records."""
+        # ...function implementation...
+        
     Raises: IIFParseError
-    Example: records = parse_iif_accounts('input/sample.iif')
+    
+    # Example usage:
+    records = parse_iif_accounts('input/sample.iif')
     ```
 - For each module, the PRD must include an "Interface Contract" section that specifies:
   - All public functions/classes intended for use by other modules.
@@ -301,30 +316,30 @@ logging.basicConfig(
 - Supports `.env` or config file for cross-platform path management (future enhancement).
 
 
-### 10.7 Security Concerns
+### 10.6 Security Concerns
 
 - Does not process executable code or macros from input files.
 - Only reads and writes plain text files (CSV, JSON, HTML).
 - No explicit handling of sensitive data, but assumes input files may contain confidential information.
 
-### 10.8 User Experience & Automation
+### 10.7 User Experience & Automation
 
 - Provides clear instructions and error messages for manual steps (e.g., editing mapping files, post-import GnuCash actions).
 - Supports iterative workflow: user can refine mappings and re-run the script.
 - Output files are formatted for easy import into GnuCash and for human readability.
 
-### 10.9 Automation & Extensibility
+### 10.8 Automation & Extensibility
 
 - Modular design allows for future automation (e.g., batch processing, dry-run mode, preview/report mode).
 - Designed for easy extension to other QuickBooks list types or additional output formats.
 
 
-### 10.10 External References & Compatibility
+### 10.9 External References & Compatibility
 
 - Aligns with GnuCash CSV import logic and requirements.
 - Ensures output matches GnuCash's expectations for commodity, namespace, and account hierarchy.
 
-### 10.11 Logging and Graceful Error Handling
+### 10.10 Logging and Graceful Error Handling
 
 - All modules must ensure that any error, exception, or abnormal termination is logged to the designated log file before the process exits.
 - Logging must occur synchronously, and log handlers must be flushed to disk before any process termination (including `os._exit`, `sys.exit`, or unhandled exceptions).
@@ -337,9 +352,7 @@ logging.basicConfig(
 - If a fatal error is encountered (e.g., unmapped types, validation failure), the error must be logged, and the log must be flushed before exiting.
 - Where possible, modules should raise custom exceptions that are caught at the top level, ensuring logging and cleanup are performed.
 
----
-
-## 12. Validation & Error Handling
+### 10.11 Validation & Error Handling
 
 - **Error Code Index:**  
   A centralized index of all error codes and their associated messages shall be maintained as constants in `utils/error_handler.py`. This module acts as the authoritative reference for error definitions, ensuring consistency and ease of maintenance.
