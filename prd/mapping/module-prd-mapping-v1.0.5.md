@@ -64,7 +64,7 @@ No specific config options are required.
 
 ## 6. Interface & Integration
 
-### 6.1 API Contracts
+### 6.1 Interface Contracts
 #### load_mapping
 - Arguments: `user_mapping_path: Optional[str]`
 - Return type: `Dict[str, Any]`

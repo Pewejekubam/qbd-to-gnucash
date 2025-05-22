@@ -13,7 +13,7 @@ This module manages the conversion and validation of account data exported from 
 ---
 
 ## 2. Scope  
-- Covers parsing, mapping, and validating QBD account list exports (`!ACCNT` records).  
+- Covers parsing, mapping, and validating QBD account list exports (`!ACCNT` records embedded in `.IIF` files).  
 - Produces CSV outputs compatible with GnuCash’s import formats.  
 - Enforces strict rules on account typing, placeholder accounts, and AR/AP account special handling.  
 - Does not process transaction data or other QBD list types beyond accounts.  
@@ -24,8 +24,8 @@ This module manages the conversion and validation of account data exported from 
 ## 3. Inputs and Outputs  
 
 ### 3.1 Inputs  
-- QBD list export CSV files with `!ACCNT` records, including account fields as per QuickBooks schema.  
-- Mapping configuration files (YAML/JSON) specifying account type mappings and default rules.
+- QBD list export `.IIF` files with `!ACCNT` records, including account fields as per QuickBooks schema.  
+- Mapping configuration files (JSON) specifying account type mappings and default rules.
 
 ### 3.2 Outputs  
 - CSV files formatted for GnuCash import containing converted accounts.  
@@ -191,26 +191,16 @@ Orchestrates the full processing pipeline for the `!ACCNT` list type:
     PARENT: Optional[str]
     # ...other QBD fields as needed
  ```
- - Validation Error Structure (Python Typing):
- ```Python
- class ValidationError(TypedDict):
-     record: dict
-     error: str
-     stage: str
- ```
 
 ### 6.3 Dependencies  
 
-- **Internal Modules:**  
-| Module Name        | Import Path                                                      | Purpose                                   |
-|--------------------|------------------------------------------------------------------|-------------------------------------------|
-| `mapping.py`       | `from list_converters.mapping import load_and_merge_mappings`    | Loading and merging JSON mapping files    |
-| `accounts_tree.py` | `from modules.accounts.accounts_tree import build_account_tree`  | Building and validating account hierarchy |
-| `error_handler.py` | `from utils.error_handler import IIFParseError, MappingLoadError`| Standardized exception classes            |
-| `iif_parser.py`    | `from utils.iif_parser import parse_iif_file`                    | Parsing the QBD IIF file                  |
-| `logger.py`        | `from utils.logger import setup_logging`                         | Centralized logging configuration         |
-
-- **External Requirements:**
+| Module Name        | Import Path                                                                                       | Purpose                                   |
+|--------------------|---------------------------------------------------------------------------------------------------|-------------------------------------------|
+| `mapping.py`       | `from list_converters.mapping import load_and_merge_mappings`                                     | Loading and merging JSON mapping files    |
+| `accounts_tree.py` | `from modules.accounts.accounts_tree import build_account_tree`                                   | Building and validating account hierarchy |
+| `error_handler.py` | `from utils.error_handler import IIFParseError, MappingLoadError, AccountTreeError, OutputError`  | Standardized exception classes            |
+| `iif_parser.py`    | `from utils.iif_parser import parse_iif_file`                                                     | Parsing the QBD IIF file                  |
+| `logger.py`        | `from utils.logger import setup_logging`                                                          | Centralized logging configuration         |- **External Requirements:**
 
 #### External Requirements
 - Python 3.8+ as specified in Core PRD section 9
@@ -231,15 +221,30 @@ Orchestrates the full processing pipeline for the `!ACCNT` list type:
 - Input accounts must have valid QuickBooks account types.  
 - Enforce one AR and one AP root account; duplicates trigger errors.  
 - Placeholder accounts must be inserted if mapping is missing.  
+  - **Fallback logic:** If an account type is not mapped, a placeholder account is created using the default rules specified in the mapping file (e.g., mapped to 'Uncategorized:ASSET' or as defined in `mapping["default_rules"]`). All such events are logged with context, and the placeholder is clearly marked in the output.  
 - Account type promotion under “1-child” rule must not violate type constraints.  
 - Hierarchy must not contain cycles or invalid parent references.
 
 ### 7.2 Error Classes & Exit Codes
-- `MappingError` (E010): Missing or invalid mapping entries (exit code 10).
-- `ValidationError` (E020): Structural violations or type inconsistencies (exit code 20).
-- `PlaceholderError` (E030): Placeholder account handling failures (exit code 30).
-- All errors logged per centralized logging standards.
-
+- **Error Code Reference:** All error codes are defined as constants in `utils/error_handler.py` following format E### (e.g., E001, E002, E003).
+- **Module-Specific Error Categories:**
+  - **Parsing:** IIF file structure issues, missing headers, invalid encoding
+  - **Mapping:** Unknown account types, missing hierarchy definitions, mapping load failures  
+  - **Tree Construction:** Missing parents, circular references, 1-child promotion failures
+  - **Output:** CSV generation failures, file permission issues
+- **Exception Classes:** Referenced from centralized `utils/error_handler.py`:
+  - `IIFParseError`: Parsing category failures
+  - `MappingLoadError`: Mapping category failures  
+  - `AccountTreeError`: Tree construction category failures
+  - `OutputError`: Output category failures
+- **ValidationError Structure:**
+  - The `ValidationError` `TypedDict` is used for structured logging of validation issues. It is not raised as an exception but is included in logs and error reports for agentic inspection and debugging.
+- **Exit Codes:** Following core PRD standard:
+  - 0: Success
+  - 1: Critical failure (parsing, mapping load failures)
+  - 2: Validation errors (tree construction, missing parents)
+- **Usage:** All error raising and logging references centralized constants from `utils/error_handler.py`
+- **Logging:** Defers to centralized logging policies as defined in Core PRD section 7.10
 
 ---
 
@@ -258,7 +263,7 @@ Orchestrates the full processing pipeline for the `!ACCNT` list type:
 |---------|------------|--------|--------------------------------- 
 | v1.0.0  | 2025-05-21 | PJ     | Initial governance-compliant PRD 
 | v1.0.8  | 2025-05-21 | PJ     | Full processing through PRD template v3.5.1
-| v1.0.9  | 2025-05-21 | PJ     | Full processing through PRD template v3.5.0
+| v1.0.9  | 2025-05-21 | PJ     | Full processing through PRD template v3.5.2 (which broke it!)
  
 
 ### 9.2 Upstream/Downstream Impacts  
@@ -285,14 +290,14 @@ Orchestrates the full processing pipeline for the `!ACCNT` list type:
 
 ## 12. Example Calls for Public Functions/Classes  
 
-### 12.1 `build_gnucash_accounts`  
 ```python
-# Example usage  
-from accounts import build_gnucash_accounts  
-mapping_config = load_mapping_config("account_mapping.yaml")  
-account_list = parse_qbd_export("qbd_accounts.csv")  
-gnucash_accounts = build_gnucash_accounts(account_list, mapping_config)  
-export_to_csv(gnucash_accounts, "gnucash_accounts.csv")  
+run_accounts_pipeline(
+    iif_path='input/sample-qbd-accounts.IIF',
+    mapping_path='output/accounts_mapping_specific.json',
+    csv_path='output/accounts.csv',
+    log_path='output/qbd-to-gnucash.log',
+    mapping_diff_path='output/accounts_mapping_diff.json'
+)
 ```
 
 ---
