@@ -21,7 +21,7 @@ try {
 
 # Generate timestamp and archive name
 $timestamp = Get-Date -Format "yyyyMMddHHmm"
-$archiveName = "qbd-to-gnucash-$commitHash-$timestamp.zip"
+$archiveName = "qbd-to-gnucash-$timestamp-$commitHash.zip"
 $target = Join-Path -Path $targetRoot -ChildPath $archiveName
 $commitMessageFile = Join-Path -Path $source -ChildPath "commit_message.txt"
 

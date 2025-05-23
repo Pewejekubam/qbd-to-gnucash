@@ -629,43 +629,63 @@ def test_successful_conversion_creates_csv_and_log(tmp_path):
 - All mapping files must be in JSON format and referenced via configuration.
 - The core PRD does not prescribe or exemplify domain-specific mapping structures; see the relevant module PRD for details.
 
-### 11.3 Registry Dispatch and Fallback Logic
+### 11.3 Registry Dispatch and Interface Contract
 
-- Registry dispatches per-key (e.g., `!ACCNT`, `!TRNS`).
-- Keys must be unique per module.
-- If two modules claim the same key, a `RegistryKeyConflictError` is raised.
-- Module registration occurs in `main.py` via the `registry.dispatch()` call.
-- If a key is not registered, a structured error is raised and logged.
+The existing prose describes dispatch logic, but interface-level clarity is needed to guide agentic implementation.
 
-### 11.4 Declarative Error Categories Table
-
-A declarative error category structure is used for code generation, test scaffolding, and documentation:
+#### Registry Contract
 
 ```python
-ERROR_CATEGORIES = {
-    "Parsing": ["Missing header", "Tab mismatch", "Invalid UTF-8"],
-    "Mapping": ["Unknown account type", "No destination hierarchy defined"],
-    "Tree Construction": ["Missing parent", "Failed 1-child promotion", "Circular paths"],
-    "Output": ["File write permission denied", "CSV malformed"],
-    "Registry": ["Unregistered key", "Key conflict", "Fallback loop"]
-}
+class Registry:
+    def __init__(self) -> None: ...
+    
+    def register(self, key: str, module: Any) -> None:
+        """Register a domain module with a unique section key (e.g., '!ACCNT').
+        Raises:
+            RegistryKeyConflictError: If the key is already registered.
+        """
+    
+    def dispatch(self, key: str, records: List[Dict[str, Any]]) -> Any:
+        """Dispatches parsed records to the appropriate domain module.
+        Raises:
+            KeyError: If the key is not registered.
+            Exception: If the target module raises an uncaught exception.
+        """
 ```
 
-### 11.5 Unicode Normalization and Logging
+#### Behavioral Notes
+- Keys must be unique per module. Duplicates raise `RegistryKeyConflictError`.
+- If a key is not registered, a structured error is raised (see `log_and_exit()` in core).
+- On dispatch error, module-specific exceptions may propagate or be wrapped depending on `run_conversion_pipeline` error strategy.
 
-- All input files are read as UTF-8. If non-UTF-8 characters are encountered, they are stripped.
-- To avoid silent data loss, the tool logs a warning each time a character is stripped or replaced during normalization.
-- Example implementation:
+#### Error Codes (from utils/error_handler.py)
 
 ```python
-def safe_decode(line, file_path):
-    try:
-        return line.encode('utf-8').decode('utf-8')
-    except UnicodeDecodeError as e:
-        logging.warning(f"Unicode decode error in {file_path}: {e}. Stripping invalid characters.")
-        return line.encode('utf-8', errors='ignore').decode('utf-8', errors='ignore')
+class RegistryKeyConflictError(Exception):
+    """Raised when two modules attempt to register the same section key."""
+    pass
+
+class DispatchError(Exception):
+    """Raised when dispatch fails due to an unknown or unreachable module."""
+    pass
 ```
 
-- All normalization and stripping events are logged with file name and line number for traceability.
+#### Fallback Rules (Reference)
+| Condition                | Action                        |
+|-------------------------|-------------------------------|
+| Unregistered key         | Raise `KeyError`, log error   |
+| Duplicate registration   | Raise `RegistryKeyConflictError` |
+| Dispatch fails internally | Raise `DispatchError` or module-defined |
+| Registry is empty        | Abort conversion with `E999` |
+
+#### Example Usage (from main.py)
+
+```python
+registry = Registry()
+registry.register('!ACCNT', accounts_module)
+output = registry.dispatch('!ACCNT', account_records)
+```
 
 ---
+
+This interface should be honored across all modules using the registry dispatch pattern. Any deviation from this pattern must be justified in the relevant module PRD with test coverage and exception handling noted.
