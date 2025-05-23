@@ -11,15 +11,16 @@
 
 | Module Name         | PRD Version | Compatible With Core PRD |
 |---------------------|-------------|--------------------------|
-| Chart of Accounts   | v1.0.9      | v3.5.0                   |
-| Sales Tax Code List | (TBD)       | v3.5.0                   |
-| Item List           | (TBD)       | v3.5.0                   |
-| Customer List       | (TBD)       | v3.5.0                   |
-| Vendor List         | (TBD)       | v3.5.0                   |
+| Chart of Accounts   | v1.0.9      | v3.6.0                   |
+| Sales Tax Code List | (TBD)       |                          |
+| Item List           | (TBD)       |                          |
+| Customer List       | (TBD)       |                          |
+| Vendor List         | (TBD)       |                          |
 
 ---
 
-## 2.0 History
+## 2.0 Revision History
+- v3.6.0 – Corrected domain module naming
 - v3.5.1 – Remediated governance audit violations (compatibility matrix, history format, duplicate section, user story subsections)
 - v3.5.0 – Finalized full extraction and compliance with separation of concerns and compartmentalization of domain-specific content.
 - v3.4.1 – Split module logic into dedicated files and updated user story mappings.
@@ -84,13 +85,30 @@ The ability to migrate financial records from QBD into GnuCash is essential for 
 
 Each domain module owns its **full functional implementation**, including all subcomponents necessary for its logic, construction, and validation
 
-### 4.5 Domain Module Naming Requirements
+### 4.5 Domain Module Naming and Containment Rules
 
-- All submodules and files within a domain module must be named unambiguously to prevent cross-domain confusion and ensure clarity.
-- File and submodule names should, wherever practical, include the parent domain as a prefix or otherwise clearly indicate their domain ownership.
-- **Example:** Files in the `accounts` module should be named using the pattern `accounts_<submodule>.py` (e.g., `accounts_tree.py`, `accounts_utils.py`).
-- This naming requirement applies to all current and future domain modules and their subcomponents.
-- This rule is mandatory for governance compliance and supports extensibility, maintainability, and prevention of naming collisions across the codebase.
+To ensure maintainability, prevent cross-domain collisions, and support governance enforcement:
+
+- All domain-specific modules must:
+  - Use a domain prefix in their filename (e.g., `accounts_`, `customers_`).
+  - Reside within their respective domain directory (e.g., `src/modules/accounts/`).
+  - Avoid placement in `src/utils/` or any unrelated folder.
+
+- Only domain-agnostic modules may be placed in `src/utils/` (e.g., `iif_parser.py`, `error_handler.py`, `logging.py`).
+
+#### 4.5.1 Examples (Correct vs Incorrect)
+
+✅ `src/modules/accounts/accounts_validation.py`  
+❌ `src/utils/validation.py` *(violates naming and containment rules)*
+
+#### 4.5.2 Developer Checklist
+
+Before creating or moving any file:
+- ✅ Prefix domain logic with its module name.
+- ✅ Place it under `src/modules/<domain>/`.
+- ❌ Never place domain logic in `utils/`.
+
+> This rule is mandatory for all current and future modules. Violations are considered governance failures and must be corrected before codegen or commit.
 
 ---
 
@@ -127,51 +145,42 @@ Each domain module owns its **full functional implementation**, including all su
 ## 6. System Architecture and Workflow
 
 
-### 6.1 Directory Layout
-
-```plaintext
 .                                  # Project root
-├── input/                        # User-provided IIF files
-│   ├── sample-qbd-accounts.IIF   # Example Chart of Accounts export
-│   ├── sample-qbd-customers.IIF  # Example Customers export
-│   ├── sample-qbd-items.IIF      # Example Items export
-│   ├── sample-qbd-payment-terms.IIF # Example Payment Terms export
-│   └── sample-qbd-sales-tax-codes.IIF # Example Sales Tax Codes export
-├── output/                       # Generated output files and logs
-│   └── qbd-to-gnucash.log        # Main log file for conversion runs
-├── prd/                          # Product Requirements Documents (PRDs)
-│   ├── core-prd-vX.Y.Z.md        # Core PRD (this document)
-│   ├── PRD-Module-Template-vX.Y.Z.md # PRD template for new modules
-│   ├── accounts/                 # Accounts module PRD and docs
-│   │   ├── module-prd-accounts-vX.Y.Z.md # Accounts module PRD
-│   │   └── README.md             # Accounts module readme
-│   ├── logging/                  # Logging module PRD and docs
-│   │   ├── module-prd-logging-vX.Y.Z.md # Logging module PRD
-│   │   └── README.md             # Logging module readme
-│   └── mapping/                  # Mapping module PRD and docs
-│       ├── module-prd-mapping-vX.Y.Z.md # Mapping module PRD
-│       └── README.md             # Mapping module readme
-├── src/                          # Source code for conversion tool
-│   ├── modules/                  # Domain-specific modules
-│   │   └── accounts/             # Accounts module implementation
-│   │       ├── accounts.py       # Accounts conversion logic
-│   │       └── accounts_tree.py   # Account tree builder (domain-owned)
-│   ├── list_converters/          # Other list conversion logic (non-domain-specific)
-│   │   └── mapping.py            # Mapping logic
-│   ├── registry/                 # Registry and config hooks
-│   │   └── mapping/              # Mapping registry
-│   │       └── accounts_mapping_baseline.json # Baseline mapping config
-│   ├── utils/                    # Shared utilities
-│   │   ├── error_handler.py      # Error handling utilities
-│   │   ├── iif_parser.py         # IIF file parser
-│   │   ├── logging.py            # Logging utilities
-│   │   └── validation.py         # Validation logic
-│   └── validation/               # Validation module PRD and docs
-│       ├── module-prd-validation-v1.0.4.md # Validation module PRD
-│       └── README.md             # Validation module readme
-├── main.py                       # Entrypoint: orchestrates dispatch and phase flow
-└── README.md                     # Project overview and instructions
-```
+├── input/                         # User-provided IIF files
+│   ├── sample-qbd-accounts.IIF
+│   ├── sample-qbd-customers.IIF
+│   ├── sample-qbd-items.IIF
+│   ├── sample-qbd-payment-terms.IIF
+│   └── sample-qbd-sales-tax-codes.IIF
+├── output/                        # Generated output files and logs
+│   └── qbd-to-gnucash.log
+├── prd/                           # Product Requirements Documents (PRDs)
+│   ├── core-prd-v3.6.0.md         # Core PRD
+│   ├── prd-module-template-v3.5.1.md # PRD template
+│   ├── README-core.md             # Core PRD README
+│   ├── accounts/                  # Accounts module PRDs
+│   │   ├── module-prd-accounts-v1.1.1.md
+│   │   ├── module-prd-accounts_mapping-v1.0.6.md
+│   │   ├── module-prd-accounts_validation-v1.0.1.md
+│   │   ├── README-accounts.md
+│   │   ├── README-accounts_mapping.md
+│   │   └── README-accounts_validation.md
+│   └── logging/
+│       ├── module-prd-logging-v1.0.4.md
+│       └── README-logging.md
+├── src/                           # Source code for conversion tool
+│   ├── main.py                    # Entrypoint script
+│   ├── modules/
+│   │   └── accounts/
+│   │       ├── accounts.py                # Main logic for account conversion
+│   │       ├── accounts_mapping.py        # Mapping logic loader/merger
+│   │       ├── accounts_mapping_baseline.json # Mapping config
+│   │       ├── accounts_tree.py           # Account tree builder
+│   │       └── accounts_validation.py     # Validation logic
+│   └── utils/
+│       ├── error_handler.py       # Standardized error classes
+│       ├── iif_parser.py          # IIF format parser
+│       └── logging.py             # Logging setup and utilities
 > For rules about domain ownership and why `accounts_tree.py` lives inside the `accounts` module, see Section 4.4.
 
 ### 6.2 Error Handling Strategy
@@ -684,12 +693,12 @@ class DispatchError(Exception):
 ```
 
 #### Fallback Rules (Reference)
-| Condition                | Action                        |
-|-------------------------|-------------------------------|
-| Unregistered key         | Raise `KeyError`, log error   |
-| Duplicate registration   | Raise `RegistryKeyConflictError` |
+| Condition                | Action                                   |
+|---------------------------|-----------------------------------------|
+| Unregistered key          | Raise `KeyError`, log error             |
+| Duplicate registration    | Raise `RegistryKeyConflictError`        |
 | Dispatch fails internally | Raise `DispatchError` or module-defined |
-| Registry is empty        | Abort conversion with `E999` |
+| Registry is empty         | Abort conversion with `E999`            |
 
 #### Example Usage (from main.py)
 

@@ -126,3 +126,14 @@
 [JSON schemas, typing hints, protocol descriptions, or other technical appendices.]
 ```
 
+## Module Naming and Location Checklist (Added May 2025)
+
+- [ ] All domain-specific modules use the domain prefix (e.g., `accounts_`, `customers_`).
+- [ ] All domain-specific modules are placed in the correct subdirectory under `src/modules/<domain>/`.
+- [ ] No domain logic is present in `src/utils/` or unrelated folders.
+- [ ] All references to domain modules use the correct name and path.
+
+**Example:**
+- `accounts_validation.py` in `src/modules/accounts/` (correct)
+- `validation.py` in `src/utils/` (incorrect for domain logic)
+

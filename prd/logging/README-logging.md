@@ -22,5 +22,8 @@ This module is governed by [module-prd-logging-v1.0.4.md](./module-prd-logging-v
 - Exceptions: `OSError` (directory creation), logging errors (see PRD §7)
 - Logging: All modules must call `setup_logging()` before logging; all errors and process exits are logged per PRD
 
----
-Changelog: v1.0.4 — README aligned with PRD and governance model (2025-05-23)
+
+## Revision History  
+| Version | Date       | Author | Summary                           
+|---------|------------|--------|--------------------------------- 
+| v1.0.4  | 2025-05-23 | PJ     | README aligned with PRD and governance model

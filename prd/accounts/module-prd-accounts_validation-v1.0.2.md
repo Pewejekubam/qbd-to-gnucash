@@ -1,5 +1,5 @@
 # Product Requirements Document — Validation  
-**Document Version:** v1.0.1
+**Document Version:** v1.0.2
 **Module Identifier:** validation.py  
 **System Context:** QuickBooks Desktop to GnuCash Conversion Tool  
 **Author:** Pewe Jekubam  
@@ -120,8 +120,7 @@ run_validation_pass({
 
 ### 6.4 Data Structure Definitions
 - **Internal Modules:**
-  - validation_checks.py: rule-level assertions
-  - validator.py: main entrypoint, logging + exit logic
+  - accounts_validation.py: rule-level assertions, main entrypoint, logging + exit logic
 - **External Requirements:**
   - Logging policy: [Logging Framework PRD v1.0.2](../logging/module-prd-logging-v1.0.2.md)
   - Error constants: [Core PRD v3.5.0](../core-prd-v3.5.0.md)
@@ -171,6 +170,8 @@ run_validation_pass({
 |---------|------------|---------------|---------------------------------
 | v1.0.0  | 2025-05-21 | Pewe Jekubam  | Initial scaffold and contract spec 
 | v1.0.1  | 2025-05-21 | Pewe Jekubam  | Codegen-ready: clarified input structure, added example call, explicit error schemas, and updated references for agentic compatibility 
+| v1.0.2  | 2025-05-23 | PJ            | module and core PRD document naming and location restructure
+
 
 ### 9.2 Upstream/Downstream Impacts
 - Upstream: mapping, accounts, customers, vendors
@@ -226,3 +227,30 @@ run_validation_pass({
   }
 }
 ```
+
+## 12.2 Domain Module Naming and Containment Rules
+
+To ensure maintainability, prevent cross-domain collisions, and support governance enforcement:
+
+- All domain-specific modules must:
+  - Use a domain prefix in their filename (e.g., `accounts_`, `customers_`).
+  - Reside within their respective domain directory (e.g., `src/modules/accounts/`).
+  - Avoid placement in `src/utils/` or any unrelated folder.
+
+- Only domain-agnostic modules may be placed in `src/utils/` (e.g., `iif_parser.py`, `error_handler.py`, `logging.py`).
+
+#### Examples
+✅ `src/modules/accounts/accounts_validation.py`  
+❌ `src/utils/validation.py` *(violates naming and containment rules)*
+
+#### Developer Checklist
+Before creating or moving any file:
+- ✅ Prefix domain logic with its module name.
+- ✅ Place it under `src/modules/<domain>/`.
+- ❌ Never place domain logic in `utils/`.
+
+> This rule is mandatory for all current and future modules. Violations are considered governance failures and must be corrected before codegen or commit.
+
+#### Glossary
+- **Domain Validation Module:** Validation logic specific to a business domain, named with the domain prefix and located in the domain's module directory.
+- **Generic Validation Module:** Validation logic that is reusable across domains, permitted in `src/utils/` only if it contains no domain-specific logic.

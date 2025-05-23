@@ -1,5 +1,5 @@
 # Product Requirements Document — accounts.py  
-**Document Version:** v1.1.0
+**Document Version:** v1.1.1
 **Module Identifier:** accounts.py  
 **System Context:** QuickBooks Desktop to GnuCash Conversion Tool  
 **Author:** Pewe Jekubam (Development Engineer)  
@@ -172,25 +172,25 @@ The module converts QBD accounts into a GnuCash-compatible hierarchy, applying t
 
 ### 6.3 Dependencies  
 
-| Module Name        | Import Path                                                                                       | Purpose                                   |
-|--------------------|---------------------------------------------------------------------------------------------------|-------------------------------------------|
-| `mapping.py`       | `from list_converters.mapping import load_and_merge_mappings`                                     | Loading and merging JSON mapping files    |
-| `accounts_tree.py` | `from modules.accounts.accounts_tree import build_accounts_tree`                                  | Building and validating account hierarchy |
-| `error_handler.py` | `from utils.error_handler import IIFParseError, MappingLoadError, AccountsTreeError, OutputError`  | Standardized exception classes            |
-| `iif_parser.py`    | `from utils.iif_parser import parse_iif_file`                                                     | Used only by the dispatcher; not called directly by this module as of v1.0.9+ |
-| `logger.py`        | `from utils.logger import setup_logging`                                                          | Centralized logging configuration         |- **External Requirements:**
+| Module Name           | Import Path                                                                                      | Purpose                                   
+|-----------------------|--------------------------------------------------------------------------------------------------|-------------------------------------------
+| `accounts_mapping.py` | `from modules.accounts.accounts_mapping import load_and_merge_mappings`                          | Loading and merging JSON mapping files    
+| `accounts_tree.py`    | `from modules.accounts.accounts_tree import build_accounts_tree`                                 | Building and validating account hierarchy 
+| `error_handler.py`    | `from utils.error_handler import IIFParseError, MappingLoadError, AccountsTreeError, OutputError`| Standardized exception classes            
+| `iif_parser.py`       | `from utils.iif_parser import parse_iif_file`                                                    | Used only by the dispatcher; not called directly by this module as of v1.0.9+ 
+| `logger.py`           | `from utils.logger import setup_logging`                                                         | Centralized logging configuration         
 
-#### External Requirements
-- Python 3.8+ as specified in Core PRD section 9
-- No external package dependencies beyond Python standard library
-- Conforms to logging/error handling policies as defined in Core PRD sections 7.2, 7.3, and 7.10
-    
+### External Requirements
 
-- **External Data Format Contracts:**  
-  - JSON mapping schema (for `accounts_mapping_specific.json`, `accounts_mapping_baseline.json`)  
-  - GnuCash CSV import format for accounts
-  - The mapping file structure defined here adheres to the conventions established in Core PRD section 11.2, which requires mapping files to be in JSON format and referenced via configuration. This module's mapping schema specifically supports account type conversions while maintaining the broader architectural pattern defined in the core requirements.
+- Python 3.8+ as specified in Core PRD section 9  
+- No external package dependencies beyond Python standard library  
+- Conforms to logging/error handling policies as defined in Core PRD sections 7.2, 7.3, and 7.10  
 
+### External Data Format Contracts
+
+- JSON mapping schema (for `accounts_mapping_specific.json`, `accounts_mapping_baseline.json`)  
+- GnuCash CSV import format for accounts  
+- The mapping file structure defined here adheres to the conventions established in Core PRD section 11.2, which requires mapping files to be in JSON format and referenced via configuration. This module's mapping schema specifically supports account type conversions while maintaining the broader architectural pattern defined in the core requirements.
 ---
 
 ## 7. Validation & Error Handling  
@@ -248,7 +248,8 @@ The module converts QBD accounts into a GnuCash-compatible hierarchy, applying t
 | v1.0.0  | 2025-05-21 | PJ     | Initial governance-compliant PRD 
 | v1.0.8  | 2025-05-21 | PJ     | Full processing through PRD template v3.5.1
 | v1.0.9  | 2025-05-21 | PJ     | Full processing through PRD template v3.5.2 (which broke it!)
-| v1.0.10 | 2025-05-23 | PJ     | Editorial and semantic cleanup; clarified parsing vs dispatch validation | 
+| v1.0.10 | 2025-05-23 | PJ     | Editorial and semantic cleanup; clarified parsing vs dispatch validation
+| v1.1.1  | 2025-05-23 | PJ     | module and core PRD document naming and location restructure
 
 ### 9.2 Upstream/Downstream Impacts  
 - Changes to mapping schema or account typing rules require coordination with config management modules.  
@@ -315,3 +316,30 @@ run_accounts_pipeline(payload={
 ```
 
 ---
+
+## 14. Domain Module Naming and Containment Rules
+
+To ensure maintainability, prevent cross-domain collisions, and support governance enforcement:
+
+- All domain-specific modules must:
+  - Use a domain prefix in their filename (e.g., `accounts_`, `customers_`).
+  - Reside within their respective domain directory (e.g., `src/modules/accounts/`).
+  - Avoid placement in `src/utils/` or any unrelated folder.
+
+- Only domain-agnostic modules may be placed in `src/utils/` (e.g., `iif_parser.py`, `error_handler.py`, `logging.py`).
+
+### Examples
+✅ `src/modules/accounts/accounts_validation.py`  
+❌ `src/utils/validation.py` *(violates naming and containment rules)*
+
+### Developer Checklist
+Before creating or moving any file:
+- ✅ Prefix domain logic with its module name.
+- ✅ Place it under `src/modules/<domain>/`.
+- ❌ Never place domain logic in `utils/`.
+
+> This rule is mandatory for all current and future modules. Violations are considered governance failures and must be corrected before codegen or commit.
+
+### Glossary
+- **Domain Validation Module:** Validation logic specific to a business domain, named with the domain prefix and located in the domain's module directory.
+- **Generic Validation Module:** Validation logic that is reusable across domains, permitted in `src/utils/` only if it contains no domain-specific logic.

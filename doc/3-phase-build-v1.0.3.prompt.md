@@ -4,7 +4,7 @@ This prompt drives the implementation of a modular Python CLI tool for convertin
 
 Only the Chart of Accounts (`!ACCNT`) is in scope for this build.
 
-A complete PRD (v3.4.0) is provided and assumed available in the `prd/` directory. It defines:
+A complete PRD (v3.6.0) is provided and assumed available in the `prd/` directory. It defines:
 - File layout and module responsibilities
 - Input/output format contracts
 - Mapping, config, and error handling logic

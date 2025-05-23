@@ -1,5 +1,5 @@
 # Product Requirements Document — Mapping Module
-**Document Version:** v1.0.6  
+**Document Version:** v1.0.7 
 **Module Identifier:** mapping.py  
 **System Context:** QuickBooks Desktop to GnuCash Conversion Tool  
 **Author:** Pewe Jekubam 
@@ -109,6 +109,8 @@ No specific config options are required.
 | v1.0.4  | 2025-05-19 | PJ         | Align with PRD-base v3.4.0
 | v1.0.5  | 2025-05-21 | PJ         | Full processing through PRD template v3.5.1
 | v1.0.6  | 2025-05-23 | PJ         | Updated logging and core PRD references for governance compliance
+| v1.0.7  | 2025-05-23 | PJ         | module and core PRD document naming and location restructure
+
 ### 9.2 Upstream/Downstream Impacts
 Changes to this module may affect other modules that rely on the mapping functionality.
 
@@ -168,3 +170,31 @@ except MappingLoadError as e:
 }
 ```
 
+---
+
+## 14. Domain Module Naming and Containment Rules
+
+To ensure maintainability, prevent cross-domain collisions, and support governance enforcement:
+
+- All domain-specific modules must:
+  - Use a domain prefix in their filename (e.g., `accounts_`, `customers_`).
+  - Reside within their respective domain directory (e.g., `src/modules/accounts/`).
+  - Avoid placement in `src/utils/` or any unrelated folder.
+
+- Only domain-agnostic modules may be placed in `src/utils/` (e.g., `iif_parser.py`, `error_handler.py`, `logging.py`).
+
+### Examples
+✅ `src/modules/accounts/accounts_validation.py`  
+❌ `src/utils/validation.py` *(violates naming and containment rules)*
+
+### Developer Checklist
+Before creating or moving any file:
+- ✅ Prefix domain logic with its module name.
+- ✅ Place it under `src/modules/<domain>/`.
+- ❌ Never place domain logic in `utils/`.
+
+> This rule is mandatory for all current and future modules. Violations are considered governance failures and must be corrected before codegen or commit.
+
+### Glossary
+- **Domain Validation Module:** Validation logic specific to a business domain, named with the domain prefix and located in the domain's module directory.
+- **Generic Validation Module:** Validation logic that is reusable across domains, permitted in `src/utils/` only if it contains no domain-specific logic.

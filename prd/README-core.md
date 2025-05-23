@@ -6,9 +6,10 @@ This directory contains the Product Requirements Documents (PRDs) governing the 
 ## File Structure
 - `core-prd-v3.5.1.md` — Core product requirements and architecture
 - `accounts/module-prd-accounts-v1.0.9.md` — Accounts module PRD
+- `accounts/module-prd-accounts_mapping-v1.0.6.md` — Accounts Mapping module PRD
+- `accounts/module-prd-accounts_validation-v1.0.1.md` — Accounts Validation module PRD
+- `accounts/module-prd-accounts_tree-v1.0.1.md` — Accounts Validation module PRD
 - `logging/module-prd-logging-v1.0.4.md` — Logging module PRD
-- `mapping/module-prd-mapping-v1.0.6.md` — Mapping module PRD
-- `validation/module-prd-validation-v1.0.1.md` — Validation module PRD
 - `prd-module-template-v3.5.2.md` — PRD template for new modules
 
 ## Design Reference
@@ -25,5 +26,8 @@ This directory contains the Product Requirements Documents (PRDs) governing the 
 - Exception and logging requirements are formalized in each module PRD (see respective §7 or §8)
 - Centralized logging and error handling are governed by [logging/module-prd-logging-v1.0.4.md](logging/module-prd-logging-v1.0.4.md)
 
----
-Changelog: v1.0.0 — Initial PRD index for modular system (2025-05-23)
+
+## Revision History  
+| Version | Date       | Author | Summary                           
+|---------|------------|--------|--------------------------------- 
+| v3.6.0  | 2025-05-23 | PJ     | README aligned with PRD and governance model
