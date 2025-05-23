@@ -19,33 +19,39 @@ This project follows a 3-phase build model. Each phase should be completed befor
 🎯 Goals:
 - Implement only the features explicitly defined in the PRD — no feature drift
 - Use Python 3.8–3.12, standard library only
-- Establish modular design (`utils/`, `modules/`, `registry/`, `main.py`)
+- Establish modular design under the `src/` root directory, specifically:
+  - `src/utils/`
+  - `src/list_converters/`
+  - `src/registry/` (for future phases)
+  - `src/main.py`
 - Build declarative, agent-friendly logic
 
-🔨 Implement the following foundational modules:
+🔨 Implement the following foundational modules inside `src/`:
 
-1. `main.py`  
+1. `src/main.py`  
    - Entry point and registry dispatch (initial stub is sufficient)
 
-2. `utils/iif_parser.py`  
+2. `src/utils/iif_parser.py`  
    - Parses `.IIF` files for `!ACCNT` records  
    - Normalizes headers and returns structured records
 
-3. `utils/error_handler.py`  
+3. `src/utils/error_handler.py`  
    - Defines custom exceptions with clear PRD-based error codes  
    - Supports structured error handling
 
-4. `list_converters/mapping.py`  
-   - Loads and merges `account_mapping_baseline.json` and `accounts_mapping_specific.json`  
+4. `src/list_converters/mapping.py`  
+   - Loads and merges `accounts_mapping_baseline.json` and `accounts_mapping_specific.json`  
    - Writes `accounts_mapping_diff.json` if needed
 
-5. `utils/logging.py`  
+5. `src/utils/logging.py`  
    - Initializes logging based on PRD guidelines  
-   - Ensures `output/` directory exists  
+   - Ensures `output/` directory exists at project root  
    - Formats logs with timestamps, levels, module/function context  
    - Logging must flush synchronously on exit
 
 📌 Do **not** implement any other QBD list types or GUI support.
+
+📌 Ensure no duplicate modules exist at the top-level outside `src/`.
 
 ---
 

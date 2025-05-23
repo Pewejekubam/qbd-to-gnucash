@@ -77,7 +77,7 @@ Orchestrates the full processing pipeline for the `!ACCNT` list type:
 **Inputs:**  
 - `.IIF` filepath containing a `!ACCNT` section  
 - Mapping files:
-  - `account_mapping_baseline.json` (required)  
+  - `accounts_mapping_baseline.json` (required)  
   - `accounts_mapping_specific.json` (optional override)  
 - Output file path (e.g., `output/accounts.csv`)
 
@@ -93,7 +93,7 @@ Orchestrates the full processing pipeline for the `!ACCNT` list type:
 - Logging must track pipeline stages and critical error points
 
 **Failure Modes:**  
-- Raises `MappingLoadError`, `AccountTreeError`, or validation exceptions on failure  
+- Raises `MappingLoadError`, `AccountsTreeError`, or validation exceptions on failure  
 - Logs structured messages for all validation issues  
 - Halts pipeline if critical steps fail (e.g., mapping or tree invalid)  
 - **Note:** The `mapping` returned by `load_and_merge_mappings()` must be unpacked before being used. Callers must extract the mapping dictionary and mapping diff file as follows:
@@ -110,7 +110,7 @@ Orchestrates the full processing pipeline for the `!ACCNT` list type:
     - `log_path: str`
     - `mapping_diff_path: str`
   - **Return type:** `None`
-  - **Exceptions raised:** `IIFParseError`, `MappingLoadError`, `AccountTreeError`
+  - **Exceptions raised:** `IIFParseError`, `MappingLoadError`, `AccountsTreeError`
   - **Description:** Orchestrates the full pipeline for QBD account conversion to GnuCash CSV.
   - **Example call:**
     ```python
@@ -137,7 +137,7 @@ Orchestrates the full processing pipeline for the `!ACCNT` list type:
 - **Exceptions:**  
   - `IIFParseError`  
   - `MappingLoadError`  
-  - `AccountTreeError`
+  - `AccountsTreeError`
 - **Description:** Entry point for processing QBD `!ACCNT` list. Ensures full pipeline execution from input parsing to validated GnuCash CSV generation.
 - **Example Call:**  
   ```python
@@ -156,7 +156,7 @@ Orchestrates the full processing pipeline for the `!ACCNT` list type:
  - All file paths are of type str.
  - Example mapping structure: Dict[str, Any] as loaded from JSON.
  
- - Mapping File Schema (accounts_mapping_specific.json, account_mapping_baseline.json):
+ - Mapping File Schema (accounts_mapping_specific.json, accounts_mapping_baseline.json):
   ```JSON
   {
     "$schema": "http://json-schema.org/draft-07/schema#",
@@ -197,8 +197,8 @@ Orchestrates the full processing pipeline for the `!ACCNT` list type:
 | Module Name        | Import Path                                                                                       | Purpose                                   |
 |--------------------|---------------------------------------------------------------------------------------------------|-------------------------------------------|
 | `mapping.py`       | `from list_converters.mapping import load_and_merge_mappings`                                     | Loading and merging JSON mapping files    |
-| `accounts_tree.py` | `from modules.accounts.accounts_tree import build_account_tree`                                   | Building and validating account hierarchy |
-| `error_handler.py` | `from utils.error_handler import IIFParseError, MappingLoadError, AccountTreeError, OutputError`  | Standardized exception classes            |
+| `accounts_tree.py` | `from modules.accounts.accounts_tree import build_accounts_tree`                                  | Building and validating account hierarchy |
+| `error_handler.py` | `from utils.error_handler import IIFParseError, MappingLoadError, AccountsTreeError, OutputError`  | Standardized exception classes            |
 | `iif_parser.py`    | `from utils.iif_parser import parse_iif_file`                                                     | Parsing the QBD IIF file                  |
 | `logger.py`        | `from utils.logger import setup_logging`                                                          | Centralized logging configuration         |- **External Requirements:**
 
@@ -209,7 +209,7 @@ Orchestrates the full processing pipeline for the `!ACCNT` list type:
     
 
 - **External Data Format Contracts:**  
-  - JSON mapping schema (for `accounts_mapping_specific.json`, `account_mapping_baseline.json`)  
+  - JSON mapping schema (for `accounts_mapping_specific.json`, `accounts_mapping_baseline.json`)  
   - GnuCash CSV import format for accounts
   - The mapping file structure defined here adheres to the conventions established in Core PRD section 11.2, which requires mapping files to be in JSON format and referenced via configuration. This module's mapping schema specifically supports account type conversions while maintaining the broader architectural pattern defined in the core requirements.
 
@@ -235,7 +235,7 @@ Orchestrates the full processing pipeline for the `!ACCNT` list type:
 - **Exception Classes:** Referenced from centralized `utils/error_handler.py`:
   - `IIFParseError`: Parsing category failures
   - `MappingLoadError`: Mapping category failures  
-  - `AccountTreeError`: Tree construction category failures
+  - `AccountsTreeError`: Tree construction category failures
   - `OutputError`: Output category failures
 - **ValidationError Structure:**
   - The `ValidationError` `TypedDict` is used for structured logging of validation issues. It is not raised as an exception but is included in logs and error reports for agentic inspection and debugging.

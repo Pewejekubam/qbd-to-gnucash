@@ -22,7 +22,7 @@ This module is governed by [module-prd-accounts-v1.0.9.md](./module-prd-accounts
 - Log all processing phases for traceability
 
 ## Exceptions & Logging
-- Exceptions: `MappingLoadError`, `AccountTreeError`, validation exceptions (see PRD §7)
+- Exceptions: `MappingLoadError`, `AccountsTreeError`, validation exceptions (see PRD §7)
 - Logging: All errors and processing steps are logged to `output/qbd-to-gnucash.log` per [logging/module-prd-logging-v1.0.4.md](../logging/module-prd-logging-v1.0.4.md)
 
 ---
