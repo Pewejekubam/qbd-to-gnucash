@@ -2,14 +2,13 @@
 # Core PRD: QuickBooks Desktop to GnuCash Conversion Tool
 
 **Document Version:** 3.5.1  
-**State:** Domain Logic Compartmentalization
+**State:** Fully Governed & Codegen-Ready
 **Author:** Pewe Jekubam
 
 ---
 
-## 1. Compatibility Matrix
+## 1.0 Compatibility Matrix
 
-Compatibility Matrix  
 | Module Name         | PRD Version | Compatible With Core PRD |
 |---------------------|-------------|--------------------------|
 | Chart of Accounts   | v1.0.9      | v3.5.0                   |
@@ -20,16 +19,16 @@ Compatibility Matrix
 
 ---
 
-## 2. History
-
-History  
-v2.7.3: Final monolithic PRD before modularization.  
-v3.0.0: Core PRD established as the root of a modular PRD system. All module-specific logic to be extracted into versioned standalone files in `./prd/{module}/`.  
-v3.0.1: Minor clarifications and error handling improvements.  
-v3.1.0: Mandated explicit function signatures and interface contracts for all module boundaries.
-v3.3.1: Standardized terminology for mapping diff file, output file path, and accounts.csv. Added Terminology section for clarity and future consistency.
-v3.4.0: Added explicit JSON Schema and Python typing examples for all major data structures. Updated interface contracts and example calls for public functions/classes.
-v3.5.0: Finalized full extraction and compliance with separation of concerns and compartmentalization of domain-specific content.
+## 2.0 History
+- v3.5.1 – Remediated governance audit violations (compatibility matrix, history format, duplicate section, user story subsections)
+- v3.5.0 – Finalized full extraction and compliance with separation of concerns and compartmentalization of domain-specific content.
+- v3.4.1 – Split module logic into dedicated files and updated user story mappings.
+- v3.4.0 – Added explicit JSON Schema and Python typing examples for all major data structures. Updated interface contracts and example calls for public functions/classes.
+- v3.3.1 – Standardized terminology for mapping diff file, output file path, and accounts.csv. Added Terminology section for clarity and future consistency.
+- v3.1.0 – Mandated explicit function signatures and interface contracts for all module boundaries.
+- v3.0.1 – Minor clarifications and error handling improvements.  
+- v3.0.0 – Core PRD established as the root of a modular PRD system. All module-specific logic to be extracted into versioned standalone files in `./prd/{module}/`.  
+- v2.7.3 – Final monolithic PRD before modularization.
 
 ---
 
@@ -78,7 +77,7 @@ Enable seamless and accurate conversion of QuickBooks Desktop (QBD) financial da
 - ✅ **Traceability**: All transformation steps (parsing, mapping, output) are logged with structured detail to support debugging and auditing.
 - ✅ **Agentic Compatibility**: Logic is modular and declarative to facilitate AI-based code generation and automation with minimal human intervention.
 
-### 4.3 Background Context
+### 4.3 Strategic Considerations
 The ability to migrate financial records from QBD into GnuCash is essential for users transitioning to open-source or non-proprietary systems. GnuCash relies on strict double-entry accounting principles and requires precise data structuring during import. A conversion tool that meets these standards will allow users to retain control of their data while escaping licensing or platform lock-in. A clean, modular tool also provides the foundation for future modules (e.g., Transactions, Vendors, Customers), each using the same logic framework to extend the system.
 
 ### 4.4 Module Ownership and Directory Boundaries
@@ -97,27 +96,31 @@ Each domain module owns its **full functional implementation**, including all su
 
 ## 5. User Stories & Use Cases
 
-### 5.1 User Stories
+### 5.1 Actors
+- **Finance team member**: Converts a QBD account list into a GnuCash-compatible format.
+- **Technical operator**: Validates CSV structure before importing into GnuCash.
+- **Developer**: Integrates the tool into an automated migration pipeline.
+- **Business stakeholder**: Reviews logs and diffs for data integrity.
+- **Contributor**: Extends the architecture to other QBD data types.
 
-- **As a finance team member**, I want to convert a QBD account list into a GnuCash-compatible format so I can continue managing finances without proprietary software.
-- **As a technical operator**, I want to validate the CSV structure before importing into GnuCash so I can avoid errors during the migration.
-- **As a developer**, I want the tool to be modular and scriptable so I can integrate it into an automated migration pipeline.
-- **As a business stakeholder**, I want to see clear logs and diffs so I can trust the data integrity of the migrated output.
-- **As a contributor**, I want the architecture to be transparent and well-documented so I can extend it to other QBD data types in the future.
-
-> **Creator's User Story:**  
-> As a technical team lead, I'm responsible for migrating our company's financial records from QuickBooks Desktop after Intuit's repeated subscription hikes — most recently from $142 to $163 *per seat*. With multiple users across departments, this translates into thousands of dollars per month. This tool is being developed to eliminate that recurring cost, free us from vendor lock-in, and preserve full access to our historical financial data in a stable, open-source system.
-
-### 5.2 Use Cases
-
+### 5.2 Usage Flow
 - The core engine parses input files and dispatches data to the configured domain modules for processing.
 - The core engine loads and validates mapping configuration files to ensure consistent domain module behavior.
 - The core engine logs processing steps and errors in a structured format for downstream auditing and debugging.
 - The system supports dynamic module integration via configuration to extend supported data domains.
 
-### 5.3 Background Context
+### 5.3 User Stories
+- As a finance team member, I want to convert a QBD account list into a GnuCash-compatible format so I can continue managing finances without proprietary software.
+- As a technical operator, I want to validate the CSV structure before importing into GnuCash so I can avoid errors during the migration.
+- As a developer, I want the tool to be modular and scriptable so I can integrate it into an automated migration pipeline.
+- As a business stakeholder, I want to see clear logs and diffs so I can trust the data integrity of the migrated output.
+- As a contributor, I want the architecture to be transparent and well-documented so I can extend it to other QBD data types in the future.
 
-These user stories and use cases reflect real-world pressures faced by organizations using QBD — primarily the rising cost of licensing and the limitations of proprietary formats. By designing the tool to operate via the command line and to support detailed inspection, mapping flexibility, and configuration diffs, it solves not only the technical challenge of migration but also addresses auditability, extensibility, and maintainability. This allows both end users and system owners to move toward GnuCash with confidence and control.
+> **Creator's User Story:**  
+> As a technical team lead, I'm responsible for migrating our company's financial records from QuickBooks Desktop after Intuit's repeated subscription hikes — most recently from $142 to $163 *per seat*. With multiple users across departments, this translates into thousands of dollars per month. This tool is being developed to eliminate that recurring cost, free us from vendor lock-in, and preserve full access to our historical financial data in a stable, open-source system.
+
+### 5.4 Use Cases
+- These user stories and use cases reflect real-world pressures faced by organizations using QBD — primarily the rising cost of licensing and the limitations of proprietary formats. By designing the tool to operate via the command line and to support detailed inspection, mapping flexibility, and configuration diffs, it solves not only the technical challenge of migration but also addresses auditability, extensibility, and maintainability. This allows both end users and system owners to move toward GnuCash with confidence and control.
 
 ---
 

@@ -1,9 +1,9 @@
 # Product Requirements Document — Mapping Module
-**Document Version:** v1.0.5  
+**Document Version:** v1.0.6  
 **Module Identifier:** mapping.py  
 **System Context:** QuickBooks Desktop to GnuCash Conversion Tool  
 **Author:** Pewe Jekubam 
-**Last Updated:** 2025-05-20  
+**Last Updated:** 2025-05-23  
 
 ---
 
@@ -78,8 +78,8 @@ No specific config options are required.
 - Description: Returns a list of unmapped QBD account types.
 
 ### 6.2 Dependencies
-- [Logging Framework module PRD v1.0.2](../logging/module-prd-logging-v1.0.2.md)
-- [core PRD section 10.12](../core-prd-v3.4.0.md#1012-logging-and-error-handling)
+- [Logging Framework module PRD v1.0.4](../logging/module-prd-logging-v1.0.4.md)
+- [core PRD section 7.3](../core-prd-v3.5.0.md#73-logging-strategy)
 
 ---
 
@@ -108,6 +108,7 @@ No specific config options are required.
 | v1.0.2  | 2025-05-19 | PJ         | Add explicit JSON Schema 
 | v1.0.4  | 2025-05-19 | PJ         | Align with PRD-base v3.4.0
 | v1.0.5  | 2025-05-21 | PJ         | Full processing through PRD template v3.5.1
+| v1.0.6  | 2025-05-23 | PJ         | Updated logging and core PRD references for governance compliance
 ### 9.2 Upstream/Downstream Impacts
 Changes to this module may affect other modules that rely on the mapping functionality.
 
@@ -165,4 +166,5 @@ except MappingLoadError as e:
   },
   "required": ["account_types", "default_rules"]
 }
+```
 

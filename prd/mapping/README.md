@@ -1,56 +1,27 @@
 # Mapping Module
 
-## 1. Version
-1.0.4  
-**Date:** 2025-05-20  
+## Overview
+This module manages the mapping of QBD account types to GnuCash types and hierarchies. It loads, merges, and validates mapping files, provides lookup services, and generates diff files for unmapped types. The module is fully agentic AI-compatible and supports modular extension.
+
+## File Structure
+- `module-prd-mapping-v1.0.6.md` — PRD for the mapping module
+- `mapping.py` — Mapping logic
+- `README.md` — This file
+- Mapping files: `registry/mapping/account_mapping_baseline.json`, `output/accounts_mapping_diff.json`
+
+## Design Reference
+This module is governed by [module-prd-mapping-v1.0.6.md](./module-prd-mapping-v1.0.6.md)
+
+## Key Contracts or Responsibilities
+- Load and merge mapping files for QBD to GnuCash account types
+- Provide lookup services for QBD to GnuCash account types
+- Generate diff files for unmapped QBD types
+- Enforce strict schema and validation rules for mapping files
+- Log all key loads, fallbacks, and mapping mismatches
+
+## Exceptions & Logging
+- Exceptions: `MappingLoadError` (see PRD §7)
+- Logging: All mapping and error events are logged per [logging/module-prd-logging-v1.0.4.md](../logging/module-prd-logging-v1.0.4.md)
 
 ---
-
-## 2. Overview
-
-This module provides the mapping logic for the QBD-to-GnuCash conversion tool. It manages the mapping of QBD account types to GnuCash types and hierarchies, supports baseline and specific mapping overlays, and generates diff files for unmapped types. The module is fully agentic AI-compatible and supports modular extension.
-
----
-
-## 3. Features
-
-- Manages mapping of QBD account types to GnuCash types and hierarchies
-- Supports baseline and user-specific mapping overlays
-- Generates diff files for unmapped QBD types
-- Agentic AI-compatible PRD and interface contracts
-
----
-
-## 4. Usage
-
-- Used automatically by the main tool during mapping and diff generation
-- Mapping files are located in `registry/mapping/` and `output/`
-- See `module-prd-mapping-v1.0.4.md` for interface contracts and example calls
-
----
-
-## 5. Data Structures
-
-- See `module-prd-mapping-v1.0.4.md` for explicit JSON Schema and Python typing for all major data structures (mapping files, mapping diff, etc.)
-
----
-
-## 6. Example Calls
-
-See the "Example Calls for Public Functions/Classes" section in `module-prd-mapping-v1.0.4.md` for realistic usage and edge cases.
-
----
-
-## 7. Version History
-
-- v1.0.0 (2025-05-19): Initial release, extracted and modularized from core PRD.
-- v1.0.4 (2025-05-19): Align with PRD-base v3.4.0, update interface contracts and data structure definitions for agentic AI compatibility.
-
----
-
-## 8. References
-
-- [module-prd-mapping-v1.0.4.md](module-prd-mapping-v1.0.4.md): Canonical contract and requirements for the mapping module.
-- [../core-prd-v3.4.0.md](../core-prd-v3.4.0.md): Core PRD for the modular system.
-- [GnuCash CSV Import Guide](https://www.gnucash.org/viewdoc.phtml?rev=5&lang=C&doc=guide)
-- [GnuCash CSV Import Source (C implementation)](https://github.com/Gnucash/gnucash/blob/stable/gnucash/import-export/csv-imp/assistant-csv-account-import.c)
+Changelog: v1.0.6 — README aligned with PRD and governance model (2025-05-23)
