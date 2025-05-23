@@ -1,8 +1,8 @@
 <!-- filepath: c:\git-root\qbd-to-gnucash\prd\core-prd-v3.5.0.md -->
 # Core PRD: QuickBooks Desktop to GnuCash Conversion Tool
 
-**Document Version:** 3.5.1  
-**State:** Fully Governed & Codegen-Ready
+**Document Version:** 3.6.0
+**State:** Under Review / Workflow Discrepancy
 **Author:** Pewe Jekubam
 
 ---
@@ -36,14 +36,14 @@
 
 ### 3.1 Project Overview
 
-This project delivers a modular, command-line conversion tool for migrating financial data from QuickBooks Desktop (QBD) into GnuCash using structured import files. The core framework applies a consistent, extensible processing pipeline—input ingestion, parsing, mapping, and output generation—which is reused across all modules. Each domain module (e.g., Accounts, Vendors, Transactions, and others) is responsible for converting its respective QBD data into GnuCash-compatible formats, as defined in its own PRD. The core PRD defines the shared architecture, orchestration, and extension points for all modules.
+This project delivers a modular, command-line conversion tool for migrating financial data from QuickBooks Desktop (QBD) into GnuCash using structured import files. The core framework applies a consistent, extensible processing pipeline—centralized input ingestion and parsing, followed by dispatching well-defined payloads to domain modules for mapping and output generation—which is reused across all modules. Each domain module (e.g., Accounts, Vendors, Transactions, and others) is responsible for converting its respective QBD data as received from the dispatcher into GnuCash-compatible formats, as defined in its own PRD. The core PRD defines the shared architecture, orchestration, and extension points for all modules.
 
 This project is CLI-only; no graphical user interface or CLI arguments will be developed or supported.
 
 ### 3.2 Scope
 
 **In-Scope**  
-- Core engine functionality for parsing, mapping, and generating output files compatible with GnuCash import formats.  
+- Core engine functionality for parsing input files, dispatching section payloads, mapping, and generating output files compatible with GnuCash import formats.  
 - Modular design to enable extension for additional financial data domains.  
 - Command-line interface for invoking conversion pipelines and managing configuration.
 
@@ -335,7 +335,6 @@ class RegistryKeyConflictError(Exception):
 class ValidationError(Exception):
     """Raised when validation of input or output data fails."""
     pass
-```
 
 # Example usage:
 try:
@@ -344,59 +343,70 @@ except RegistryKeyConflictError as e:
     log_and_exit(str(e), code=1)
 ```
 
-### 6.5 Global Dispatch Data Contract (Immutable)
+### 6.5 Input File Discovery and Processing Model
 
-> **Governance Note:**
-> This section is IMMUTABLE and governed under PRD Governance Document v1.0.0. All module PRDs must cross-reference this section as the single source of truth for the core-to-module dispatch payload structure. Any changes require formal governance review and version increment.
+The tool supports dynamic discovery and structured dispatch of user-provided `.IIF` files placed in the `input/` directory. This section defines the complete file ingestion lifecycle.
 
-#### 6.5.1 Canonical Payload Schema (`core_dispatch_payload_v1`)
+#### 6.5.1 File Discovery
 
-The following schema defines the structured payload passed from the core dispatcher to each processing module. This contract is versioned and must be referenced by all modules for input validation and interface compliance.
+- All `.IIF` files (case-insensitive) located in the `input/` directory will be discovered.
+- Filenames are not interpreted for routing or validation. Discovery is content-based.
+- Subdirectories inside `input/` are ignored.
+
+#### 6.5.2 Section Header Parsing
+
+- Each `.IIF` file is scanned line-by-line to detect top-level QuickBooks headers (e.g., `!ACCNT`, `!TRNS`, `!CUST`, etc.).
+- Header lines may occur in any order and may be interleaved with data or other headers.
+- A single `.IIF` file may contain multiple section types. All are independently extracted.
+- Unsupported or unrecognized headers will be logged and ignored with a warning.
+
+#### 6.5.3 Module Dispatch
+
+- For each detected section, a normalized dispatch event is constructed and routed to the appropriate processing module (e.g., `accounts`, `transactions`, `customers`, etc.).
+- Each section is processed independently, even if originating from the same `.IIF` file.
+- Processing modules are responsible for validation, mapping, transformation, and output generation for their assigned sections.
+
+#### 6.5.4 Dispatch Payload Schema
+
+All section data is passed between components using a canonical dispatch schema:
+
+**`core_dispatch_payload_v1`**
+
+| Key              | Type     | Description                                         |
+|------------------|----------|-----------------------------------------------------|
+| `section`        | `str`    | QuickBooks header name (e.g., `!ACCNT`)            |
+| `records`        | `list`   | Parsed records under the section header            |
+| `input_path`     | `str`    | Absolute path to the source `.IIF` file            |
+| `output_dir`     | `str`    | Destination directory for processed output         |
+| `log_path`       | `str`    | File path for logging messages related to this dispatch |
+| `mapping_config` | `dict`   | Resolved mapping configuration for this section    |
+| `extra_config`   | `dict`   | Optional: Additional runtime parameters (may be empty) |
+
+All module contracts must conform to this schema. Future schema versions must be versioned separately and gated by config or CLI flags.
+
+### Governance Note
+
+This section is **immutable** under PRD Governance v1.0.0. All changes must go through formal versioning review. Referencing module PRDs must treat this schema as canonical.
+
+### Example Payload
 
 ```python
-from typing import TypedDict, List, Dict, Any, Optional
-
-class core_dispatch_payload_v1(TypedDict):
-    """Canonical payload structure for core-to-module dispatch (v1)."""
-    section_key: str  # Section identifier (e.g., '!ACCNT', '!VEND')
-    records: List[Dict[str, Any]]  # List of parsed records for the section
-    mapping: Dict[str, Any]  # Mapping configuration relevant to the module
-    input_file: str  # Path to the source input file
-    output_dir: str  # Directory for module output files
-    log_path: str  # Path to the main log file
-    config: Optional[Dict[str, Any]]  # Additional config (optional, module-specific)
-```
-
-#### 6.5.2 Example Payload
-
-```python
-example_payload: core_dispatch_payload_v1 = {
-    "section_key": "!ACCNT",
-    "records": [
-        {"NAME": "Assets", "TYPE": "ASSET", "DESC": "Company assets"},
-        {"NAME": "Bank", "TYPE": "BANK", "DESC": "Checking account"}
-    ],
-    "mapping": {
-        "ASSET": "Asset",
-        "BANK": "Bank"
-    },
-    "input_file": "input/sample-qbd-accounts.IIF",
+example_payload = {
+    "section": "!ACCNT",
+    "records": [...],
+    "input_path": "input/sample-qbd-accounts.IIF",
     "output_dir": "output/",
     "log_path": "output/qbd-to-gnucash.log",
-    "config": {
-        "strict_mode": True,
-        "module_version": "1.0.9"
-    }
+    "mapping_config": {...},
+    "extra_config": {}
 }
 ```
 
-#### 6.5.3 Minimal Dispatch Function Signature
-
-```python
-def dispatch_to_module(module: Any, payload: core_dispatch_payload_v1) -> Any:
-    """Dispatch the canonical payload to a processing module and return the result."""
-    # ...function implementation...
-```
+> **Governance Note:**  
+> This section is governed under **PRD Governance Document v1.0.0**.  
+> - It defines `core_dispatch_payload_v1`, a canonical schema for module communication.  
+> - All downstream module PRDs must treat this schema as the single source of truth.  
+> - Any modifications require a formal version increment (e.g., `core_dispatch_payload_v2`) and a PRD governance review.
 
 ---
 

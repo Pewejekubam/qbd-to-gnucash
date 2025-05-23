@@ -1,7 +1,7 @@
 # Accounts Module
 
 ## Overview
-This module manages the conversion and validation of account data exported from QuickBooks Desktop (QBD) into a format compatible with GnuCash CSV import. It parses QBD IIF `!ACCNT` records, applies mapping and hierarchy rules, and generates a GnuCash-compatible `accounts.csv` file. Strict validation, logging, and deterministic account type inheritance are enforced.
+This module manages the conversion and validation of account data exported from QuickBooks Desktop (QBD) into a format compatible with GnuCash CSV import. Receives parsed `!ACCNT` records from the dispatcher, applies mapping and hierarchy rules, and generates a GnuCash-compatible `accounts.csv` file. Strict validation, logging, and deterministic account type inheritance are enforced.
 
 ## File Structure
 - `module-prd-accounts-v1.0.9.md` — PRD for the accounts module

@@ -1,5 +1,5 @@
 # Product Requirements Document — accounts.py  
-**Document Version:** v1.0.9
+**Document Version:** v1.1.0
 **Module Identifier:** accounts.py  
 **System Context:** QuickBooks Desktop to GnuCash Conversion Tool  
 **Author:** Pewe Jekubam (Development Engineer)  
@@ -13,7 +13,7 @@ This module manages the conversion and validation of account data exported from 
 ---
 
 ## 2. Scope  
-- Covers parsing, mapping, and validating QBD account list exports (`!ACCNT` records embedded in `.IIF` files).  
+- Covers mapping and validating `!ACCNT` records as dispatched by the core dispatcher.
 - Produces CSV outputs compatible with GnuCash’s import formats.  
 - Enforces strict rules on account typing, placeholder accounts, and AR/AP account special handling.  
 - Does not process transaction data or other QBD list types beyond accounts.  
@@ -23,9 +23,23 @@ This module manages the conversion and validation of account data exported from 
 
 ## 3. Inputs and Outputs  
 
-### 3.1 Inputs  
-- QBD list export `.IIF` files with `!ACCNT` records, including account fields as per QuickBooks schema.  
-- Mapping configuration files (JSON) specifying account type mappings and default rules.
+### 3.1 Inputs
+
+- Dispatched payloads containing `!ACCNT` section data, as provided by the central dispatcher conforming to the `core_dispatch_payload_v1` schema.  
+  > ⚠️ **Note:** This module no longer performs `.IIF` file parsing. All parsing and section routing is performed upstream by the central dispatcher. Direct consumption of `.IIF` files is deprecated as of v1.0.9.
+
+- Mapping configuration files (`.json`) specifying:
+  - Account type mappings (QBD to GnuCash),
+  - Default type rules for unmapped entries,
+  - Optional fallback configurations for placeholder detection and root account typing.
+
+- Dispatcher context metadata:
+  - `input_path`: Original source file (for traceability).
+  - `output_dir`: Directory for generated files.
+  - `log_path`: Central log output for all dispatch-related activity.
+  - `extra_config` (optional): Reserved for future agentic directives or overrides.
+
+> 💡 See Section 6.5.1 of the Core PRD for the canonical definition of `core_dispatch_payload_v1`.
 
 ### 3.2 Outputs  
 - CSV files formatted for GnuCash import containing converted accounts.  
@@ -40,7 +54,7 @@ This module manages the conversion and validation of account data exported from 
 The module converts QBD accounts into a GnuCash-compatible hierarchy, applying type mappings, enforcing parent-child relationships, and validating compliance with required account types and placeholders.
 
 ### 4.2 Detailed Behavior  
-- Parse `!ACCNT` records from QBD exports.  
+- Process `!ACCNT` records as received from the dispatcher; do not parse raw files directly.  
 - Apply account type mappings based on config; fallback to placeholders where mappings are missing.  
 - Enforce the “1-child” rule: accounts with a single child may have their type promoted to match the child.  
 - Handle AR/AP account typing strictly, ensuring only one AR and one AP root account exist.  
@@ -70,93 +84,57 @@ The module converts QBD accounts into a GnuCash-compatible hierarchy, applying t
 
 ### 6.1 Module Contract: accounts.py
 
-**Purpose:**  
-Orchestrates the full processing pipeline for the `!ACCNT` list type:
-- Parsing → Mapping → Tree Construction → Validation → CSV Output
+- **Input:**  
+  - A dispatched section payload object conforming to the `core_dispatch_payload_v1` schema, representing the `!ACCNT` section extracted and parsed from the original `.IIF` file.  
+    This object includes:  
+    - `section` (str): Section identifier, e.g., `!ACCNT`  
+    - `records` (list): List of parsed records within the section  
+    - `input_path` (str): Original source file path for traceability  
+    - `output_dir` (str): Target directory for output files  
+    - `log_path` (str): Log file path for recording processing information  
+    - `mapping_config` (dict): Account mapping configuration details  
+    - `extra_config` (dict, optional): Additional configuration overrides or agent directives
 
-**Inputs:**  
-- `.IIF` filepath containing a `!ACCNT` section  
-- Mapping files:
-  - `accounts_mapping_baseline.json` (required)  
-  - `accounts_mapping_specific.json` (optional override)  
-- Output file path (e.g., `output/accounts.csv`)
+- **Output:**  
+  - Processed account data structured for GnuCash CSV export  
+  - Validation results, logs, and exit codes as per the module specification
 
-**Outputs:**  
-- GnuCash-compatible CSV (`accounts.csv`)  
-- Optional mapping diff file for unmapped types (`accounts_mapping_diff.json`)  
-- Logs for all key pipeline steps
-
-**Invariants:**  
-- All input records must be parsed using original QBD field names (e.g., `NAME`, `ACCNTTYPE`) — case-sensitive  
-- Intermediate fields (e.g., `full_account_name`) must be derived explicitly and consistently  
-- Account records must pass validation before CSV generation  
-- Logging must track pipeline stages and critical error points
-
-**Failure Modes:**  
-- Raises `MappingLoadError`, `AccountsTreeError`, or validation exceptions on failure  
-- Logs structured messages for all validation issues  
-- Halts pipeline if critical steps fail (e.g., mapping or tree invalid)  
-- **Note:** The `mapping` returned by `load_and_merge_mappings()` must be unpacked before being used. Callers must extract the mapping dictionary and mapping diff file as follows:
-  ```python
-  mapping, diff = load_and_merge_mappings(...)
-  ```
-
-**Public Functions/Classes:**
-- Name: `run_accounts_pipeline`
-  - **Arguments:**
-    - `iif_path: str`
-    - `mapping_path: str`
-    - `csv_path: str`
-    - `log_path: str`
-    - `mapping_diff_path: str`
-  - **Return type:** `None`
-  - **Exceptions raised:** `IIFParseError`, `MappingLoadError`, `AccountsTreeError`
-  - **Description:** Orchestrates the full pipeline for QBD account conversion to GnuCash CSV.
-  - **Example call:**
-    ```python
-    run_accounts_pipeline(
-        iif_path='input/sample-qbd-accounts.IIF',
-        mapping_path='output/accounts_mapping_specific.json',
-        csv_path='output/accounts.csv',
-        log_path='output/qbd-to-gnucash.log',
-        mapping_diff_path='output/accounts_mapping_diff.json'
-    )
-    ```
-> **Note on log_path parameter:** The `log_path` parameter provides flexibility for specifying a custom log file location. When not specified or set to None, the system will default to using `output/qbd-to-gnucash.log` as defined in the core PRD section 7.10. This parameter allows for module-specific logging while maintaining compatibility with centralized logging strategies.
+> ⚠️ **Note:** Direct acceptance of `.IIF` file paths is deprecated as of module v1.0.9.  
+> Modules must exclusively accept centrally dispatched section payloads to maintain consistency with the core dispatch workflow and enable modular, agentic processing.
 
 ### 6.2 Interface Contracts  
 
 #### Public Interface: `run_accounts_pipeline`
 - **Arguments:**  
-  - `iif_path: str`  
-  - `mapping_path: str`  
-  - `csv_path: str`  
-  - `log_path: str`  
-  - `mapping_diff_path: str`
+  - `payload: dict` (conforming to `core_dispatch_payload_v1` schema; see Section 6.1)  
 - **Return Type:** `None`
 - **Exceptions:**  
   - `IIFParseError`  
   - `MappingLoadError`  
   - `AccountsTreeError`
-- **Description:** Entry point for processing QBD `!ACCNT` list. Ensures full pipeline execution from input parsing to validated GnuCash CSV generation.
+- **Description:** Entry point for processing QBD `!ACCNT` list. Ensures full pipeline execution from dispatched payload to validated GnuCash CSV generation.
 - **Example Call:**  
   ```python
-  run_accounts_pipeline(
-      iif_path='input/sample-qbd-accounts.IIF',
-      mapping_path='output/accounts_mapping_specific.json',
-      csv_path='output/accounts.csv',
-      log_path='output/qbd-to-gnucash.log',
-      mapping_diff_path='output/accounts_mapping_diff.json'
-  )
+  # Example agentic/dispatch-based call:
+  run_accounts_pipeline(payload={
+      'section': '!ACCNT',
+      'records': [...],
+      'input_path': 'input/sample-qbd-accounts.IIF',
+      'output_dir': 'output/',
+      'log_path': 'output/qbd-to-gnucash.log',
+      'mapping_config': {...},
+      'extra_config': {...}
+  })
   ```
 
- **Data Structures:**
- - Input: iif_path (str), mapping_path (str)
- - Output: csv_path (str), log_path (str), mapping_diff_path (str)
- - All file paths are of type str.
- - Example mapping structure: Dict[str, Any] as loaded from JSON.
- 
- - Mapping File Schema (accounts_mapping_specific.json, accounts_mapping_baseline.json):
+> **Legacy interface using direct file paths is deprecated as of v1.0.9. Modules must accept only centrally dispatched section payloads.**
+
+**Data Structures:**
+- Input: `payload` (dict) conforming to `core_dispatch_payload_v1` (see Section 6.1)
+- Output: Processed account data for GnuCash CSV, validation logs, and exit codes
+- Example mapping structure: `Dict[str, Any]` as loaded from JSON
+
+- Mapping File Schema (accounts_mapping_specific.json, accounts_mapping_baseline.json):
   ```JSON
   {
     "$schema": "http://json-schema.org/draft-07/schema#",
@@ -199,7 +177,7 @@ Orchestrates the full processing pipeline for the `!ACCNT` list type:
 | `mapping.py`       | `from list_converters.mapping import load_and_merge_mappings`                                     | Loading and merging JSON mapping files    |
 | `accounts_tree.py` | `from modules.accounts.accounts_tree import build_accounts_tree`                                  | Building and validating account hierarchy |
 | `error_handler.py` | `from utils.error_handler import IIFParseError, MappingLoadError, AccountsTreeError, OutputError`  | Standardized exception classes            |
-| `iif_parser.py`    | `from utils.iif_parser import parse_iif_file`                                                     | Parsing the QBD IIF file                  |
+| `iif_parser.py`    | `from utils.iif_parser import parse_iif_file`                                                     | Used only by the dispatcher; not called directly by this module as of v1.0.9+ |
 | `logger.py`        | `from utils.logger import setup_logging`                                                          | Centralized logging configuration         |- **External Requirements:**
 
 #### External Requirements
@@ -226,25 +204,31 @@ Orchestrates the full processing pipeline for the `!ACCNT` list type:
 - Hierarchy must not contain cycles or invalid parent references.
 
 ### 7.2 Error Classes & Exit Codes
-- **Error Code Reference:** All error codes are defined as constants in `utils/error_handler.py` following format E### (e.g., E001, E002, E003).
+- **Error Code Reference:** All error codes are defined as constants in `utils/error_handler.py`, following the format `E###` (e.g., `E001`, `E002`, `E003`).
+
 - **Module-Specific Error Categories:**
-  - **Parsing:** IIF file structure issues, missing headers, invalid encoding
-  - **Mapping:** Unknown account types, missing hierarchy definitions, mapping load failures  
-  - **Tree Construction:** Missing parents, circular references, 1-child promotion failures
-  - **Output:** CSV generation failures, file permission issues
+  - **Dispatch Validation (formerly "Parsing"):** Errors originating from invalid or malformed payloads passed by the dispatcher—such as corrupted section structures, missing headers, or encoding issues detected during upstream `.IIF` preprocessing.
+  - **Mapping:** Unknown account types, missing hierarchy definitions, mapping load failures.
+  - **Tree Construction:** Missing parents, circular references, 1-child promotion violations.
+  - **Output:** CSV generation failures, file permission issues.
+
 - **Exception Classes:** Referenced from centralized `utils/error_handler.py`:
-  - `IIFParseError`: Parsing category failures
-  - `MappingLoadError`: Mapping category failures  
-  - `AccountsTreeError`: Tree construction category failures
-  - `OutputError`: Output category failures
+  - `IIFParseError`: Raised by the dispatcher for `.IIF` parsing or extraction failures; logged by modules when surfaced through upstream diagnostics or payload metadata.
+  - `MappingLoadError`: Mapping-related failures.
+  - `AccountsTreeError`: Hierarchy and construction-related failures.
+  - `OutputError`: Failures during output generation.
+
 - **ValidationError Structure:**
   - The `ValidationError` `TypedDict` is used for structured logging of validation issues. It is not raised as an exception but is included in logs and error reports for agentic inspection and debugging.
-- **Exit Codes:** Following core PRD standard:
-  - 0: Success
-  - 1: Critical failure (parsing, mapping load failures)
-  - 2: Validation errors (tree construction, missing parents)
-- **Usage:** All error raising and logging references centralized constants from `utils/error_handler.py`
-- **Logging:** Defers to centralized logging policies as defined in Core PRD section 7.10
+
+- **Exit Codes:** As per core PRD specification:
+  - `0`: Success
+  - `1`: Critical failure (e.g., dispatch validation, mapping load failure)
+  - `2`: Validation errors (e.g., tree construction, unresolved references)
+
+- **Usage:** All exceptions and error codes must reference centralized constants from `utils/error_handler.py`.
+
+- **Logging:** Conforms to logging framework and structure defined in Core PRD §7.10.
 
 ---
 
@@ -264,7 +248,7 @@ Orchestrates the full processing pipeline for the `!ACCNT` list type:
 | v1.0.0  | 2025-05-21 | PJ     | Initial governance-compliant PRD 
 | v1.0.8  | 2025-05-21 | PJ     | Full processing through PRD template v3.5.1
 | v1.0.9  | 2025-05-21 | PJ     | Full processing through PRD template v3.5.2 (which broke it!)
- 
+| v1.0.10 | 2025-05-23 | PJ     | Editorial and semantic cleanup; clarified parsing vs dispatch validation | 
 
 ### 9.2 Upstream/Downstream Impacts  
 - Changes to mapping schema or account typing rules require coordination with config management modules.  
@@ -291,14 +275,28 @@ Orchestrates the full processing pipeline for the `!ACCNT` list type:
 ## 12. Example Calls for Public Functions/Classes  
 
 ```python
-run_accounts_pipeline(
-    iif_path='input/sample-qbd-accounts.IIF',
-    mapping_path='output/accounts_mapping_specific.json',
-    csv_path='output/accounts.csv',
-    log_path='output/qbd-to-gnucash.log',
-    mapping_diff_path='output/accounts_mapping_diff.json'
-)
+# Agentic/dispatch-based example (current, v1.0.9+):
+run_accounts_pipeline(payload={
+    'section': '!ACCNT',
+    'records': [...],
+    'input_path': 'input/sample-qbd-accounts.IIF',
+    'output_dir': 'output/',
+    'log_path': 'output/qbd-to-gnucash.log',
+    'mapping_config': {...},
+    'extra_config': {...}
+})
 ```
+
+> **Legacy Example (deprecated as of v1.0.9):**
+> ```python
+> run_accounts_pipeline(
+>     iif_path='input/sample-qbd-accounts.IIF',
+>     mapping_path='output/accounts_mapping_specific.json',
+>     csv_path='output/accounts.csv',
+>     log_path='output/qbd-to-gnucash.log',
+>     mapping_diff_path='output/accounts_mapping_diff.json'
+> )
+> ```
 
 ---
 

@@ -20,7 +20,7 @@
 ## 3. Inputs and Outputs  
 
 ### 3.1 Inputs  
-[List all input files, data, parameters, and sources with any required formats or schemas.]
+[Modules must not expect raw files as input; all data is received as dispatched payloads per `core_dispatch_payload_v1`.]
 
 ### 3.2 Outputs  
 [List all output files, data structures, and any side effects.]
@@ -66,7 +66,7 @@
   - List external requirements and references to other PRDs or system components.
   - Example: Conforms to logging/error handling policies in:
     - [Logging Framework PRD v1.0.4](../logging/module-prd-logging-v1.0.4.md)
-    - [Core PRD v3.5.2](../core-prd-v3.5.2.md#7.2-Error-Handling)
+    - [Core PRD v3.6.0](../core-prd-v3.6.0.md#62-error-handling-strategy)
 
 - **External Data Format Contracts:**
   - List external data format contracts.
