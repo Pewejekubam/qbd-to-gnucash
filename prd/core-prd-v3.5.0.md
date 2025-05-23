@@ -239,6 +239,162 @@ These user stories and use cases reflect real-world pressures faced by organizat
 - Code reviews must check for conformance to the documented contracts.
 - Example calls and test cases should be included in the PRD to clarify correct usage.
 
+### 6.4 Core Interface Contracts
+
+This section documents the public interface contracts for core orchestration functions that modules interact with. All signatures, docstrings, exception handling, and example usages follow the standards established in Section 6.3. These contracts ensure reliable integration, governance compliance, and agentic compatibility across the codebase.
+
+#### 6.4.1 Core Orchestration Functions
+
+##### `run_conversion_pipeline`
+```python
+def run_conversion_pipeline(config: Dict[str, Any]) -> int:
+    """Orchestrate the full conversion process: input parsing, mapping, tree construction, output generation, and logging.
+    Args:
+        config (Dict[str, Any]): Configuration dictionary specifying input/output paths, module registry, and mapping files.
+    Returns:
+        int: Exit code (0=success, 1=critical error, 2=validation error)
+    Raises:
+        FileNotFoundError: If required input files are missing.
+        RegistryKeyConflictError: If two modules claim the same registry key.
+        Exception: For any uncaught critical error.
+    """
+    # ...function implementation...
+
+# Example usage:
+from core import run_conversion_pipeline
+exit_code = run_conversion_pipeline(config)
+if exit_code != 0:
+    sys.exit(exit_code)
+```
+
+##### `register_module`
+```python
+def register_module(registry: Dict[str, Any], key: str, module: Any) -> None:
+    """Register a domain module with the core registry for dispatching input sections.
+    Args:
+        registry (Dict[str, Any]): The central registry mapping section keys to modules.
+        key (str): The unique section key (e.g., '!ACCNT').
+        module (Any): The module object implementing the required interface.
+    Raises:
+        RegistryKeyConflictError: If the key is already registered.
+    """
+    # ...function implementation...
+
+# Example usage:
+register_module(registry, '!ACCNT', accounts_module)
+```
+
+##### `dispatch_to_module`
+```python
+def dispatch_to_module(registry: Dict[str, Any], section_key: str, records: List[Dict[str, Any]]) -> Any:
+    """Dispatch parsed records to the appropriate domain module for processing.
+    Args:
+        registry (Dict[str, Any]): The central registry mapping section keys to modules.
+        section_key (str): The section key identifying the domain (e.g., '!ACCNT').
+        records (List[Dict[str, Any]]): Parsed records for the section.
+    Returns:
+        Any: Module-specific result (e.g., processed data, output file path).
+    Raises:
+        KeyError: If the section_key is not registered.
+        Exception: For module-specific processing errors.
+    """
+    # ...function implementation...
+
+# Example usage:
+result = dispatch_to_module(registry, '!ACCNT', account_records)
+```
+
+##### `log_and_exit`
+```python
+def log_and_exit(message: str, code: int = 1) -> None:
+    """Log a critical error message and exit the process with the specified code.
+    Args:
+        message (str): The error message to log.
+        code (int, optional): Exit code (default: 1).
+    Raises:
+        SystemExit: Always raised to terminate the process.
+    """
+    # ...function implementation...
+
+# Example usage:
+log_and_exit('Critical error: input file missing', code=1)
+```
+
+#### 6.4.2 Exception Classes
+
+All custom exceptions raised by core functions are defined in `utils/error_handler.py` and must be referenced by all modules and core logic for consistency.
+
+```python
+class RegistryKeyConflictError(Exception):
+    """Raised when two modules attempt to register the same section key."""
+    pass
+
+class ValidationError(Exception):
+    """Raised when validation of input or output data fails."""
+    pass
+```
+
+# Example usage:
+try:
+    register_module(registry, '!ACCNT', accounts_module)
+except RegistryKeyConflictError as e:
+    log_and_exit(str(e), code=1)
+```
+
+### 6.5 Global Dispatch Data Contract (Immutable)
+
+> **Governance Note:**
+> This section is IMMUTABLE and governed under PRD Governance Document v1.0.0. All module PRDs must cross-reference this section as the single source of truth for the core-to-module dispatch payload structure. Any changes require formal governance review and version increment.
+
+#### 6.5.1 Canonical Payload Schema (`core_dispatch_payload_v1`)
+
+The following schema defines the structured payload passed from the core dispatcher to each processing module. This contract is versioned and must be referenced by all modules for input validation and interface compliance.
+
+```python
+from typing import TypedDict, List, Dict, Any, Optional
+
+class core_dispatch_payload_v1(TypedDict):
+    """Canonical payload structure for core-to-module dispatch (v1)."""
+    section_key: str  # Section identifier (e.g., '!ACCNT', '!VEND')
+    records: List[Dict[str, Any]]  # List of parsed records for the section
+    mapping: Dict[str, Any]  # Mapping configuration relevant to the module
+    input_file: str  # Path to the source input file
+    output_dir: str  # Directory for module output files
+    log_path: str  # Path to the main log file
+    config: Optional[Dict[str, Any]]  # Additional config (optional, module-specific)
+```
+
+#### 6.5.2 Example Payload
+
+```python
+example_payload: core_dispatch_payload_v1 = {
+    "section_key": "!ACCNT",
+    "records": [
+        {"NAME": "Assets", "TYPE": "ASSET", "DESC": "Company assets"},
+        {"NAME": "Bank", "TYPE": "BANK", "DESC": "Checking account"}
+    ],
+    "mapping": {
+        "ASSET": "Asset",
+        "BANK": "Bank"
+    },
+    "input_file": "input/sample-qbd-accounts.IIF",
+    "output_dir": "output/",
+    "log_path": "output/qbd-to-gnucash.log",
+    "config": {
+        "strict_mode": True,
+        "module_version": "1.0.9"
+    }
+}
+```
+
+#### 6.5.3 Minimal Dispatch Function Signature
+
+```python
+def dispatch_to_module(module: Any, payload: core_dispatch_payload_v1) -> Any:
+    """Dispatch the canonical payload to a processing module and return the result."""
+    # ...function implementation...
+```
+
 ---
 
 ## 7. Non-Functional Requirements
@@ -343,12 +499,13 @@ logging.basicConfig(
 ### 7.11 Validation & Error Handling
 
 - **Error Code Index:**  
-  A centralized index of all error codes and their associated messages shall be maintained as constants in `utils/error_handler.py`. This module acts as the authoritative reference for error definitions, ensuring consistency and ease of maintenance.
+  A centralized index of all error codes and their associated messages shall be maintained as constants in [`src/utils/error_handler.py`](../src/utils/error_handler.py). This module acts as the authoritative reference for error definitions, ensuring consistency and ease of maintenance. All error code constants (e.g., `E001`, `E002`, etc.) defined in this file act as a global, immutable registry and must be referenced by all modules.  
+  See also: [Logging and Error Handling PRD](../prd/logging/module-prd-logging-v1.0.4.md)
 
 - **Error Code Format:**  
-  Codes should be short, unique strings prefixed with 'E' and followed by a numeric identifier (e.g., E001, E002). Each code maps to a descriptive error message.
+  Codes should be short, unique strings prefixed with 'E' and followed by a numeric identifier (e.g., `E001`, `E002`). Each code maps to a descriptive error message.
 
-- **Example error codes in `utils/error_handler.py`:**  
+- **Example error codes in `error_handler.py`:**  
   ```python
   E001 = 'Invalid IIF file structure'
   E002 = 'Unknown account type'
@@ -357,7 +514,7 @@ logging.basicConfig(
   ```
 
 - **Usage:**
-  All modules shall reference these constants when raising or logging errors, ensuring uniform error handling and reporting throughout the pipeline.
+  All modules shall reference these constants when raising or logging errors, ensuring uniform error handling and reporting throughout the pipeline. The behaviors and exit codes described below are aligned with both the [Logging and Error Handling PRD](../prd/logging/module-prd-logging-v1.0.4.md) and the implementation in [`src/utils/error_handler.py`](../src/utils/error_handler.py).
 
 - **Log File Location:** Default to `output/qbd-to-gnucash.log`. No rotation by default; recommend logrotate for production.
 - **Exit Codes:**
@@ -366,7 +523,6 @@ logging.basicConfig(
   - 2: Validation errors (e.g., unmapped types, missing parents)
   > All exit codes must be tested via CLI or subprocess-based test that verifies `sys.exit()` was called with the correct code.
 
-- **Behavior:**
   - On validation errors, tool writes details to log and exits with code 2.
   - On critical errors, tool logs and exits with code 1.
 
@@ -384,6 +540,44 @@ logging.basicConfig(
   - Errors and warnings are printed to stderr and logged to `output/qbd-to-gnucash.log`.
   - Exit code signals error type for automation.
   - **Missing `output/` directory**: Tool should auto-create it without crashing and initialize the log file.
+
+### 8.1 Test Case Examples (Agentic Scaffolding)
+
+> All test case examples below are declarative scaffolding for agentic validation. Each is traceable to a specific PRD requirement and is formatted for pytest compatibility. No new behaviors are introduced.
+
+#### Example 1: Critical Failure (Exit Code 1)
+```python
+def test_unreadable_input_file(tmp_path):
+    """Should exit with code 1 if input file is missing or unreadable.
+    Ref: Section 7.11 - Exit code 1 (Critical failure)
+    """
+    # Simulate missing file scenario
+    # ...invoke main.py with non-existent input file...
+    # assert exit_code == 1
+```
+
+#### Example 2: Validation Error (Exit Code 2)
+```python
+def test_unmapped_account_type(tmp_path):
+    """Should exit with code 2 if unmapped account type is encountered.
+    Ref: Section 7.11 - Validation exit code 2
+    """
+    # Provide input with unmapped account type
+    # ...invoke main.py with test input...
+    # assert exit_code == 2
+```
+
+#### Example 3: Success Path with Verifiable Output
+```python
+def test_successful_conversion_creates_csv_and_log(tmp_path):
+    """Should produce accounts.csv and log file on successful run.
+    Ref: Section 7.3, 7.11 - Logging and output file creation
+    """
+    # Provide valid input
+    # ...invoke main.py with valid input...
+    # assert output_dir.joinpath('accounts.csv').exists()
+    # assert output_dir.joinpath('qbd-to-gnucash.log').exists()
+```
 
 ---
 
