@@ -5,7 +5,7 @@ You are tasked with performing a **deep, section-by-section governance complianc
 ---
 
 ### 🎯 Objective
-Identify and annotate **all violations** of the **PRD Governance Model v1.0.0**, including but not limited to:
+Identify and annotate **all violations** of the **PRD Governance Model v2.3.10**, including but not limited to:
 
 - Section misnumbering, mislabeling, or heading drift
 - Violations of separation-of-concerns (e.g., module logic in core PRD)

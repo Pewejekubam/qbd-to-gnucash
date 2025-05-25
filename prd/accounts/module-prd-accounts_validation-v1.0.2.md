@@ -7,47 +7,45 @@
 
 ---
 
-## 1. Purpose  
+## 1. Scope  
+
+### 1.1 Purpose  
 The `validation` module performs final-stage cross-domain verification of all parsed and transformed data before output is emitted. It ensures data consistency, mapping completeness, hierarchy integrity, and conformance with GnuCash import requirements. All validation errors are raised in structured form and logged in compliance with centralized logging policy.
 
----
-
-## 2. Scope  
-
-### In-Scope  
+### 1.2 In-Scope  
 - Global data integrity checks (duplicate paths, missing parents)  
 - Domain interdependency validation (e.g., mapping vs. hierarchy)  
 - Structured error collection and exit signaling  
 - Enforcement of error codes and logging contracts
 
-### Out-of-Scope  
+### 1.3 Out-of-Scope  
 - Parsing of `.IIF` input files  
 - Mapping logic or tree construction  
 - Output file generation  
 
 ---
 
-## 3. Inputs and Outputs  
+## 2. Inputs and Outputs  
 
-### 3.1 Inputs  
+### 2.1 Inputs  
 - Post-mapping in-memory data structures from domain modules  
 - Configuration and registry data  
 - Mapping baseline and diff files (read-only)  
 - Output-ready CSV data (for structural scanning)
 
-### 3.2 Outputs  
+### 2.2 Outputs  
 - Structured validation errors (raised and logged)  
 - `output/qbd-to-gnucash.log`  
 - Process exit code: `0`, `1`, or `2` depending on result  
 
 ---
 
-## 4. Functional Requirements  
+## 3. Functional Requirements  
 
-### 4.1 Overview  
+### 3.1 Overview  
 The validation module enforces global correctness constraints after individual modules finish processing. It identifies fatal mismatches, referential gaps, and mapping inconsistencies that would break GnuCash import.
 
-### 4.2 Detailed Behavior  
+### 3.2 Detailed Behavior  
 - Scans account tree for orphaned nodes, invalid types, and unpromoted placeholders  
 - Ensures all required mappings exist and are valid  
 - Checks for duplicate paths and conflicting identifiers  
@@ -56,30 +54,30 @@ The validation module enforces global correctness constraints after individual m
 
 ---
 
-## 5. Configuration & Environment  
+## 4. Configuration & Environment  
 
-### 5.1 Config Schema  
+### 4.1 Config Schema  
 - `validation.enabled: bool` — master toggle  
 - `validation.strict_mode: bool` — if True, no fallbacks permitted  
 - Uses central config file loaded by core  
 
-### 5.2 Environment Constraints  
+### 4.2 Environment Constraints  
 - UTF-8 decoding enforcement  
 - Output directory must be writable  
 - `PYTHONPATH` must include project root  
 
 ---
 
-## 6. Interface & Integration  
+## 5. Interface & Integration  
 
-### 6.1 Module Contract: validation  
+### 5.1 Module Contract: validation  
 - **Purpose:** Final validation of all domain outputs  
 - **Inputs:** In-memory output from modules, config, mapping files  
 - **Outputs:** Raised exceptions, flushed logs  
 - **Invariants:** No unhandled errors may exit the pipeline  
 - **Failure Modes:** Raises `ValidationError`, returns code 2  
 
-### 6.2 Interface Contracts: run_validation_pass()
+### 5.2 Interface Contracts: run_validation_pass()
 
 ```python
 def run_validation_pass(data: Dict[str, Any]) -> None:
@@ -113,12 +111,12 @@ run_validation_pass({
 })
 ```
 
-### 6.3 Dependencies
+### 5.3 Dependencies
 - utils/error_handler.py (see [../utils/error_handler.py](../../utils/error_handler.py))
 - mapping registry
 - All domain modules (transitively)
 
-### 6.4 Data Structure Definitions
+### 5.4 Data Structure Definitions
 - **Internal Modules:**
   - accounts_validation.py: rule-level assertions, main entrypoint, logging + exit logic
 - **External Requirements:**
@@ -130,16 +128,16 @@ run_validation_pass({
 
 ---
 
-## 7. Validation & Error Handling
+## 6. Validation & Error Handling
 
-### 7.1 Validation Rules
+### 6.1 Validation Rules
 - All account paths must be unique
 - No orphaned children or circular hierarchies
 - Mapping keys must resolve to known GnuCash types
 - Placeholder accounts must be promoted or flagged
 - Must not emit CSV with null or empty required fields
 
-### 7.2 Error Classes & Exit Codes
+### 6.2 Error Classes & Exit Codes
 - ValidationError (base class, see Appendix for schema)
 - HierarchyViolationError (see Appendix for schema)
 - MappingInconsistencyError (see Appendix for schema)
@@ -154,7 +152,7 @@ run_validation_pass({
 
 ---
 
-## 8. Logging & Error Handling
+## 7. Logging & Error Handling
 - All logging behavior is governed by centralized policy:
   - See: module-prd-logging-v1.0.2.md
   - Log to output/qbd-to-gnucash.log
@@ -163,9 +161,9 @@ run_validation_pass({
 
 ---
 
-## 9. Versioning & Change Control
+## 8. Versioning & Change Control
 
-### 9.1 Revision History
+### 8.1 Revision History
 | Version | Date       | Author        | Summary                         
 |---------|------------|---------------|---------------------------------
 | v1.0.0  | 2025-05-21 | Pewe Jekubam  | Initial scaffold and contract spec 
@@ -173,13 +171,13 @@ run_validation_pass({
 | v1.0.2  | 2025-05-23 | PJ            | module and core PRD document naming and location restructure
 
 
-### 9.2 Upstream/Downstream Impacts
+### 8.2 Upstream/Downstream Impacts
 - Upstream: mapping, accounts, customers, vendors
 - Downstream: logging, exit strategy, CLI test harness
 
 ---
 
-## 10. Non-Functional Requirements
+## 9. Non-Functional Requirements
 - Deterministic pass/fail output
 - Fast fail on fatal violations
 - Must not mutate input or write files (other than logging)
@@ -187,15 +185,15 @@ run_validation_pass({
 
 ---
 
-## 11. Open Questions / TODOs
+## 10. Open Questions / TODOs
 - Should validation support partial modes for incremental dev testing?
 - Should this module emit a JSON report for downstream diffing?
 - When future modules (e.g., vendors) are added, should validation become plugin-aware?
 
 ---
 
-## 12. Appendix (Optional)
-### 12.1 Data Schemas or Additional References
+## 11. Appendix (Optional)
+### 11.1 Data Schemas or Additional References
 ```json
 {
   "ValidationError": {
@@ -228,7 +226,7 @@ run_validation_pass({
 }
 ```
 
-## 12.2 Domain Module Naming and Containment Rules
+## 11.2 Domain Module Naming and Containment Rules
 
 To ensure maintainability, prevent cross-domain collisions, and support governance enforcement:
 
