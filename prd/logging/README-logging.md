@@ -6,10 +6,10 @@ This module provides the centralized logging framework for the QBD-to-GnuCash co
 ## File Structure
 - `module-prd-logging-v1.0.4.md` — PRD for the logging module
 - `logging.py` — Logging implementation
-- `README.md` — This file
+- `README-logging.md` — This file
 
 ## Design Reference
-This module is governed by [module-prd-logging-v1.0.4.md](./module-prd-logging-v1.0.4.md)
+This module is governed by [module-prd-logging-v1.0.4.md](./module-prd-logging-v1.0.4.md).
 
 ## Key Contracts or Responsibilities
 - Provide a consistent and centralized logging mechanism for all modules
@@ -22,8 +22,7 @@ This module is governed by [module-prd-logging-v1.0.4.md](./module-prd-logging-v
 - Exceptions: `OSError` (directory creation), logging errors (see PRD §7)
 - Logging: All modules must call `setup_logging()` before logging; all errors and process exits are logged per PRD
 
-
-## Revision History  
-| Version | Date       | Author | Summary                           
-|---------|------------|--------|--------------------------------- 
-| v1.0.4  | 2025-05-23 | PJ     | README aligned with PRD and governance model
+## Revision History
+| Version | Date       | Author | Summary                           |
+|---------|------------|--------|-----------------------------------|
+| v1.0.4  | 2025-05-25 | PJ     | README updated to match PRD v1.0.4|

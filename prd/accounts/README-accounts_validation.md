@@ -5,12 +5,11 @@ This module performs final-stage cross-domain verification of all parsed and tra
 
 ## File Structure
 - `prd/accounts/module-prd-accounts_validation-v1.0.2.md` — PRD for the validation module
-- `src/modules/accounts/accounts_validation.py` — Account validation logic  
-- `prd/accounts/README-accounts_validation.md` — This file  
-
+- `src/modules/accounts/accounts_validation.py` — Account validation logic
+- `prd/accounts/README-accounts_validation.md` — This file
 
 ## Design Reference
-This module is governed by [module-prd-accounts_validation-v1.0.2.md](./module-prd-validation-v1.0.2.md)
+This module is governed by [module-prd-accounts_validation-v1.0.2.md](./module-prd-accounts_validation-v1.0.2.md).
 
 ## Key Contracts or Responsibilities
 - Perform global validation checks on processed module data
@@ -22,8 +21,8 @@ This module is governed by [module-prd-accounts_validation-v1.0.2.md](./module-p
 - Exceptions: `ValidationError` (see PRD §7)
 - Logging: All validation errors and process exits are logged per [logging/module-prd-logging-v1.0.4.md](../logging/module-prd-logging-v1.0.4.md)
 
-
-## Revision History  
-| Version | Date       | Author | Summary                           
-|---------|------------|--------|--------------------------------- 
-| v1.0.1  | 2025-05-23 | PJ     | README aligned with PRD and governance model
+## Revision History
+| Version | Date       | Author | Summary                           |
+|---------|------------|--------|-----------------------------------|
+| v1.0.2  | 2025-05-25 | PJ     | README updated to match PRD v1.0.2|
+| v1.0.1  | 2025-05-23 | PJ     | README aligned with PRD and governance model|
