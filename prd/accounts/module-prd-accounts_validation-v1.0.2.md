@@ -1,10 +1,11 @@
 # Product Requirements Document — Validation  
-**Document Version:** v1.0.2
-**Module Identifier:** validation.py  
+
+**Document Version:** v1.0.2  
+**Module Identifier:** validation-prd-v1.0.2.md  
 **System Context:** QuickBooks Desktop to GnuCash Conversion Tool  
 **Author:** Pewe Jekubam  
 **Last Updated:** 2025-05-21  
-
+**Governance Model:** prd-governance-model-v2.3.10.md  
 ---
 
 ## 1. Scope  

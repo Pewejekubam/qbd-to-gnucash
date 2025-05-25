@@ -1,10 +1,11 @@
-# Product Requirements Document — Mapping Module
-**Document Version:** v1.0.7 
-**Module Identifier:** mapping.py  
-**System Context:** QuickBooks Desktop to GnuCash Conversion Tool  
-**Author:** Pewe Jekubam 
-**Last Updated:** 2025-05-23  
+# Product Requirements Document — Mapping Module  
 
+**Document Version:** v1.0.7  
+**Module Identifier:** mapping-prd-v1.0.7.md  
+**System Context:** QuickBooks Desktop to GnuCash Conversion Tool  
+**Author:** Pewe Jekubam  
+**Last Updated:** 2025-05-23  
+**Governance Model:** prd-governance-model-v2.3.10.md  
 ---
 
 ## 1. Scope

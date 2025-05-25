@@ -1,8 +1,12 @@
 # Core PRD: QuickBooks Desktop to GnuCash Conversion Tool
 
-**Document Version:** v3.6.3 
-**State:** Finalized for Governance Compliance  
-**Author:** Pewe Jekubam
+**Document Version:** v3.6.3  
+**Module Identifier:** core-prd-v3.6.3.md  
+**State:** Finalized for Governance Compliance / Review cycle 001  
+**System Context:** QuickBooks Desktop to GnuCash Conversion Tool  
+**Author:** Pewe Jekubam  
+**Last Updated:** 2025-05-25  
+**Governance Model:** prd-governance-model-v2.3.10.md  
 
 ---
 
@@ -22,7 +26,7 @@ All section numbering and headers must be strictly sequential and hierarchical, 
 ---
 
 ## 3. Background Context
-QuickBooks Desktop is a proprietary platform, and many users are migrating to open-source accounting systems for reasons including cost, longevity, and transparency. However, the lack of compatible conversion tooling presents a serious barrier. This project exists to fill that gap, enabling clean migration of core data without data loss or manual recreation.
+QuickBooks Desktop is a proprietary platform, and many users are migrating to open-source accounting systems for reasons including cost, longevity, and transparency. However, the lack of compatible conversion tooling presents a serious barrier. This project exists to fill that gap, enabling clean migration of core data without data loss and with minimal manual recreation.
 
 ---
 

@@ -1,9 +1,11 @@
 # Product Requirements Document — accounts.py  
-**Document Version:** v1.1.1
-**Module Identifier:** accounts.py  
+
+**Document Version:** v1.1.1  
+**Module Identifier:** accounts-prd-v1.1.1.md  
 **System Context:** QuickBooks Desktop to GnuCash Conversion Tool  
 **Author:** Pewe Jekubam (Development Engineer)  
 **Last Updated:** 2025-05-21  
+**Governance Model:** prd-governance-model-v2.3.10.md  
 
 ---
 

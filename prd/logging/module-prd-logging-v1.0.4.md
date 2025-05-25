@@ -1,9 +1,11 @@
 # Product Requirements Document — Logging Framework Module  
-**Document Version:** v1.0.4 
-**Module Identifier:** logging.py  
+
+**Document Version:** v1.0.4  
+**Module Identifier:** logging-prd-v1.0.4.md  
 **System Context:** QuickBooks Desktop to GnuCash Conversion Tool  
-**Author:** Pewe Jekubam
+**Author:** Pewe Jekubam  
 **Last Updated:** 2025-05-21  
+**Governance Model:** prd-governance-model-v2.3.10.md  
 
 ---
 
