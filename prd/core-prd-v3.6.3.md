@@ -2,7 +2,7 @@
 
 **Document Version:** v3.6.3  
 **Module Identifier:** core-prd-v3.6.3.md  
-**State:** Finalized for Governance Compliance / Review cycle 001  
+**State:** Finalized for Governance Compliance
 **System Context:** QuickBooks Desktop to GnuCash Conversion Tool  
 **Author:** Pewe Jekubam  
 **Last Updated:** 2025-05-25  
@@ -88,7 +88,7 @@ Before creating or moving any file:
 ---
 
 ## 8. Inter-PRD Dependencies
-All module references must use relative paths and canonical anchor links. Invalid references must trigger rejection—no silent failures. Cross-version references require explicit version-lock enforcement.
+All module references must use relative paths and canonical anchor links (e.g., `[Section 7.1.1](#711-domain-module-naming-and-containment-rules)`). Invalid references must trigger rejection—no silent failures. Cross-version references require explicit version-lock enforcement. All referenced PRDs must exist in the repository and be version-locked in the reference (e.g., `[Logging Framework PRD v1.0.4](./logging/module-prd-logging-v1.0.4.md)`).
 
 ---
 
@@ -137,43 +137,45 @@ AI agents must affirm this governance before making structural edits. Human cont
 ---
 
 ## 13. System Architecture and Workflow
-.                                  # Project root
-├── input/                         # User-provided IIF files
-│   ├── sample-qbd-accounts.IIF
-│   ├── sample-qbd-customers.IIF
-│   ├── sample-qbd-items.IIF
-│   ├── sample-qbd-payment-terms.IIF
-│   └── sample-qbd-sales-tax-codes.IIF
-├── output/                        # Generated output files and logs
-│   └── qbd-to-gnucash.log
-├── prd/                           # Product Requirements Documents (PRDs)
-│   ├── core-prd-v3.6.0.md         # Core PRD
-│   ├── prd-module-template-v3.5.1.md # PRD template
-│   ├── README-core.md             # Core PRD README
-│   ├── accounts/                  # Accounts module PRDs
-│   │   ├── module-prd-accounts-v1.1.1.md
-│   │   ├── module-prd-accounts_mapping-v1.0.6.md
-│   │   ├── module-prd-accounts_validation-v1.0.1.md
-│   │   ├── README-accounts.md
-│   │   ├── README-accounts_mapping.md
-│   │   └── README-accounts_validation.md
-│   └── logging/
-│       ├── module-prd-logging-v1.0.4.md
-│       └── README-logging.md
-├── src/                           # Source code for conversion tool
-│   ├── main.py                    # Entrypoint script
-│   ├── modules/
-│   │   └── accounts/
-│   │       ├── accounts.py                # Main logic for account conversion
-│   │       ├── accounts_mapping.py        # Mapping logic loader/merger
-│   │       ├── accounts_mapping_baseline.json # Mapping config
-│   │       ├── accounts_tree.py           # Account tree builder
-│   │       └── accounts_validation.py     # Validation logic
-│   └── utils/
-│       ├── error_handler.py       # Standardized error classes
-│       ├── iif_parser.py          # IIF format parser
-│       └── logging.py             # Logging setup and utilities
-> For rules about domain ownership and why `accounts_tree.py` lives inside the `accounts` module, see Section 7.1.1.
+
+Project root:
+- input/
+  - sample-qbd-accounts.IIF
+  - sample-qbd-customers.IIF
+  - sample-qbd-items.IIF
+  - sample-qbd-payment-terms.IIF
+  - sample-qbd-sales-tax-codes.IIF
+- output/
+  - qbd-to-gnucash.log
+- prd/
+  - core-prd-v3.6.0.md
+  - prd-module-template-v3.6.2.md
+  - README-core.md
+  - accounts/
+    - module-prd-accounts-v1.1.1.md
+    - module-prd-accounts_mapping-v1.0.6.md
+    - module-prd-accounts_validation-v1.0.1.md
+    - README-accounts.md
+    - README-accounts_mapping.md
+    - README-accounts_validation.md
+  - logging/
+    - module-prd-logging-v1.0.4.md
+    - README-logging.md
+- src/
+  - main.py
+  - modules/
+    - accounts/
+      - accounts.py
+      - accounts_mapping.py
+      - accounts_mapping_baseline.json
+      - accounts_tree.py
+      - accounts_validation.py
+  - utils/
+    - error_handler.py
+    - iif_parser.py
+    - logging.py
+
+> For rules about domain ownership and why `accounts_tree.py` lives inside the `accounts` module, see [Section 7.1.1](#711-domain-module-naming-and-containment-rules).
 
 ### 13.1 Error Handling Strategy
 

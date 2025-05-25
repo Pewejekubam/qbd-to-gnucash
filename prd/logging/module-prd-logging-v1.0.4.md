@@ -141,15 +141,9 @@ def setup_logging(log_path: Optional[str] = None, log_level: str = "INFO") -> No
 
 ---
 
-## 10. Open Questions / TODOs  
-- [ ] Should structured log output be JSON-serializable for ingestion into external systems?  
-- [ ] Will future versions introduce log rotation or retention policies?
+## 10. Example Calls for Public Functions/Classes  
 
----
-
-## 11. Example Calls for Public Functions/Classes  
-
-### 11.1 `setup_logging`  
+### 10.1 `setup_logging`  
 ```python
 # Normal case
 setup_logging(log_path='output/qbd-to-gnucash.log', log_level='DEBUG')
@@ -160,9 +154,9 @@ setup_logging(log_path='output/nonexistent-dir/qbd-to-gnucash.log', log_level='I
 
 ---
 
-## 12. Appendix (Optional)
+## 11. Appendix (Optional)
 
-### 12.1 Data Schemas or Additional References  
+### 11.1 Data Schemas or Additional References  
 
 #### Log Event Structure  
 ```python

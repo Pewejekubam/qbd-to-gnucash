@@ -25,25 +25,29 @@ Loads, merges, and validates account type mapping files. Provides lookup service
 
 ---
 
-## 3. Functional Requirements
+## 3. Functional Requirements  
 
-### 3.1 Overview
-- Load and merge mapping files
-- Provide lookup services for QBD to GnuCash account types
-- Handle unmapped types and logging
+### 3.1 Overview  
+- Load and merge mapping files  
+- Provide lookup services for QBD to GnuCash account types  
+- Handle unmapped types and logging  
 
-### 3.2 Detailed Behavior
-#### 3.2.1 Loading Mapping Files
-- Loads baseline and specific mapping JSON files
-- Merges the two files into a single dictionary
+### 3.2 Detailed Behavior  
 
-#### 3.2.2 Lookup Services
-- Provides exact QBD key lookups (e.g., `BANK`, `OCASSET`, `AR`)
-- Fallback behavior is defined by `default_rules`
+#### 3.2.1 Loading Mapping Files  
+- Loads baseline and specific mapping JSON files  
+- Merges the two files into a single dictionary  
 
-#### 3.2.3 Unmapped Types
-- Returns a list of unmapped QBD account types
-- Logs all key loads, fallbacks, and mapping mismatches
+#### 3.2.2 Lookup Services  
+- Provides exact QBD key lookups (e.g., `BANK`, `OCASSET`, `AR`)  
+- Fallback behavior is defined by `default_rules`  
+
+#### 3.2.3 Unmapped Types  
+- Returns a list of unmapped QBD account types  
+- Logs all key loads, fallbacks, and mapping mismatches  
+
+#### 3.2.4 Version-Locked Core PRD Reference  
+- Aligns with [Core PRD v3.6.3 Section 6.5.1](../core-prd-v3.6.3.md#651-processing-rules)  
 
 ---
 
@@ -58,24 +62,25 @@ No specific config options are required.
 
 ---
 
-## 5. Interface & Integration
+## 5. Interface & Integration  
 
-### 5.1 Interface Contracts
-#### load_mapping
-- Arguments: `user_mapping_path: Optional[str]`
-- Return type: `Dict[str, Any]`
-- Exceptions raised: `MappingLoadError`
-- Description: Loads and merges mapping files for QBD to GnuCash account types.
+### 5.1 Interface Contracts  
 
-#### find_unmapped_types
-- Arguments: `records: List[Dict[str, Any]]`, `mapping: Dict[str, Any]`
-- Return type: `List[str]`
-- Exceptions raised: None
-- Description: Returns a list of unmapped QBD account types.
+#### load_mapping  
+- Arguments: `user_mapping_path: Optional[str]`  
+- Return type: `Dict[str, Any]`  
+- Exceptions raised: `MappingLoadError`  
+- Description: Loads and merges mapping files for QBD to GnuCash account types.  
 
-### 5.2 Dependencies
-- [Logging Framework module PRD v1.0.4](../logging/module-prd-logging-v1.0.4.md)
-- [core PRD section 7.3](../core-prd-v3.5.0.md#73-logging-strategy)
+#### find_unmapped_types  
+- Arguments: `records: List[Dict[str, Any]]`, `mapping: Dict[str, Any]`  
+- Return type: `List[str]`  
+- Exceptions raised: None  
+- Description: Returns a list of unmapped QBD account types.  
+
+### 5.2 Dependencies  
+- [Logging Framework module PRD v1.0.4](../logging/module-prd-logging-v1.0.4.md)  
+- [Core PRD v3.6.3 Section 7.3: Logging Strategy](../core-prd-v3.6.3.md#73-logging-strategy)  
 
 ---
 
@@ -117,12 +122,7 @@ No specific non-functional requirements are noted.
 
 ---
 
-## 10. Open Questions / TODOs
-None noted.
-
----
-
-## 11. Example Calls for Public Functions/Classes
+## 10. Example Calls for Public Functions/Classes
 
 ### 11.1 load_mapping
 
@@ -138,7 +138,7 @@ except MappingLoadError as e:
 
 ---
 
-## 12. Appendix (Optional)
+## 11. Appendix (Optional)
 ### 12.1. Mapping File Schema
 
 ```json
@@ -168,7 +168,7 @@ except MappingLoadError as e:
 
 ---
 
-## 13. Domain Module Naming and Containment Rules
+## 12. Domain Module Naming and Containment Rules
 
 To ensure maintainability, prevent cross-domain collisions, and support governance enforcement:
 

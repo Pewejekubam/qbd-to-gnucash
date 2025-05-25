@@ -9,12 +9,10 @@
 
 ---
 
-## 1. Purpose  
+## 1. Purpose
 This module manages the conversion and validation of account data exported from QuickBooks Desktop (QBD) into a format compatible with GnuCash CSV import. It handles account mapping, hierarchy construction, and enforces typing rules critical for correct financial data import.
 
----
-
-## 1. Scope  
+## 2. Scope
 - Covers mapping and validating `!ACCNT` records as dispatched by the core dispatcher.
 - Produces CSV outputs compatible with GnuCash’s import formats.  
 - Enforces strict rules on account typing, placeholder accounts, and AR/AP account special handling.  
@@ -23,9 +21,9 @@ This module manages the conversion and validation of account data exported from 
 
 ---
 
-## 2. Inputs and Outputs  
+## 3. Inputs and Outputs  
 
-### 2.1 Inputs
+### 3.1 Inputs
 
 - Dispatched payloads containing `!ACCNT` section data, as provided by the central dispatcher conforming to the `core_dispatch_payload_v1` schema.  
   > ⚠️ **Note:** This module no longer performs `.IIF` file parsing. All parsing and section routing is performed upstream by the central dispatcher. Direct consumption of `.IIF` files is deprecated as of v1.0.9.
@@ -43,19 +41,19 @@ This module manages the conversion and validation of account data exported from 
 
 > 💡 See Section 6.5.1 of the Core PRD for the canonical definition of `core_dispatch_payload_v1`.
 
-### 2.2 Outputs  
+### 3.2 Outputs  
 - CSV files formatted for GnuCash import containing converted accounts.  
 - Internal data structures representing the account tree and mappings.  
 - Validation error logs and exit codes on failure conditions.
 
 ---
 
-## 3. Functional Requirements  
+## 4. Functional Requirements  
 
-### 3.1 Overview  
+### 4.1 Overview  
 The module converts QBD accounts into a GnuCash-compatible hierarchy, applying type mappings, enforcing parent-child relationships, and validating compliance with required account types and placeholders.
 
-### 3.2 Detailed Behavior  
+### 4.2 Detailed Behavior  
 - Process `!ACCNT` records as received from the dispatcher; do not parse raw files directly.  
 - Apply account type mappings based on config; fallback to placeholders where mappings are missing.  
 - Enforce the “1-child” rule: accounts with a single child may have their type promoted to match the child.  
@@ -66,15 +64,15 @@ The module converts QBD accounts into a GnuCash-compatible hierarchy, applying t
 
 ---
 
-## 4. Configuration & Environment  
+## 5. Configuration & Environment  
 
-### 4.1 Config Schema  
+### 5.1 Config Schema  
 - Mapping files specifying:  
   - Account type mappings (`mapping["account_types"]`)  
   - Default placeholder rules (`mapping["default_rules"]`)  
 - Validation rule flags for strict AR/AP enforcement and placeholder behavior.
 
-### 4.2 Environment Constraints  
+### 5.2 Environment Constraints  
 - Python 3.8+ runtime assumed.  
 - Input files must conform to QBD export specifications; no source file alterations allowed.  
 - Outputs must meet GnuCash CSV import requirements.  
@@ -82,9 +80,9 @@ The module converts QBD accounts into a GnuCash-compatible hierarchy, applying t
 
 ---
 
-## 5. Interface & Integration  
+## 6. Interface & Integration  
 
-### 5.1 Module Contract: accounts.py
+### 6.1 Module Contract: accounts.py
 
 - **Input:**  
   - A dispatched section payload object conforming to the `core_dispatch_payload_v1` schema, representing the `!ACCNT` section extracted and parsed from the original `.IIF` file.  
@@ -104,7 +102,7 @@ The module converts QBD accounts into a GnuCash-compatible hierarchy, applying t
 > ⚠️ **Note:** Direct acceptance of `.IIF` file paths is deprecated as of module v1.0.9.  
 > Modules must exclusively accept centrally dispatched section payloads to maintain consistency with the core dispatch workflow and enable modular, agentic processing.
 
-### 5.2 Interface Contracts  
+### 6.2 Interface Contracts  
 
 #### Public Interface: `run_accounts_pipeline`
 - **Arguments:**  
@@ -172,7 +170,7 @@ The module converts QBD accounts into a GnuCash-compatible hierarchy, applying t
     # ...other QBD fields as needed
  ```
 
-### 5.3 Dependencies  
+### 6.3 Dependencies  
 
 | Module Name           | Import Path                                                                                      | Purpose                                   
 |-----------------------|--------------------------------------------------------------------------------------------------|-------------------------------------------
@@ -195,9 +193,9 @@ The module converts QBD accounts into a GnuCash-compatible hierarchy, applying t
 - The mapping file structure defined here adheres to the conventions established in Core PRD section 11.2, which requires mapping files to be in JSON format and referenced via configuration. This module's mapping schema specifically supports account type conversions while maintaining the broader architectural pattern defined in the core requirements.
 ---
 
-## 6. Validation & Error Handling  
+## 7. Validation & Error Handling  
 
-### 6.1 Validation Rules  
+### 7.1 Validation Rules  
 - Input accounts must have valid QuickBooks account types.  
 - Enforce one AR and one AP root account; duplicates trigger errors.  
 - Placeholder accounts must be inserted if mapping is missing.  
@@ -205,7 +203,7 @@ The module converts QBD accounts into a GnuCash-compatible hierarchy, applying t
 - Account type promotion under “1-child” rule must not violate type constraints.  
 - Hierarchy must not contain cycles or invalid parent references.
 
-### 6.2 Error Classes & Exit Codes
+### 7.2 Error Classes & Exit Codes
 - **Error Code Reference:** All error codes are defined as constants in `utils/error_handler.py`, following the format `E###` (e.g., `E001`, `E002`, `E003`).
 
 - **Module-Specific Error Categories:**
@@ -234,7 +232,7 @@ The module converts QBD accounts into a GnuCash-compatible hierarchy, applying t
 
 ---
 
-## 7. Logging & Error Handling  
+## 8. Logging & Error Handling  
 
 - Defers to centralized logging and error handling policies as defined in `module-prd-logging-v1.0.2.md` and `utils/error_handler.py`.  
 - Unique validation errors include detailed context to aid debugging.  
@@ -242,9 +240,9 @@ The module converts QBD accounts into a GnuCash-compatible hierarchy, applying t
 
 ---
 
-## 8. Versioning & Change Control  
+## 9. Versioning & Change Control  
 
-### 8.1 Revision History  
+### 9.1 Revision History  
 | Version | Date       | Author | Summary                           
 |---------|------------|--------|--------------------------------- 
 | v1.0.0  | 2025-05-21 | PJ     | Initial governance-compliant PRD 
@@ -253,29 +251,14 @@ The module converts QBD accounts into a GnuCash-compatible hierarchy, applying t
 | v1.0.10 | 2025-05-23 | PJ     | Editorial and semantic cleanup; clarified parsing vs dispatch validation
 | v1.1.1  | 2025-05-23 | PJ     | module and core PRD document naming and location restructure
 
-### 8.2 Upstream/Downstream Impacts  
+### 9.2 Upstream/Downstream Impacts  
 - Changes to mapping schema or account typing rules require coordination with config management modules.  
 - Downstream modules consuming account CSVs depend on this module for data correctness.  
 - Validation logic updates affect overall pipeline reliability.
 
 ---
 
-## 9. Non-Functional Requirements  
-- Performance optimized to handle large QBD account exports with minimal latency.  
-- Strict maintainability to allow future extension for additional QBD list types.  
-- Security: No sensitive data exposure; input files treated as read-only.  
-- Scalability: Designed to integrate with larger ETL workflows.
-
----
-
-## 10. Open Questions / TODOs  
-- Determine support strategy for future QBD list types beyond accounts.  
-- Define automated testing coverage thresholds for complex validation rules.  
-- Assess potential for supporting QIF imports in future releases.  
-
----
-
-## 11. Example Calls for Public Functions/Classes  
+## 10. Example Calls for Public Functions/Classes  
 
 ```python
 # Agentic/dispatch-based example (current, v1.0.9+):
@@ -303,8 +286,8 @@ run_accounts_pipeline(payload={
 
 ---
 
-## 12. Appendix (Optional)  
-### 12.1 Data Schemas or Additional References  
+## 11. Appendix (Optional)  
+### 11.1 Data Schemas or Additional References  
 ```json
 {
   "account_record": {
@@ -319,7 +302,7 @@ run_accounts_pipeline(payload={
 
 ---
 
-## 13. Domain Module Naming and Containment Rules
+## 12. Domain Module Naming and Containment Rules
 
 To ensure maintainability, prevent cross-domain collisions, and support governance enforcement:
 

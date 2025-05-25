@@ -1,4 +1,4 @@
-## 📋 Audit Prompt: PRD-Only Governance Compliance Audit (v1.1)
+## 📋 Audit Prompt: PRD-Only Governance Compliance Audit (v1.0.12)
 
 You are tasked with performing a **deep, section-by-section governance compliance audit** on all **Product Requirements Documents (PRDs)** located in the `./prd/` directory of this project.
 
@@ -29,19 +29,36 @@ Treat all PRDs as **authoritative**, even if labeled as drafts. Internal consist
 
 ---
 
-### 🧭 Audit Method
-1. Move **section-by-section** through each PRD from top to bottom.
-2. For each section:
-    - Identify **governance violations** with a citation (e.g., “Governance §4.2”)
-    - Recommend specific **corrective actions**
-    - Assign a **compliance grade**:
-        - ✅ Pass | ⚠️ Needs Revision | ❌ Fail
-3. At the end of each PRD:
-    - Provide a **per-document summary**:
-        - Total ✅ / ⚠️ / ❌ by section
-        - Top 3 structural risks or drift points
-        - Action plan to bring the PRD to full compliance
+---
 
+### 🧭 Audit Method  
+1. Move **section-by-section** through each PRD from top to bottom.  
+2. For each section:  
+    - Identify **governance violations** with a citation (e.g., “Governance §4.2”)  
+    - Recommend specific **corrective actions**  
+    - Assign a **compliance grade**:  
+        - ✅ Pass | ⚠️ Needs Revision | ❌ Fail  
+
+3. **Strict Version-Locking Enforcement**  
+    - Flag any **PRD references that are not explicitly version-locked** (e.g., `[Core PRD Section 7.3]` → ❌ Fail)  
+    - Require all **cross-PRD references to use absolute version identifiers** (e.g., `[Core PRD v3.6.0 Section 7.3](../core-prd-v3.6.0.md#73-logging-strategy)`)  
+    - Ensure **all anchor links are stable** and do not rely on section numbering that may change.  
+
+4. **Pure GD Compliance Auditing** *(Revision Applied Here 👇)*  
+    - **Audit ONLY compliance items explicitly mandated by the GD.**  
+    - **DO NOT flag discretionary risks or suggest best practices.**  
+    - Strictly enforce **placement rules as defined in GD §5.4.1 and §7.1** without discretionary interpretation.  
+    - Ensure **directory mismatches, misplaced PRDs, or invalid domain associations trigger strict violations.**  
+
+5. At the end of each PRD:  
+    - Provide a **per-document summary**:  
+        - Total ✅ / ⚠️ / ❌ by section  
+        - Top 3 structural risks or drift points  
+        - **List all unversioned PRD references that require correction**  
+        - **List any PRDs that violate directory placement rules**  
+        - Action plan to bring the PRD to full compliance  
+
+---
 ---
 
 ### 📁 Output Format

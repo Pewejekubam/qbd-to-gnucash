@@ -186,15 +186,8 @@ run_validation_pass({
 
 ---
 
-## 10. Open Questions / TODOs
-- Should validation support partial modes for incremental dev testing?
-- Should this module emit a JSON report for downstream diffing?
-- When future modules (e.g., vendors) are added, should validation become plugin-aware?
-
----
-
-## 11. Appendix (Optional)
-### 11.1 Data Schemas or Additional References
+## 10. Appendix (Optional)
+### 10.1 Data Schemas or Additional References
 ```json
 {
   "ValidationError": {
@@ -227,7 +220,7 @@ run_validation_pass({
 }
 ```
 
-## 11.2 Domain Module Naming and Containment Rules
+## 10.2 Domain Module Naming and Containment Rules
 
 To ensure maintainability, prevent cross-domain collisions, and support governance enforcement:
 
