@@ -1,4 +1,4 @@
-## 📋 Audit Prompt: PRD-Only Governance Compliance Audit (v1.0.12)
+## 📋 Audit Prompt: PRD-Only Governance Compliance Audit (v1.1.0)
 
 You are tasked with performing a **deep, section-by-section governance compliance audit** on all **Product Requirements Documents (PRDs)** located in the `./prd/` directory of this project.
 
