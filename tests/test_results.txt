@@ -1,0 +1,69 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.3, pytest-8.3.5, pluggy-1.6.0
+rootdir: C:\git-root\qbd-to-gnucash
+collected 13 items
+
+tests\test_accounts.py ..                                                [ 15%]
+tests\test_accounts_integration.py .                                     [ 23%]
+tests\test_accounts_mapping.py .F.                                       [ 46%]
+tests\test_accounts_tree.py ..                                           [ 61%]
+tests\test_accounts_validation.py ..                                     [ 76%]
+tests\test_main_cli.py F.F                                               [100%]
+
+================================== FAILURES ===================================
+_______________________ test_load_mapping_missing_file ________________________
+
+    def test_load_mapping_missing_file():
+        import uuid
+        missing_path = f"missing_{uuid.uuid4()}.json"
+>       with pytest.raises(MappingLoadError):
+E       Failed: DID NOT RAISE <class 'utils.error_handler.MappingLoadError'>
+
+tests\test_accounts_mapping.py:20: Failed
+____________________________ test_main_cli_success ____________________________
+
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/2/pytest-of-sysadmin/pytest-3/test_main_cli_success0')
+
+    def test_main_cli_success(tmp_path):
+        input_path = os.path.join('tests', 'data', 'sample-qbd-accounts.IIF')
+        output_path = tmp_path / 'accounts.csv'
+        log_path = tmp_path / 'qbd-to-gnucash.log'
+        result = subprocess.run([
+            sys.executable, '-m', 'src.main',
+            '-i', input_path,
+            '-o', str(output_path),
+            '--log', str(log_path)
+        ], capture_output=True, text=True)
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Program Files\\Python313\\python.exe', '-m', 'src.main', '-i', 'tests\\data\\sample-qbd-ac...emp\\2\\pytest-of-sysadmin\\pytest-3\\test_main_cli_success0\\qbd-to-gnucash.log'], returncode=1, stdout='', stderr='').returncode
+
+tests\test_main_cli.py:20: AssertionError
+_______________________ test_main_cli_validation_error ________________________
+
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/2/pytest-of-sysadmin/pytest-3/test_main_cli_validation_error0')
+
+    def test_main_cli_validation_error(tmp_path):
+        # Use a file with unmapped account type to trigger validation error
+        test_iif = tmp_path / 'unmapped.IIF'
+        with open(test_iif, 'w', encoding='utf-8') as f:
+            f.write('NAME\tACCNTTYPE\tDESC\tPARENT\n')
+            f.write('Assets\tEQUITY\tEquity account\t\n')
+        output_path = tmp_path / 'accounts.csv'
+        log_path = tmp_path / 'qbd-to-gnucash.log'
+        result = subprocess.run([
+            sys.executable, '-m', 'src.main',
+            '-i', str(test_iif),
+            '-o', str(output_path),
+            '--log', str(log_path)
+        ], capture_output=True, text=True)
+>       assert result.returncode == 2
+E       AssertionError: assert 0 == 2
+E        +  where 0 = CompletedProcess(args=['C:\\Program Files\\Python313\\python.exe', '-m', 'src.main', '-i', 'C:\\Users\\Administrator\\...ytest-of-sysadmin\\pytest-3\\test_main_cli_validation_error0\\qbd-to-gnucash.log'], returncode=0, stdout='', stderr='').returncode
+
+tests\test_main_cli.py:54: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_accounts_mapping.py::test_load_mapping_missing_file - Faile...
+FAILED tests/test_main_cli.py::test_main_cli_success - AssertionError: assert...
+FAILED tests/test_main_cli.py::test_main_cli_validation_error - AssertionErro...
+======================== 3 failed, 10 passed in 0.29s =========================

@@ -1,0 +1,34 @@
+2025-05-25 20:41:15 | INFO | qbd-to-gnucash | Validation pass completed successfully.
+2025-05-25 20:41:15 | ERROR | qbd-to-gnucash | Unmapped account type: EQUITY in account Assets
+2025-05-25 20:41:45 | INFO | qbd-to-gnucash | Validation pass completed successfully.
+2025-05-25 20:41:45 | INFO | qbd-to-gnucash | Writing output CSV: C:\Users\Administrator\AppData\Local\Temp\2\pytest-of-sysadmin\pytest-1\test_run_accounts_pipeline_suc0\accounts.csv
+2025-05-25 20:41:45 | INFO | qbd-to-gnucash | Accounts pipeline completed successfully.
+2025-05-25 20:41:45 | ERROR | qbd-to-gnucash | Unmapped account type: VEND in account Vendor
+2025-05-25 20:41:45 | INFO | qbd-to-gnucash | Validation pass completed successfully.
+2025-05-25 20:41:45 | ERROR | qbd-to-gnucash | Unmapped account type: EQUITY in account Assets
+2025-05-25 20:42:22 | INFO | qbd-to-gnucash | Validation pass completed successfully.
+2025-05-25 20:42:22 | INFO | qbd-to-gnucash | Writing output CSV: C:\Users\Administrator\AppData\Local\Temp\2\pytest-of-sysadmin\pytest-2\test_run_accounts_pipeline_suc0\accounts.csv
+2025-05-25 20:42:22 | INFO | qbd-to-gnucash | Accounts pipeline completed successfully.
+2025-05-25 20:42:22 | ERROR | qbd-to-gnucash | Unmapped account type: VEND in account Vendor
+2025-05-25 20:42:22 | INFO | qbd-to-gnucash | Validation pass completed successfully.
+2025-05-25 20:42:22 | INFO | qbd-to-gnucash | Writing output CSV: C:\Users\Administrator\AppData\Local\Temp\2\pytest-of-sysadmin\pytest-2\test_accounts_pipeline_integra0\accounts.csv
+2025-05-25 20:42:22 | INFO | qbd-to-gnucash | Accounts pipeline completed successfully.
+2025-05-25 20:42:22 | INFO | qbd-to-gnucash | Validation pass completed successfully.
+2025-05-25 20:42:22 | ERROR | qbd-to-gnucash | Unmapped account type: EQUITY in account Assets
+2025-05-25 20:42:22 | INFO | qbd-to-gnucash | Validation pass completed successfully.
+2025-05-25 20:42:22 | INFO | qbd-to-gnucash | Writing output CSV: C:\Users\Administrator\AppData\Local\Temp\2\pytest-of-sysadmin\pytest-2\test_main_cli_validation_error0\accounts.csv
+2025-05-25 20:42:22 | INFO | qbd-to-gnucash | Accounts pipeline completed successfully.
+2025-05-25 20:42:22 | INFO | qbd-to-gnucash | Pipeline completed successfully.
+2025-05-25 20:42:40 | INFO | qbd-to-gnucash | Validation pass completed successfully.
+2025-05-25 20:42:40 | INFO | qbd-to-gnucash | Writing output CSV: C:\Users\Administrator\AppData\Local\Temp\2\pytest-of-sysadmin\pytest-3\test_run_accounts_pipeline_suc0\accounts.csv
+2025-05-25 20:42:40 | INFO | qbd-to-gnucash | Accounts pipeline completed successfully.
+2025-05-25 20:42:40 | ERROR | qbd-to-gnucash | Unmapped account type: VEND in account Vendor
+2025-05-25 20:42:40 | INFO | qbd-to-gnucash | Validation pass completed successfully.
+2025-05-25 20:42:40 | INFO | qbd-to-gnucash | Writing output CSV: C:\Users\Administrator\AppData\Local\Temp\2\pytest-of-sysadmin\pytest-3\test_accounts_pipeline_integra0\accounts.csv
+2025-05-25 20:42:40 | INFO | qbd-to-gnucash | Accounts pipeline completed successfully.
+2025-05-25 20:42:40 | INFO | qbd-to-gnucash | Validation pass completed successfully.
+2025-05-25 20:42:40 | ERROR | qbd-to-gnucash | Unmapped account type: EQUITY in account Assets
+2025-05-25 20:42:41 | INFO | qbd-to-gnucash | Validation pass completed successfully.
+2025-05-25 20:42:41 | INFO | qbd-to-gnucash | Writing output CSV: C:\Users\Administrator\AppData\Local\Temp\2\pytest-of-sysadmin\pytest-3\test_main_cli_validation_error0\accounts.csv
+2025-05-25 20:42:41 | INFO | qbd-to-gnucash | Accounts pipeline completed successfully.
+2025-05-25 20:42:41 | INFO | qbd-to-gnucash | Pipeline completed successfully.

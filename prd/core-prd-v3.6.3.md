@@ -423,7 +423,6 @@ Before creating or moving any file:
 - **Performance:** The tool must process typical QBD exports (up to 10,000 records per section) in under 60 seconds on commodity hardware.
 - **Reliability:** All critical errors must be logged and surfaced to the user. The tool must fail fast on unrecoverable errors and provide actionable diagnostics.
 - **Portability:** The tool must run on Windows, macOS, and Linux with no code changes, requiring only Python 3.8+ and standard libraries.
-- **Security:** No sensitive data is retained after processing. All logs must redact account numbers and personally identifiable information.
 - **Maintainability:** All modules and core logic must be documented and follow the interface contract and directory rules.
 
 ### 15.2 Testing and Validation

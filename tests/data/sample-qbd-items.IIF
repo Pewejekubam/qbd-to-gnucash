@@ -1,0 +1,87 @@
+!HDR	PROD	VER	REL	IIFVER	DATE	TIME	ACCNTNT	ACCNTNTSPLITTIME
+HDR	QuickBooks Enterprise Solutions	Version 34.0D	Release R14P	1	2026-12-15	1797367393	N	0
+!CUSTITEMDICT	INDEX	LABEL	INUSE
+!ENDCUSTITEMDICT
+CUSTITEMDICT	0	Color	Y
+CUSTITEMDICT	1	Material	Y
+CUSTITEMDICT	2		N
+CUSTITEMDICT	3		N
+CUSTITEMDICT	4		N
+CUSTITEMDICT	5		N
+CUSTITEMDICT	6		N
+CUSTITEMDICT	7		N
+CUSTITEMDICT	8		N
+CUSTITEMDICT	9		N
+CUSTITEMDICT	10		N
+CUSTITEMDICT	11		N
+CUSTITEMDICT	12		N
+CUSTITEMDICT	13		N
+CUSTITEMDICT	14		N
+ENDCUSTITEMDICT
+!INVITEM	NAME	REFNUM	TIMESTAMP	INVITEMTYPE	DESC	PURCHASEDESC	ACCNT	ASSETACCNT	COGSACCNT	QNTY	VALUE	PRICE	COST	TAXABLE	SALESTAXCODE	PAYMETH	TAXVEND	PREFVEND	REORDERPOINT	EXTRA	CUSTFLD1	CUSTFLD2	CUSTFLD3	CUSTFLD4	CUSTFLD5	DEP_TYPE	ISPASSEDTHRU	HIDDEN	DELCOUNT	USEID	ISNEW	PO_NUM	SERIALNUM	WARRANTY	LOCATION	VENDOR	ASSETDESC	SALEDATE	SALEEXPENSE	NOTES	ASSETNUM	COSTBASIS	ACCUMDEPR	UNRECBASIS	PURCHASEDATE
+INVITEM	Delivery	36	1071531214	SERV	Delivery Service Fee \n(free for orders over $100)	Delivery Service Fee \n(free for orders over $100)	Service					15.00	0	N	Non											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Design	1	934380927	SERV	Custom Landscape Design	Custom Landscape Design	Landscaping Services:Design Services					55.00	0	N	Non											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Gardening	2	934380927	SERV	Weekly gardening services	Weekly gardening services	Landscaping Services:Labor:Installation					0.00	0	N	Non											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Installation	3	934380927	SERV	Installation of landscape design	Installation of landscape design	Landscaping Services:Labor:Installation					35.00	0	N	Non											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Pest Control	4	934380927	SERV	Pest control services	Pest control services	Landscaping Services:Labor:Maintenance & Repairs					0.00	0	N	Non											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Tree Removal	46	1071514896	SERV	Tree Removal Service	Tree Removal Service	Service					0.00	0	N	Non											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Trimming	5	934380927	SERV	Tree and shrub trimming	Tree and shrub trimming	Landscaping Services:Labor:Maintenance & Repairs					35.00	0	N	Non											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Irrigation Hose	37	1071523682	INVENTORY	Parent Item \nVinyl Irrigation Line\n- Do Not Purchase or Sell	Vinyl Irrigation Line\n\nParent Item - Do Not Purchase or Sell	Landscaping Services:Job Materials:Misc Materials	Inventory Asset	Cost of Goods Sold	0	0.00	0.00	0.00	Y	Tax				-1							0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Irrigation Hose:1/2' Line	39	1071524193	INVENTORY	1/2'  Vinyl Irrigation Line	1/2'  Vinyl Irrigation Line	Landscaping Services:Job Materials:Misc Materials	Inventory Asset	Cost of Goods Sold	"1,783"	213.96	0.15	0.12	Y	Tax				"1,500"							0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Irrigation Hose:1/4' Line	38	1071523858	INVENTORY	1/4'  Vinyl Irrigation Line	1/4'  Vinyl Irrigation Line	Landscaping Services:Job Materials:Misc Materials	Inventory Asset	Cost of Goods Sold	"1,235"	86.45	0.10	0.07	Y	Tax				500							0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Irrigation Hose:3/4' Line	40	1071524260	INVENTORY	3/4'  Vinyl Irrigation Line	3/4'  Vinyl Irrigation Line	Landscaping Services:Job Materials:Misc Materials	Inventory Asset	Cost of Goods Sold	"2,670"	480.60	0.27	0.18	Y	Tax				"1,500"							0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Lighting	6	934380927	INVENTORY	Garden Lighting	Garden Lighting	Landscaping Services:Job Materials:Fountains & Garden Lighting	Inventory Asset	Cost of Goods Sold	94	"1,392.00"	0.00	0.00	Y	Tax											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Pump	7	934380927	INVENTORY	Fountain pump	Fountain pump #198-30	Landscaping Services:Job Materials:Fountains & Garden Lighting	Inventory Asset	Cost of Goods Sold	48	"2,588.87"	75.00	56.00	Y	Tax											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Soil	8	934380927	INVENTORY	"Soil, 2 cubic ft bag"	"Soil, 2 cubic ft bag"	Landscaping Services:Job Materials:Plants and Sod	Inventory Asset	Cost of Goods Sold	0	0.00	6.75	5.30	Y	Tax			Middlefield Nursery	25							0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Sprinkler Hds	9	934380927	INVENTORY	Sprinkler heads	Sprinkler head #BLS9081-09	Landscaping Services:Job Materials:Sprinklers & Drip systems	Inventory Asset	Cost of Goods Sold	69	440.60	0.00	0.00	Y	Tax											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Sprkl pipes	10	934380927	INVENTORY	Plastic sprinkler piping	Plastic sprinkler piping #1098-20	Landscaping Services:Job Materials:Sprinklers & Drip systems	Inventory Asset	Cost of Goods Sold	826	"1,734.60"	2.75	2.10	Y	Tax				250							0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Concrete	11	934380927	PART	Concrete for fountain installation	Concrete for fountain installation	Landscaping Services:Job Materials:Fountains & Garden Lighting					0.00	0	Y	Tax											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Deck Lumber	12	934380927	PART	Deck Lumber	Deck Lumber	Landscaping Services:Job Materials:Decks & Patios					0.00	0	Y	Tax											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Fertilizer	33	1071530240	PART	Parent Item - Do Not Use	Parent Item - Do Not Use	Retail Sales					0.00	0	Y	Tax											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Fertilizer:Lawn & Garden	34	1071530358	PART	Lawn & Garden Fertilizer 20-14-7	Lawn & Garden Fertilizer 20-14-7	Retail Sales					1.89	0	Y	Tax											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Fertilizer:Plants & Trees	35	1071530444	PART	Plant & Tree Fertilizer 6-6-10	Plant & Tree Fertilizer 6-6-10	Retail Sales					1.49	0	Y	Tax											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Foliage Tags/Markers	48	1071507836	PART	In-ground signs describing foliage	In-ground signs describing foliage	Misc Income					0.00	0	Y	Tax											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Fountain	13	934380927	PART	Rock Fountain	Rock Fountain	Landscaping Services:Job Materials:Fountains & Garden Lighting					275.00	0	Y	Tax											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Plants/Trees	14	934380927	PART	Plants\nParent Item - Do Not Use	Plants\nParent Item - Do Not Use	Landscaping Services:Job Materials:Plants and Sod					0.00	0	Y	Tax											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Plants/Trees:Citrus Trees	41	1071523481	PART	Citrus Tree - 50 gal.	"Tree, Citrus - 50 gal."	Landscaping Services:Job Materials:Plants and Sod		Job Expenses:Job Materials:Plants & Sod			66.00	46.00	Y	Tax			Gussman's Nursery								0	Y	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Plants/Trees:Fruit Trees	44	1071524126	PART	Fruit Tree -	Fruit Tree -	Job Expenses:Job Materials:Plants & Sod					55.00	0	Y	Tax											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Plants/Trees:Hedges & Shrubs	42	1071523837	PART	Hedges & Shrubs	Hedges & Shrubs	Landscaping Services:Job Materials:Plants and Sod					30.00	0	Y	Tax											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Plants/Trees:Misc Plants & Flowers	45	1071524237	PART	Misc Plants & Flowers	Misc Plants & Flowers	Landscaping Services:Job Materials:Plants and Sod					0.00	0	Y	Tax											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Plants/Trees:Ornamental	43	1071524010	PART	Ornamental	Ornamental	Landscaping Services:Job Materials:Plants and Sod					36.25	0	Y	Tax											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Ponds	15	934380927	PART	Fish Pond	Fish Pond	Landscaping Services:Job Materials:Fountains & Garden Lighting					0.00	0	Y	Tax											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Rocks	16	934380927	PART	Garden rocks	Garden rocks	Landscaping Services:Job Materials:Plants and Sod					9.75	0	Y	Tax											0	N	N	0	N	N								0.00			0.00	0.00	0.00	
+INVITEM	Fin Chg	17	934380927	OTHC	Finance Charges on Overdue Balance	Finance Charges on Overdue Balance	Interest Income					10.0%	0	N	Non											0	N	N	0	N	Y								0.00						
+INVITEM	Permits	18	934380927	OTHC	Permits	Permits	Other Income		Job Expenses:Permits			0.00	0.00	N	Non											0	Y	N	0	N	Y								0.00						
+INVITEM	Shipping	19	934380927	OTHC	Shipping and handling	Shipping and handling	Other Income					0.00	0	N	Non											0	N	N	0	N	Y								0.00						
+INVITEM	Reimb Subt	20	934380927	SUBT	Reimbursable Expenses Subtotal								0	N						REXPSUBTOT						0	N	N	0	N	Y								0.00						
+INVITEM	Subtotal	21	934380927	SUBT	Subtotal								0	N												0	N	N	0	N	Y								0.00						
+INVITEM	10% Discount	22	934380927	DISC	10% Discount		Discounts					-10.0%	0	Y	Tax											0	N	N	0	N	Y								0.00						
+INVITEM	5% Discount	47	1071528396	DISC	5% Discount		Discounts					0.00	0	Y	Tax											0	N	N	0	N	Y								0.00						
+INVITEM	Deposit Credit	32	1071511955	DISC	Applied Payment on Account		Payments on Account					0.00	0	Y	Tax											0	N	N	0	N	Y								0.00						
+INVITEM	Assessment	23	934380927	COMPTAX	San Thomas County - Earthquake assessment		Sales Tax Payable					1.75%	0	N			State Board of Equalization									0	N	N	0	N	Y								0.00						
+INVITEM	"County, San Thomas"	24	934380927	COMPTAX	"CA sales tax, San Tomas County"		Sales Tax Payable					6.5%	0	N			State Board of Equalization									0	N	N	0	N	Y								0.00						
+INVITEM	Out of State	25	934380927	COMPTAX	"Out-of-state sale, exempt from sales tax"		Sales Tax Payable					0.0%	0	N												0	N	N	0	N	Y								0.00						
+INVITEM	San Domingo	26	934380927	COMPTAX	Sales Tax - San Domingo County Tax		Sales Tax Payable					7.75%	0	N			State Board of Equalization									0	N	N	0	N	Y								0.00						
+!INVITEM	NAME	REFNUM	TIMESTAMP	INVITEMTYPE	DESC	TOPRINT	EXTRA	QNTY	CUSTFLD1	CUSTFLD2	CUSTFLD3	CUSTFLD4	CUSTFLD5	HIDDEN	DELCOUNT	USEID
+!ENDGRP
+INVITEM	Reimb Group	27	934380927	GRP	Total Reimbursable Expenses	Y	REXPGROUP							N	0	N
+ENDGRP
+INVITEM	Rock Fountain	28	934380927	GRP	Custom rock fountain	Y								N	0	N
+INVITEM	Fountain	13	934380927	PART		Y								N	0	N
+INVITEM	Pump	7	934380927	INVENTORY		Y								N	0	N
+INVITEM	Concrete	11	934380927	PART		Y								N	0	N
+INVITEM	Installation	3	934380927	SERV		Y								N	0	N
+ENDGRP
+INVITEM	Sprinkler Systems	29	934380927	GRP	Sprinkler system	Y								N	0	N
+INVITEM	Sprinkler Hds	9	934380927	INVENTORY		Y								N	0	N
+INVITEM	Sprkl pipes	10	934380927	INVENTORY		Y								N	0	N
+INVITEM	Installation	3	934380927	SERV		Y								N	0	N
+ENDGRP
+INVITEM	Walkway	30	934380927	GRP	Walkway lighting	Y								N	0	N
+INVITEM	Lighting	6	934380927	INVENTORY		Y								N	0	N
+INVITEM	Installation	3	934380927	SERV		Y								N	0	N
+ENDGRP
+INVITEM	San Thomas Group	31	934380927	STAX	Sales Tax - San Thomas County	N								N	0	N
+INVITEM	"County, San Thomas"	24	934380927	COMPTAX		N								N	0	N
+INVITEM	Assessment	23	934380927	COMPTAX		N		0						N	0	N
+ENDTAX
