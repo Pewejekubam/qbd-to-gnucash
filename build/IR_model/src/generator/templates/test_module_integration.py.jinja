@@ -1,0 +1,56 @@
+"""Integration tests for {{ module_name }}.
+Version: {{ version }}
+"""
+import unittest
+from typing import Dict, List, Any, Optional
+from pathlib import Path
+{% for import in imports %}
+{{ import }}
+{% endfor %}
+
+class Test{{ class_name }}Integration(unittest.TestCase):
+    """Integration test cases for {{ module_name }}."""
+    
+    @classmethod
+    def setUpClass(cls):
+        """Set up test fixtures."""
+        {{ setup_code | indent(8) }}
+        
+    @classmethod
+    def tearDownClass(cls):
+        """Clean up after tests."""
+        {{ teardown_code | indent(8) }}
+        
+    def setUp(self):
+        """Set up individual test."""
+        {{ test_setup_code | indent(8) }}
+        
+    def tearDown(self):
+        """Clean up after individual test."""
+        {{ test_teardown_code | indent(8) }}
+    
+    {% for test in test_cases %}
+    def test_{{ test.name }}(self):
+        """{{ test.description }}"""
+        {% if test.test_data %}
+        # Test data setup
+        {{ test.test_data | indent(8) }}
+        {% endif %}
+        
+        # Execute test
+        {{ test.test_code | indent(8) }}
+        
+        {% if test.assertions %}
+        # Verify results
+        {{ test.assertions | indent(8) }}
+        {% endif %}
+        
+        {% if test.cleanup %}
+        # Cleanup
+        {{ test.cleanup | indent(8) }}
+        {% endif %}
+        
+    {% endfor %}
+    
+if __name__ == '__main__':
+    unittest.main()

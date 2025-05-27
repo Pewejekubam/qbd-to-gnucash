@@ -1,0 +1,124 @@
+# API Documentation — {{ module_name }}
+
+## Overview
+{{ overview }}
+
+## Module Functions
+
+{% for function in functions %}
+### `{{ function.name }}({% if function.parameters %}{{ function.parameters | join(', ') }}{% endif %}) -> {{ function.return_type }}`
+
+{{ function.description }}
+
+{% if function.parameters %}
+#### Parameters
+{% for param in function.parameters %}
+- `{{ param.name }}` ({{ param.type }}): {{ param.description }}
+{% endfor %}
+{% endif %}
+
+#### Returns
+{{ function.return_description }}
+
+{% if function.raises %}
+#### Raises
+{% for error in function.raises %}
+- `{{ error.type }}`: {{ error.description }}
+{% endfor %}
+{% endif %}
+
+{% if function.examples %}
+#### Examples
+```python
+{% for example in function.examples %}
+{{ example }}
+{% endfor %}
+```
+{% endif %}
+
+{% endfor %}
+
+## Classes
+
+{% for class in classes %}
+### `{{ class.name }}`
+
+{{ class.description }}
+
+{% if class.constructor %}
+#### Constructor
+```python
+{{ class.constructor }}
+```
+{% endif %}
+
+#### Methods
+{% for method in class.methods %}
+##### `{{ method.name }}({% if method.parameters %}{{ method.parameters | join(', ') }}{% endif %}) -> {{ method.return_type }}`
+
+{{ method.description }}
+
+{% if method.parameters %}
+**Parameters:**
+{% for param in method.parameters %}
+- `{{ param.name }}` ({{ param.type }}): {{ param.description }}
+{% endfor %}
+{% endif %}
+
+**Returns:**
+{{ method.return_description }}
+
+{% if method.raises %}
+**Raises:**
+{% for error in method.raises %}
+- `{{ error.type }}`: {{ error.description }}
+{% endfor %}
+{% endif %}
+
+{% if method.examples %}
+**Examples:**
+```python
+{% for example in method.examples %}
+{{ example }}
+{% endfor %}
+```
+{% endif %}
+
+{% endfor %}
+
+{% if class.attributes %}
+#### Attributes
+{% for attr in class.attributes %}
+- `{{ attr.name }}` ({{ attr.type }}): {{ attr.description }}
+{% endfor %}
+{% endif %}
+
+{% endfor %}
+
+## Error Types
+{% for error in errors %}
+### `{{ error.name }}`
+{{ error.description }}
+{% if error.example %}
+Example:
+```python
+{{ error.example }}
+```
+{% endif %}
+{% endfor %}
+
+## Constants
+{% for const in constants %}
+### `{{ const.name }}`
+Type: {{ const.type }}
+Description: {{ const.description }}
+{% endfor %}
+
+## Type Aliases
+{% for type in type_aliases %}
+### `{{ type.name }}`
+```python
+{{ type.definition }}
+```
+{{ type.description }}
+{% endfor %}

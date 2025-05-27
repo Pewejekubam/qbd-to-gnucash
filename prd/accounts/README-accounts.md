@@ -10,7 +10,9 @@ This module manages the conversion and validation of account data exported from 
 - `src/modules/accounts/accounts_tree.py` — Account tree builder and validator
 - `src/modules/accounts/accounts_validation.py` — Account validation logic
 - `prd/accounts/README-accounts.md` — This file
-- Output: `output/accounts.csv`, `output/accounts_mapping_diff.json`
+- Output: 
+    - `output/accounts.csv` - Fully converted, GNUCash compatible import file
+    - `output/accounts_mapping_diff.json` - Accounts that had no match to the baseline during mapping
 
 ## Design Reference
 This module is governed by [module-prd-accounts-v1.1.1.md](./module-prd-accounts-v1.1.1.md) and follows the PRD governance model.

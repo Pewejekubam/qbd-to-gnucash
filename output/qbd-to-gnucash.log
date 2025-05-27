@@ -1,0 +1,28 @@
+2025-05-26 16:14:06 [INFO] main.main: Logging initialized. Starting QBD to GnuCash conversion tool.
+2025-05-26 16:16:43 [INFO] main.main: Logging initialized. Starting QBD to GnuCash conversion tool.
+2025-05-26 16:16:43 [INFO] main.main: Processing IIF file: input\sample-qbd-accounts.IIF
+2025-05-26 16:16:43 [INFO] main.process_iif_data: Parsing IIF content.
+2025-05-26 16:16:43 [INFO] main.process_iif_data: Parsed 105 account records from IIF.
+2025-05-26 16:16:43 [INFO] accounts.process: Starting account data processing.
+2025-05-26 16:16:43 [INFO] accounts_validation.validate_accounts: Validating account data.
+2025-05-26 16:16:43 [INFO] accounts_mapping.map_account_types: Mapping account types/categories.
+2025-05-26 16:16:43 [INFO] accounts_tree.build_account_tree: Building account tree (hierarchy management).
+2025-05-26 16:16:43 [INFO] accounts.process: Accounts CSV written to output\accounts.csv.
+2025-05-26 16:16:43 [INFO] main.process_iif_data: Accounts processing complete.
+2025-05-26 16:16:43 [INFO] main.main: Wrote output: output\sample-qbd-accounts.json
+2025-05-26 16:16:43 [INFO] main.main: Processing IIF file: input\sample-qbd-customers.IIF
+2025-05-26 16:16:43 [INFO] main.process_iif_data: Parsing IIF content.
+2025-05-26 16:16:43 [ERROR] main.process_iif_data: IIF parsing failed: Failed to parse IIF: Missing !ACCNT header in IIF content.
+2025-05-26 16:16:43 [INFO] main.main: Wrote output: output\sample-qbd-customers.json
+2025-05-26 16:16:43 [INFO] main.main: Processing IIF file: input\sample-qbd-items.IIF
+2025-05-26 16:16:43 [INFO] main.process_iif_data: Parsing IIF content.
+2025-05-26 16:16:43 [ERROR] main.process_iif_data: IIF parsing failed: Failed to parse IIF: Missing !ACCNT header in IIF content.
+2025-05-26 16:16:43 [INFO] main.main: Wrote output: output\sample-qbd-items.json
+2025-05-26 16:16:43 [INFO] main.main: Processing IIF file: input\sample-qbd-payment-terms.IIF
+2025-05-26 16:16:43 [INFO] main.process_iif_data: Parsing IIF content.
+2025-05-26 16:16:43 [ERROR] main.process_iif_data: IIF parsing failed: Failed to parse IIF: Missing !ACCNT header in IIF content.
+2025-05-26 16:16:43 [INFO] main.main: Wrote output: output\sample-qbd-payment-terms.json
+2025-05-26 16:16:43 [INFO] main.main: Processing IIF file: input\sample-qbd-sales-tax-codes.IIF
+2025-05-26 16:16:43 [INFO] main.process_iif_data: Parsing IIF content.
+2025-05-26 16:16:43 [ERROR] main.process_iif_data: IIF parsing failed: Failed to parse IIF: Missing !ACCNT header in IIF content.
+2025-05-26 16:16:43 [INFO] main.main: Wrote output: output\sample-qbd-sales-tax-codes.json

@@ -1,0 +1,103 @@
+# QBD-to-GnuCash Intermediate Representation Schema
+# Version: v1.0.0
+# Compatible Core PRD: v3.6.3
+# Governance Model: v2.3.10
+
+# 1. System Components
+components:
+  core:
+    type: orchestrator
+    version: "3.6.3"
+    interfaces:
+      - run_conversion_pipeline
+      - register_module
+      - dispatch_to_module
+      - log_and_exit
+    error_handlers:
+      - RegistryKeyConflictError
+      - ValidationError
+
+  utils:
+    common:
+      - name: error_handler
+        path: src/utils/error_handler.py
+      - name: iif_parser
+        path: src/utils/iif_parser.py
+      - name: logging
+        path: src/utils/logging.py
+        version: "1.0.4"
+
+  modules:
+    accounts:
+      version: "1.1.1"
+      submodules:
+        - name: accounts
+          path: src/modules/accounts/accounts.py
+        - name: accounts_mapping
+          path: src/modules/accounts/accounts_mapping.py
+          version: "1.0.7"
+        - name: accounts_validation
+          path: src/modules/accounts/accounts_validation.py
+          version: "1.0.2"
+        - name: accounts_tree
+          path: src/modules/accounts/accounts_tree.py
+      dispatch_key: "!ACCNT"
+      dependencies:
+        - utils.error_handler
+        - utils.logging
+
+# 2. Module Relationships
+relationships:
+  core_contracts:
+    - module_registration:
+        provider: core.register_module
+        consumers: ["*.modules.*"]
+    - dispatch:
+        provider: core.dispatch_to_module
+        consumers: ["*.modules.*"]
+    - logging:
+        provider: utils.logging
+        consumers: ["*"]
+    - error_handling:
+        provider: utils.error_handler
+        consumers: ["*"]
+
+  module_dependencies:
+    accounts:
+      - accounts_mapping
+      - accounts_validation
+      - accounts_tree
+
+# 3. Version Binding Rules
+version_rules:
+  core_compatibility:
+    current_core: "3.6.3"
+    current_governance: "2.3.10"
+    minimum_core: "3.6.0"
+
+  module_compatibility:
+    accounts:
+      core: "3.6.3"
+      logging: "1.0.4"
+      internal:
+        accounts: "1.1.1"
+        accounts_mapping: "1.0.7"
+        accounts_validation: "1.0.2"
+
+  validation_rules:
+    - rule: semantic_versioning
+      pattern: "^v?\\d+\\.\\d+\\.\\d+$"
+    - rule: version_lock
+      enforce: true
+      check_references: true
+    - rule: governance_compliance
+      model: "2.3.10"
+      enforce: true
+
+  update_protocol:
+    - increment_major:
+        conditions: ["breaking_changes", "interface_changes"]
+    - increment_minor:
+        conditions: ["feature_additions", "backwards_compatible"]
+    - increment_patch:
+        conditions: ["bug_fixes", "documentation"]

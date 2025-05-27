@@ -10,7 +10,7 @@
 ---
 
 ## 1. Purpose
-This module manages the conversion and validation of account data exported from QuickBooks Desktop (QBD) into a format compatible with GnuCash CSV import. It handles account mapping, hierarchy construction, and enforces typing rules critical for correct financial data import.
+This module manages the conversion and validation of account data exported from QuickBooks Desktop (QBD) into an import format compatible with GnuCash CSV import. It handles account mapping, hierarchy construction, and enforces typing rules critical for correct financial data import.
 
 ## 2. Scope
 - Covers mapping and validating `!ACCNT` records as dispatched by the core dispatcher.
@@ -272,17 +272,6 @@ run_accounts_pipeline(payload={
     'extra_config': {...}
 })
 ```
-
-> **Legacy Example (deprecated as of v1.0.9):**
-> ```python
-> run_accounts_pipeline(
->     iif_path='input/sample-qbd-accounts.IIF',
->     mapping_path='output/accounts_mapping_specific.json',
->     csv_path='output/accounts.csv',
->     log_path='output/qbd-to-gnucash.log',
->     mapping_diff_path='output/accounts_mapping_diff.json'
-> )
-> ```
 
 ---
 
