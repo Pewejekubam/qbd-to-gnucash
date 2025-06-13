@@ -347,7 +347,7 @@ qbd-to-gnucash/
 ### **Architecture & Governance**
 - **[Core PRD v3.9.1](prd/core-prd-main-v3.9.1.md)** — Complete system architecture
 - **[Governance Model v2.7.0](prd/prd-governance-model-v2.7.0.md)** — Development standards
-- **[Module Template v3.7.0](prd/prd-template-module-v3.7.0.md)** — New module development guide
+- **[Module Template v3.7.0](prd/templates/prd-template-module-v3.7.0.md)** — New module development guide
 - **[Core Architecture README](prd/README-core.md)** — Console logging specification
 
 ### **Domain Modules**
