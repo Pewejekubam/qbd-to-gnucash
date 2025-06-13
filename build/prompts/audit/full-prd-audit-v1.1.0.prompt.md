@@ -21,7 +21,7 @@ Identify and annotate **all violations** of the **PRD Governance Model v2.3.10**
 ### 🔍 Scope of Audit
 Audit **only the following documents**:
 
-- `core-prd-v*.md` (Core Product Requirements Document)
+- `core-prd-main-v*.md` (Core Product Requirements Document)
 - All `module-prd-*.md` files (Module-specific PRDs under `./prd/`)
 - Explicitly exclude all `README.md` files at this stage
 
@@ -41,7 +41,7 @@ Treat all PRDs as **authoritative**, even if labeled as drafts. Internal consist
 
 3. **Strict Version-Locking Enforcement**  
     - Flag any **PRD references that are not explicitly version-locked** (e.g., `[Core PRD Section 7.3]` → ❌ Fail)  
-    - Require all **cross-PRD references to use absolute version identifiers** (e.g., `[Core PRD v3.6.0 Section 7.3](../core-prd-v3.6.0.md#73-logging-strategy)`)  
+    - Require all **cross-PRD references to use absolute version identifiers** (e.g., `[Core PRD v3.6.4 Section 7.3](../core-prd-v3.6.4.md#73-logging-strategy)`)  
     - Ensure **all anchor links are stable** and do not rely on section numbering that may change.  
 
 4. **Pure GD Compliance Auditing** *(Revision Applied Here 👇)*  
@@ -83,6 +83,6 @@ Return your audit in **structured markdown**, following this format:
 
 * Do **not** rewrite or reformat the PRDs—just audit.
 * Be strict. If a clause or heading seems ambiguous, **flag it**.
-* Apply the **PRD Governance Model v1.0.0** as the absolute standard. No external style rules apply unless explicitly codified there.
+* Apply the **PRD Governance Model v2.3.10** as the absolute standard. No external style rules apply unless explicitly codified there.
 
 ```

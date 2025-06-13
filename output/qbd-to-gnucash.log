@@ -1,28 +1,290 @@
-2025-05-26 16:14:06 [INFO] main.main: Logging initialized. Starting QBD to GnuCash conversion tool.
-2025-05-26 16:16:43 [INFO] main.main: Logging initialized. Starting QBD to GnuCash conversion tool.
-2025-05-26 16:16:43 [INFO] main.main: Processing IIF file: input\sample-qbd-accounts.IIF
-2025-05-26 16:16:43 [INFO] main.process_iif_data: Parsing IIF content.
-2025-05-26 16:16:43 [INFO] main.process_iif_data: Parsed 105 account records from IIF.
-2025-05-26 16:16:43 [INFO] accounts.process: Starting account data processing.
-2025-05-26 16:16:43 [INFO] accounts_validation.validate_accounts: Validating account data.
-2025-05-26 16:16:43 [INFO] accounts_mapping.map_account_types: Mapping account types/categories.
-2025-05-26 16:16:43 [INFO] accounts_tree.build_account_tree: Building account tree (hierarchy management).
-2025-05-26 16:16:43 [INFO] accounts.process: Accounts CSV written to output\accounts.csv.
-2025-05-26 16:16:43 [INFO] main.process_iif_data: Accounts processing complete.
-2025-05-26 16:16:43 [INFO] main.main: Wrote output: output\sample-qbd-accounts.json
-2025-05-26 16:16:43 [INFO] main.main: Processing IIF file: input\sample-qbd-customers.IIF
-2025-05-26 16:16:43 [INFO] main.process_iif_data: Parsing IIF content.
-2025-05-26 16:16:43 [ERROR] main.process_iif_data: IIF parsing failed: Failed to parse IIF: Missing !ACCNT header in IIF content.
-2025-05-26 16:16:43 [INFO] main.main: Wrote output: output\sample-qbd-customers.json
-2025-05-26 16:16:43 [INFO] main.main: Processing IIF file: input\sample-qbd-items.IIF
-2025-05-26 16:16:43 [INFO] main.process_iif_data: Parsing IIF content.
-2025-05-26 16:16:43 [ERROR] main.process_iif_data: IIF parsing failed: Failed to parse IIF: Missing !ACCNT header in IIF content.
-2025-05-26 16:16:43 [INFO] main.main: Wrote output: output\sample-qbd-items.json
-2025-05-26 16:16:43 [INFO] main.main: Processing IIF file: input\sample-qbd-payment-terms.IIF
-2025-05-26 16:16:43 [INFO] main.process_iif_data: Parsing IIF content.
-2025-05-26 16:16:43 [ERROR] main.process_iif_data: IIF parsing failed: Failed to parse IIF: Missing !ACCNT header in IIF content.
-2025-05-26 16:16:43 [INFO] main.main: Wrote output: output\sample-qbd-payment-terms.json
-2025-05-26 16:16:43 [INFO] main.main: Processing IIF file: input\sample-qbd-sales-tax-codes.IIF
-2025-05-26 16:16:43 [INFO] main.process_iif_data: Parsing IIF content.
-2025-05-26 16:16:43 [ERROR] main.process_iif_data: IIF parsing failed: Failed to parse IIF: Missing !ACCNT header in IIF content.
-2025-05-26 16:16:43 [INFO] main.main: Wrote output: output\sample-qbd-sales-tax-codes.json
+2025-06-13 12:46:18,175 [INFO] [CORE] QBD to GnuCash Conversion Tool - Started
+2025-06-13 12:46:18,175 [DEBUG] [CORE] Detailed logging initialized: output\qbd-to-gnucash.log
+2025-06-13 12:46:18,175 [DEBUG] [CORE] Console logging: INFO level (user-focused)
+2025-06-13 12:46:18,176 [DEBUG] [CORE] File logging: DEBUG level (technical details)
+2025-06-13 12:46:18,176 [DEBUG] [CORE] QBD to GnuCash conversion tool started
+2025-06-13 12:46:18,176 [DEBUG] [CORE] Directory structure verified
+2025-06-13 12:46:18,176 [DEBUG] [CORE] Module registered - ACCNT module key -> processing function
+2025-06-13 12:46:18,177 [DEBUG] [CORE] Module registration completed
+2025-06-13 12:46:18,177 [DEBUG] [CORE] File discovery completed - 5 IIF files found
+2025-06-13 12:46:18,177 [DEBUG] [CORE] Starting conversion pipeline
+2025-06-13 12:46:18,177 [DEBUG] [CORE] Starting PRD compliant conversion pipeline
+2025-06-13 12:46:18,177 [DEBUG] [CORE] Pipeline initiated - 5 IIF files, output directory: output
+2025-06-13 12:46:18,177 [INFO] [CORE] Discovered 5 IIF files for processing:
+2025-06-13 12:46:18,177 [INFO] [CORE]   * sample-qbd-accounts.IIF
+2025-06-13 12:46:18,178 [INFO] [CORE]   * sample-qbd-customers.IIF
+2025-06-13 12:46:18,178 [INFO] [CORE]   * sample-qbd-items.IIF
+2025-06-13 12:46:18,178 [INFO] [CORE]   * sample-qbd-payment-terms.IIF
+2025-06-13 12:46:18,178 [INFO] [CORE]   * sample-qbd-sales-tax-codes.IIF
+2025-06-13 12:46:18,178 [INFO] [CORE] Pipeline initiated
+2025-06-13 12:46:18,178 [DEBUG] [CORE] Begin content-based processing - input\sample-qbd-accounts.IIF
+2025-06-13 12:46:18,178 [DEBUG] [CORE] Initializing IIF parser for: input\sample-qbd-accounts.IIF
+2025-06-13 12:46:18,178 [DEBUG] [IIF-PARSER] Beginning IIF file parsing: input\sample-qbd-accounts.IIF
+2025-06-13 12:46:18,179 [DEBUG] [IIF-PARSER] Found module key: HDR at line 1
+2025-06-13 12:46:18,179 [DEBUG] [IIF-PARSER] Found module key: ACCNT at line 3
+2025-06-13 12:46:18,179 [DEBUG] [IIF-PARSER] Found module key: QB at line 110
+2025-06-13 12:46:18,179 [DEBUG] [IIF-PARSER] IIF parsing completed: 3 module keys, 117 lines processed
+2025-06-13 12:46:18,179 [DEBUG] [CORE] IIF parsing completed - input\sample-qbd-accounts.IIF -> 3 module keys discovered, 114 lines processed
+2025-06-13 12:46:18,179 [DEBUG] [CORE] Module keys found: ['HDR', 'ACCNT', 'QB']
+2025-06-13 12:46:18,179 [DEBUG] [CORE] Module key not registered - HDR (1 module key records) - no processing module available
+2025-06-13 12:46:18,179 [DEBUG] [CORE] To process HDR module keys, register a module with: register_global_module('HDR', module_function)
+2025-06-13 12:46:18,180 [DEBUG] [CORE] Module dispatch - 106 ACCNT module key records -> registered module
+2025-06-13 12:46:18,180 [DEBUG] [CORE] Module dispatch initiated - ACCNT
+2025-06-13 12:46:18,180 [INFO] [ACCOUNTS-PIPELINE] Starting accounts processing with 106 records
+2025-06-13 12:46:18,180 [DEBUG] [ACCOUNTS-ORCHESTRATION] Loading account mapping configuration
+2025-06-13 12:46:18,180 [DEBUG] [ACCOUNTS-MAPPING] Loading baseline mapping from: C:\git-root\qbd-to-gnucash\src\modules\accounts\accounts_mapping_baseline.json
+2025-06-13 12:46:18,180 [INFO] [ACCOUNTS-MAPPING] Loaded and validated baseline mapping: 15 accounts
+2025-06-13 12:46:18,180 [INFO] [ACCOUNTS-MAPPING] No user override file found - using baseline configuration
+2025-06-13 12:46:18,180 [DEBUG] [ACCOUNTS-MAPPING] To customize mappings, create: output\accounts_mapping_specific.json
+2025-06-13 12:46:18,180 [INFO] [ACCOUNTS-MAPPING] Account mapping configuration ready - 15 types mapped and validated
+2025-06-13 12:46:18,180 [DEBUG] [ACCOUNTS-ORCHESTRATION] Beginning account validation
+2025-06-13 12:46:18,181 [DEBUG] [ACCOUNTS-ORCHESTRATION] Account validation completed - 106 accounts validated
+2025-06-13 12:46:18,181 [INFO] [ACCOUNTS-UNMAPPED-PROCESSING] Found 1 unmapped accounts requiring user input
+2025-06-13 12:46:18,181 [DEBUG] [ACCOUNTS-MAPPING] Mapped types available: ['AP', 'AR', 'BANK', 'CCARD', 'COGS', 'EQUITY', 'EXEXP', 'EXINC', 'EXP', 'FIXASSET', 'INC', 'LTLIAB', 'NONPOSTING', 'OCASSET', 'OCLIAB']
+2025-06-13 12:46:18,181 [INFO] [ACCOUNTS-ORCHESTRATION] Sub-module coordination: HALT condition detected
+2025-06-13 12:46:18,182 [INFO] [ACCOUNTS-UNMAPPED-PROCESSING] Generated questions file: accounts_mapping_questions.txt and accounts_mapping_instructions.txt
+2025-06-13 12:46:18,182 [INFO] [ACCOUNTS-UNMAPPED-PROCESSING] Edit the questions file and restart pipeline to continue
+2025-06-13 12:46:18,182 [INFO] [ACCOUNTS-UNMAPPED-PROCESSING] Pipeline HALT: User action required
+2025-06-13 12:46:18,182 [INFO] [ACCOUNTS-PIPELINE] Pipeline HALT: User action required for mapping completion
+2025-06-13 12:46:18,182 [DEBUG] [CORE] Module dispatch completed - ACCNT
+2025-06-13 12:46:18,183 [ERROR] ERROR: [ACCNT-PIPELINE] Module reports HALT. User action required. See debug log "E0113" around 12:46:18.183
+2025-06-13 12:46:18,183 [DEBUG] [CORE] E0113 Module returned False - ACCNT
+2025-06-13 12:46:18,183 [DEBUG] [CORE] Module key not registered - QB (7 module key records) - no processing module available
+2025-06-13 12:46:18,183 [DEBUG] [CORE] To process QB module keys, register a module with: register_global_module('QB', module_function)
+2025-06-13 12:46:18,183 [DEBUG] [CORE] Begin content-based processing - input\sample-qbd-customers.IIF
+2025-06-13 12:46:18,183 [DEBUG] [CORE] Initializing IIF parser for: input\sample-qbd-customers.IIF
+2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Beginning IIF file parsing: input\sample-qbd-customers.IIF
+2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Found module key: HDR at line 1
+2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Found module key: CUSTNAMEDICT at line 3
+2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Found module key: ENDCUSTNAMEDICT at line 4
+2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 5 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 6 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 7 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 8 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 9 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 10 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 11 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 12 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 13 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 14 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 15 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 16 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 17 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 18 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 19 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 20 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 21 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 22 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 23 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 24 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 25 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 26 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 27 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 28 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 29 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 30 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 31 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 32 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 33 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 34 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Found module key: CUST at line 36
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 37 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 38 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 39 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 40 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 41 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 42 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 43 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 44 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 45 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 46 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 47 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 48 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 49 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 50 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 51 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 52 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 53 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 54 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 55 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 56 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 57 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 58 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 59 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 60 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 61 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 62 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 63 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 64 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 65 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 66 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 67 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 68 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 69 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 70 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 71 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 72 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 73 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 74 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 75 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 76 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 77 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 78 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 79 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 80 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 81 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 82 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 83 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 84 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 85 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 86 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 87 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 88 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 89 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 90 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 91 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 92 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 93 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 94 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 95 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 96 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 97 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 98 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 99 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 100 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 101 in section CUST. Expected 59, got 58
+2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] IIF parsing completed: 4 module keys, 101 lines processed
+2025-06-13 12:46:18,187 [DEBUG] [CORE] IIF parsing completed - input\sample-qbd-customers.IIF -> 4 module keys discovered, 97 lines processed
+2025-06-13 12:46:18,187 [DEBUG] [CORE] Module keys found: ['HDR', 'CUSTNAMEDICT', 'ENDCUSTNAMEDICT', 'CUST']
+2025-06-13 12:46:18,187 [DEBUG] [CORE] Module key not registered - HDR (1 module key records) - no processing module available
+2025-06-13 12:46:18,187 [DEBUG] [CORE] To process HDR module keys, register a module with: register_global_module('HDR', module_function)
+2025-06-13 12:46:18,187 [DEBUG] [CORE] Module key not registered - CUSTNAMEDICT (0 module key records) - no processing module available
+2025-06-13 12:46:18,187 [DEBUG] [CORE] To process CUSTNAMEDICT module keys, register a module with: register_global_module('CUSTNAMEDICT', module_function)
+2025-06-13 12:46:18,187 [DEBUG] [CORE] Module key not registered - ENDCUSTNAMEDICT (31 module key records) - no processing module available
+2025-06-13 12:46:18,187 [DEBUG] [CORE] To process ENDCUSTNAMEDICT module keys, register a module with: register_global_module('ENDCUSTNAMEDICT', module_function)
+2025-06-13 12:46:18,187 [DEBUG] [CORE] Module key not registered - CUST (65 module key records) - no processing module available
+2025-06-13 12:46:18,187 [DEBUG] [CORE] To process CUST module keys, register a module with: register_global_module('CUST', module_function)
+2025-06-13 12:46:18,187 [DEBUG] [CORE] Begin content-based processing - input\sample-qbd-items.IIF
+2025-06-13 12:46:18,187 [DEBUG] [CORE] Initializing IIF parser for: input\sample-qbd-items.IIF
+2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Beginning IIF file parsing: input\sample-qbd-items.IIF
+2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Found module key: HDR at line 1
+2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Found module key: CUSTITEMDICT at line 3
+2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Found module key: ENDCUSTITEMDICT at line 4
+2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 5 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 6 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 7 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 8 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 9 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 10 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 11 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 12 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 13 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 14 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 15 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 16 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 17 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 18 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 19 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Found module key: INVITEM at line 21
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 22 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 23 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 24 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 25 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 26 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 27 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 28 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 29 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 30 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 31 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 32 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 33 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 34 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 35 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 36 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 37 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 38 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 39 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 40 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 41 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 42 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 43 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 44 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 45 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 46 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 47 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 48 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 49 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 50 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 51 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 52 in section INVITEM. Expected 46, got 45
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 53 in section INVITEM. Expected 46, got 40
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 54 in section INVITEM. Expected 46, got 40
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 55 in section INVITEM. Expected 46, got 40
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 56 in section INVITEM. Expected 46, got 40
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 57 in section INVITEM. Expected 46, got 40
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 58 in section INVITEM. Expected 46, got 40
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 59 in section INVITEM. Expected 46, got 40
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 60 in section INVITEM. Expected 46, got 40
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 61 in section INVITEM. Expected 46, got 40
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 62 in section INVITEM. Expected 46, got 40
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 63 in section INVITEM. Expected 46, got 40
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 64 in section INVITEM. Expected 46, got 40
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Found module key: INVITEM at line 65
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Found module key: ENDGRP at line 66
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 67 in section ENDGRP. Expected 1, got 17
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 69 in section ENDGRP. Expected 1, got 17
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 70 in section ENDGRP. Expected 1, got 17
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 71 in section ENDGRP. Expected 1, got 17
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 72 in section ENDGRP. Expected 1, got 17
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 73 in section ENDGRP. Expected 1, got 17
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 75 in section ENDGRP. Expected 1, got 17
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 76 in section ENDGRP. Expected 1, got 17
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 77 in section ENDGRP. Expected 1, got 17
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 78 in section ENDGRP. Expected 1, got 17
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 80 in section ENDGRP. Expected 1, got 17
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 81 in section ENDGRP. Expected 1, got 17
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 82 in section ENDGRP. Expected 1, got 17
+2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 84 in section ENDGRP. Expected 1, got 17
+2025-06-13 12:46:18,190 [DEBUG] [IIF-PARSER] Field count mismatch at line 85 in section ENDGRP. Expected 1, got 17
+2025-06-13 12:46:18,190 [DEBUG] [IIF-PARSER] Field count mismatch at line 86 in section ENDGRP. Expected 1, got 17
+2025-06-13 12:46:18,190 [DEBUG] [IIF-PARSER] IIF parsing completed: 5 module keys, 87 lines processed
+2025-06-13 12:46:18,190 [DEBUG] [CORE] IIF parsing completed - input\sample-qbd-items.IIF -> 5 module keys discovered, 38 lines processed
+2025-06-13 12:46:18,190 [DEBUG] [CORE] Module keys found: ['HDR', 'CUSTITEMDICT', 'ENDCUSTITEMDICT', 'INVITEM', 'ENDGRP']
+2025-06-13 12:46:18,190 [DEBUG] [CORE] Module key not registered - HDR (1 module key records) - no processing module available
+2025-06-13 12:46:18,190 [DEBUG] [CORE] To process HDR module keys, register a module with: register_global_module('HDR', module_function)
+2025-06-13 12:46:18,190 [DEBUG] [CORE] Module key not registered - CUSTITEMDICT (0 module key records) - no processing module available
+2025-06-13 12:46:18,190 [DEBUG] [CORE] To process CUSTITEMDICT module keys, register a module with: register_global_module('CUSTITEMDICT', module_function)
+2025-06-13 12:46:18,190 [DEBUG] [CORE] Module key not registered - ENDCUSTITEMDICT (16 module key records) - no processing module available
+2025-06-13 12:46:18,190 [DEBUG] [CORE] To process ENDCUSTITEMDICT module keys, register a module with: register_global_module('ENDCUSTITEMDICT', module_function)
+2025-06-13 12:46:18,190 [DEBUG] [CORE] Module key not registered - INVITEM (0 module key records) - no processing module available
+2025-06-13 12:46:18,190 [DEBUG] [CORE] To process INVITEM module keys, register a module with: register_global_module('INVITEM', module_function)
+2025-06-13 12:46:18,190 [DEBUG] [CORE] Module key not registered - ENDGRP (21 module key records) - no processing module available
+2025-06-13 12:46:18,190 [DEBUG] [CORE] To process ENDGRP module keys, register a module with: register_global_module('ENDGRP', module_function)
+2025-06-13 12:46:18,190 [DEBUG] [CORE] Begin content-based processing - input\sample-qbd-payment-terms.IIF
+2025-06-13 12:46:18,190 [DEBUG] [CORE] Initializing IIF parser for: input\sample-qbd-payment-terms.IIF
+2025-06-13 12:46:18,190 [DEBUG] [IIF-PARSER] Beginning IIF file parsing: input\sample-qbd-payment-terms.IIF
+2025-06-13 12:46:18,190 [DEBUG] [IIF-PARSER] Found module key: HDR at line 1
+2025-06-13 12:46:18,190 [DEBUG] [IIF-PARSER] Found module key: TERMS at line 3
+2025-06-13 12:46:18,190 [DEBUG] [IIF-PARSER] IIF parsing completed: 2 module keys, 10 lines processed
+2025-06-13 12:46:18,190 [DEBUG] [CORE] IIF parsing completed - input\sample-qbd-payment-terms.IIF -> 2 module keys discovered, 8 lines processed
+2025-06-13 12:46:18,190 [DEBUG] [CORE] Module keys found: ['HDR', 'TERMS']
+2025-06-13 12:46:18,190 [DEBUG] [CORE] Module key not registered - HDR (1 module key records) - no processing module available
+2025-06-13 12:46:18,190 [DEBUG] [CORE] To process HDR module keys, register a module with: register_global_module('HDR', module_function)
+2025-06-13 12:46:18,190 [DEBUG] [CORE] Module key not registered - TERMS (7 module key records) - no processing module available
+2025-06-13 12:46:18,190 [DEBUG] [CORE] To process TERMS module keys, register a module with: register_global_module('TERMS', module_function)
+2025-06-13 12:46:18,190 [DEBUG] [CORE] Begin content-based processing - input\sample-qbd-sales-tax-codes.IIF
+2025-06-13 12:46:18,190 [DEBUG] [CORE] Initializing IIF parser for: input\sample-qbd-sales-tax-codes.IIF
+2025-06-13 12:46:18,190 [DEBUG] [IIF-PARSER] Beginning IIF file parsing: input\sample-qbd-sales-tax-codes.IIF
+2025-06-13 12:46:18,191 [DEBUG] [IIF-PARSER] Found module key: HDR at line 1
+2025-06-13 12:46:18,191 [DEBUG] [IIF-PARSER] Found module key: SALESTAXCODE at line 3
+2025-06-13 12:46:18,191 [DEBUG] [IIF-PARSER] IIF parsing completed: 2 module keys, 6 lines processed
+2025-06-13 12:46:18,191 [DEBUG] [CORE] IIF parsing completed - input\sample-qbd-sales-tax-codes.IIF -> 2 module keys discovered, 4 lines processed
+2025-06-13 12:46:18,191 [DEBUG] [CORE] Module keys found: ['HDR', 'SALESTAXCODE']
+2025-06-13 12:46:18,191 [DEBUG] [CORE] Module key not registered - HDR (1 module key records) - no processing module available
+2025-06-13 12:46:18,191 [DEBUG] [CORE] To process HDR module keys, register a module with: register_global_module('HDR', module_function)
+2025-06-13 12:46:18,191 [DEBUG] [CORE] Module key not registered - SALESTAXCODE (3 module key records) - no processing module available
+2025-06-13 12:46:18,191 [DEBUG] [CORE] To process SALESTAXCODE module keys, register a module with: register_global_module('SALESTAXCODE', module_function)
+2025-06-13 12:46:18,191 [INFO] [CORE] No module key records were processed
+2025-06-13 12:46:18,191 [INFO] [CORE] To process additional data types, register modules for the discovered module keys
+2025-06-13 12:46:18,191 [DEBUG] [CORE] Available registered module keys: ['ACCNT']
+2025-06-13 12:46:18,191 [DEBUG] [CORE] Conversion failed with exit code 2

@@ -1,0 +1,12 @@
+Where should these accounts go in GnuCash?
+
+[MISC_LABOR_INCOME]
+QuickBooks import path: Contractor Income
+Enter the full GnuCash account path here: 
+
+================================================================================
+WARNING: ASCII only (A-Z, 0-9, basic punctuation). Special characters cause failure.
+REQUIREMENT: Must start with Assets | Liabilities | Equity | Income | Expenses
+
+Enter full account path using colons: "Income:Service Revenue:Labor"
+See accounts_mapping_instructions.txt for examples and detailed help.

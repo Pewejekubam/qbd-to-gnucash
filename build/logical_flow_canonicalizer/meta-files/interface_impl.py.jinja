@@ -1,0 +1,40 @@
+{# Python interface implementation template for IR-Based Build System #}
+"""
+{{ module_name }} - Implementation of {{ interface_name }}
+Generated from IR-Based Build System
+"""
+
+from typing import Dict, List, Any, Optional
+from . import {{ interface_name }}
+
+class {{ module_name }}({{ interface_name }}):
+    """Implementation of {{ interface_name }}."""
+
+    def __init__(self):
+        """Initialize {{ module_name }}."""
+        pass
+
+    {% for method in interface_methods %}
+    def {{ method.name }}({{ method.params|join(', ') }}) -> {{ method.return_annotation }}:
+        """{{ method.docstring }}
+
+        {% if method.param_docs %}
+        Args:
+            {% for param in method.param_docs %}
+            {{ param.name }}: {{ param.description }}
+            {% endfor %}
+        {% endif %}
+        {% if method.return_doc %}
+        Returns:
+            {{ method.return_doc }}
+        {% endif %}
+        {% if method.raises %}
+        Raises:
+            {% for error in method.raises %}
+            {{ error }}
+            {% endfor %}
+        {% endif %}
+        """
+        raise NotImplementedError("{{ method.name }} not implemented")
+
+    {% endfor %}

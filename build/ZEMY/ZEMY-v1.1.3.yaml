@@ -1,0 +1,100 @@
+zipper_execution_mapping:
+  version: "1.1.3"
+  description: "ZEMY ensures structured execution compliance with deterministic constraint propagation, predictive weight calibration, and explicit state transitions."
+
+  iteration_tracking:
+    cycle_count: 3  # 🚀 Defines the number of refinement cycles before execution mapping locks.
+    adaptive_cycle_extension: true  # 🔹 Allows auto-increasing iteration cycles if compliance stability remains unverified.
+
+  execution_finalized: false  # 🔹 If 'false', iteration must continue before transitioning to codegen.
+                               # 🔥 Change to 'true' ONLY when compliance integrity is validated.
+
+  execution_spark:
+    trigger: "Artifact Ingestion"  # 🔹 Execution starts automatically when artifacts are processed.
+    initiation_conditions:
+      - input_received: true  # ✅ Must be set to true before execution begins.
+      - validation_checkpoints_engaged: true  # 🚀 Ensures drift analysis is triggered.
+      - compliance_thresholds_preloaded: true  # 🔥 Preloaded enforcement ensures integrity adjustments.
+
+  input_source:
+    method: "Local Directory"
+    path: ""  # ⚠️ Update this if local artifacts are used—leave empty for pasted prompts.
+    fallback: "Pasted Prompt"
+    artifacts:
+      - name: "prd-hello_world-v1.0.0"  # ✅ Product Requirements Document for execution scope.
+      - name: "ir-hello_world-v1.0.0"  # 🔹 Intermediate Representation defining execution constraints.
+      - name: "ZEMY-training-v1.1.3.prompt.md"  # 🚀 Updated agent training directive—ensures correct ingestion.
+
+  validation_checkpoints:
+    - checkpoint: "Predictive Drift Enforcement"
+      activation: "Upon artifact processing"
+      expected_behavior: "Execution misalignment flagged preemptively"
+      correction_method: "Adjust execution influence dynamically"
+      weight_score: 7.5  # 🔹 Severity threshold of misalignment enforcement.
+      threshold: 5.0  # 🚀 If misalignment score exceeds this, iteration must continue.
+
+  automated_refinement:
+    iteration_trigger: "Threshold-based drift detection"
+    correction_mechanism: "Adjust compliance weight dynamically"
+    compliance_goal: "Reduce drift below enforcement threshold"  # 🔹 Execution mapping locks ONLY when drift is within limits.
+
+  constraint_propagation:
+    inheritance_rules:
+      - parent_constraints_override_children: true
+      - weight_inheritance_depth: 3  # 🔹 Ensures proper cascading without excessive constraint propagation.
+      - conflict_resolution_method: "highest_weight_wins"  # ✅ Resolves competing execution constraints deterministically.
+    
+    validation_chain:
+      - structural_integrity: "PRD → IR → ZEMY → Codegen"
+      - drift_detection_points: ["IR_to_ZEMY", "ZEMY_to_Codegen"]
+      - rollback_triggers: ["threshold_breach", "structural_violation"]
+      - escalation_method: "Progressive Correction Scaling"  # 🔥 If rollback conditions persist, refinement intensifies dynamically.
+
+  predictive_calibration:
+    weight_prediction_model:
+      - analyze_artifact_complexity: "Calculate base weight requirements"
+      - predict_drift_probability: "Based on historical patterns"
+      - pre_adjust_thresholds: "Before execution begins"
+    
+    calibration_confidence:
+      - threshold: 0.85  # 🚀 Minimum confidence before execution starts.
+      - adjustment_factor: 1.2  # 🔹 Dynamically adjusts threshold levels based on predicted drift severity.
+
+  execution_state_machine:
+    states:
+      - "SPARK_TRIGGERED"
+      - "ARTIFACTS_INGESTED"
+      - "VALIDATION_ACTIVE"
+      - "REFINEMENT_CYCLE"
+      - "EXECUTION_LOCKED"
+      - "CODEGEN_READY"
+
+    transitions:
+      - from: "VALIDATION_ACTIVE"
+        to: "REFINEMENT_CYCLE"
+        condition: "weight_score > threshold"
+        action: "increment_cycle_count"
+
+      - from: "REFINEMENT_CYCLE"
+        to: "EXECUTION_LOCKED"
+        condition: "compliance_goal met"
+        action: "lock execution mapping"
+
+      - from: "EXECUTION_LOCKED"
+        to: "CODEGEN_READY"
+        condition: "final validation pass"
+        action: "transition to structured code generation"
+
+  execution_constraints:
+    enforcement:
+      role_isolation:
+        rule: "Separate execution logic from output generation"
+        validation: "Check for blended logic inside execution control"
+        correction: "Increase separation weighting"
+        weight_score: 7.0  # 🔥 If this score is exceeded, corrective measures trigger.
+        threshold: 4.0  # 🚀 Prevents unintended execution coupling.
+
+  final_output:
+    deliverable: "Optimized ZEMY execution mapping"
+    compliance_status: "Fully aligned with PRD and validation enforcement"  # ✅ Only reached when execution mapping stabilizes.
+

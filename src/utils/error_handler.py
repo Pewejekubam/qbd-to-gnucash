@@ -1,73 +1,61 @@
-"""Error handling for QBD to GnuCash conversion tool.
+"""Error handling utilities for QBD to GnuCash conversion.
 
-This module defines all custom exceptions used throughout the application
-to ensure consistent error handling and reporting.
+This module provides centralized error handling functionality as specified in core-prd-main-v3.6.5.md.
+All error codes follow the authoritative table in Core PRD Section 16.
+
+UPDATED: Added E0104 OutputWriteError for file writing operations.
 """
 
-class QBDError(Exception):
-    """Base class for all QBD conversion errors."""
-    pass
+class ConversionError(Exception):
+    """Base class for conversion-specific exceptions."""
+    def __init__(self, message: str, error_code: str, exit_code: int = 1):
+        self.message = message
+        self.error_code = error_code
+        self.exit_code = exit_code
+        # Include error code in exception message for logging
+        super().__init__(f"[{error_code}] {message}")
 
+class ValidationError(ConversionError):
+    """Raised when data validation fails. Error Code: E0102"""
+    def __init__(self, message: str):
+        super().__init__(message, error_code="E0102", exit_code=2)
 
-class IIFParseError(QBDError):
-    """Raised when parsing of IIF files fails."""
-    pass
+class IIFParseError(ConversionError):
+    """Raised when .IIF file parsing fails. Error Code: E0105"""
+    def __init__(self, message: str):
+        super().__init__(message, error_code="E0105", exit_code=2)
 
+class MappingLoadError(ConversionError):
+    """Mapping file missing, unreadable, or invalid schema. Error Code: E1101"""
+    def __init__(self, message: str):
+        super().__init__(message, error_code="E1101", exit_code=2)
 
-class MappingLoadError(QBDError):
-    """Raised when loading or processing mapping files fails."""
-    pass
+class AccountsTreeError(ConversionError):
+    """Account hierarchy construction errors. Error Code: E1111"""
+    def __init__(self, message: str):
+        super().__init__(message, error_code="E1111", exit_code=2)
 
+class ExportError(ConversionError):
+    """Raised when data export fails. Error Code: E1106"""
+    def __init__(self, message: str):
+        super().__init__(message, error_code="E1106", exit_code=1)
 
-class AccountsTreeError(QBDError):
-    """Raised when building or processing the account hierarchy fails."""
-    pass
+class OutputWriteError(ConversionError):
+    """Output file cannot be written. Error Code: E0104"""
+    def __init__(self, message: str):
+        super().__init__(message, error_code="E0104", exit_code=1)
 
+class RegistryKeyConflictError(ConversionError):
+    """Raised when duplicate registry key detected. Error Code: E0103"""
+    def __init__(self, message: str):
+        super().__init__(message, error_code="E0103", exit_code=1)
 
-class ValidationError(QBDError):
-    """Raised when validation of data structures or rules fails."""
-    pass
+class FileNotFoundError(ConversionError):
+    """Required input file missing or unreadable. Error Code: E0101"""
+    def __init__(self, message: str):
+        super().__init__(message, error_code="E0101", exit_code=1)
 
-
-class OutputError(QBDError):
-    """Raised when generating output files fails."""
-    pass
-
-
-# Error code constants
-E001 = "E001"  # IIF Parse Error
-E002 = "E002"  # Mapping Load Error
-E003 = "E003"  # Account Tree Error
-E004 = "E004"  # Validation Error
-E005 = "E005"  # Output Generation Error
-
-# Error code to exit code mapping
-EXIT_CODES = {
-    E001: 1,  # Critical failure
-    E002: 1,  # Critical failure
-    E003: 2,  # Validation error
-    E004: 2,  # Validation error
-    E005: 1,  # Critical failure
-}
-
-def get_exit_code(error: Exception) -> int:
-    """Get the appropriate exit code for an error.
-    
-    Args:
-        error: The exception that was raised
-        
-    Returns:
-        Exit code (0=success, 1=critical failure, 2=validation error)
-    """
-    if isinstance(error, IIFParseError):
-        return EXIT_CODES[E001]
-    elif isinstance(error, MappingLoadError):
-        return EXIT_CODES[E002]
-    elif isinstance(error, AccountsTreeError):
-        return EXIT_CODES[E003]
-    elif isinstance(error, ValidationError):
-        return EXIT_CODES[E004]
-    elif isinstance(error, OutputError):
-        return EXIT_CODES[E005]
-    else:
-        return 1  # Default to critical failure for unknown errors
+class LoggingError(ConversionError):
+    """Logging subsystem failed. Error Code: E0201"""
+    def __init__(self, message: str):
+        super().__init__(message, error_code="E0201", exit_code=1)
