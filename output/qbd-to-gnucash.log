@@ -1,290 +1,957 @@
-2025-06-13 12:46:18,175 [INFO] [CORE] QBD to GnuCash Conversion Tool - Started
-2025-06-13 12:46:18,175 [DEBUG] [CORE] Detailed logging initialized: output\qbd-to-gnucash.log
-2025-06-13 12:46:18,175 [DEBUG] [CORE] Console logging: INFO level (user-focused)
-2025-06-13 12:46:18,176 [DEBUG] [CORE] File logging: DEBUG level (technical details)
-2025-06-13 12:46:18,176 [DEBUG] [CORE] QBD to GnuCash conversion tool started
-2025-06-13 12:46:18,176 [DEBUG] [CORE] Directory structure verified
-2025-06-13 12:46:18,176 [DEBUG] [CORE] Module registered - ACCNT module key -> processing function
-2025-06-13 12:46:18,177 [DEBUG] [CORE] Module registration completed
-2025-06-13 12:46:18,177 [DEBUG] [CORE] File discovery completed - 5 IIF files found
-2025-06-13 12:46:18,177 [DEBUG] [CORE] Starting conversion pipeline
-2025-06-13 12:46:18,177 [DEBUG] [CORE] Starting PRD compliant conversion pipeline
-2025-06-13 12:46:18,177 [DEBUG] [CORE] Pipeline initiated - 5 IIF files, output directory: output
-2025-06-13 12:46:18,177 [INFO] [CORE] Discovered 5 IIF files for processing:
-2025-06-13 12:46:18,177 [INFO] [CORE]   * sample-qbd-accounts.IIF
-2025-06-13 12:46:18,178 [INFO] [CORE]   * sample-qbd-customers.IIF
-2025-06-13 12:46:18,178 [INFO] [CORE]   * sample-qbd-items.IIF
-2025-06-13 12:46:18,178 [INFO] [CORE]   * sample-qbd-payment-terms.IIF
-2025-06-13 12:46:18,178 [INFO] [CORE]   * sample-qbd-sales-tax-codes.IIF
-2025-06-13 12:46:18,178 [INFO] [CORE] Pipeline initiated
-2025-06-13 12:46:18,178 [DEBUG] [CORE] Begin content-based processing - input\sample-qbd-accounts.IIF
-2025-06-13 12:46:18,178 [DEBUG] [CORE] Initializing IIF parser for: input\sample-qbd-accounts.IIF
-2025-06-13 12:46:18,178 [DEBUG] [IIF-PARSER] Beginning IIF file parsing: input\sample-qbd-accounts.IIF
-2025-06-13 12:46:18,179 [DEBUG] [IIF-PARSER] Found module key: HDR at line 1
-2025-06-13 12:46:18,179 [DEBUG] [IIF-PARSER] Found module key: ACCNT at line 3
-2025-06-13 12:46:18,179 [DEBUG] [IIF-PARSER] Found module key: QB at line 110
-2025-06-13 12:46:18,179 [DEBUG] [IIF-PARSER] IIF parsing completed: 3 module keys, 117 lines processed
-2025-06-13 12:46:18,179 [DEBUG] [CORE] IIF parsing completed - input\sample-qbd-accounts.IIF -> 3 module keys discovered, 114 lines processed
-2025-06-13 12:46:18,179 [DEBUG] [CORE] Module keys found: ['HDR', 'ACCNT', 'QB']
-2025-06-13 12:46:18,179 [DEBUG] [CORE] Module key not registered - HDR (1 module key records) - no processing module available
-2025-06-13 12:46:18,179 [DEBUG] [CORE] To process HDR module keys, register a module with: register_global_module('HDR', module_function)
-2025-06-13 12:46:18,180 [DEBUG] [CORE] Module dispatch - 106 ACCNT module key records -> registered module
-2025-06-13 12:46:18,180 [DEBUG] [CORE] Module dispatch initiated - ACCNT
-2025-06-13 12:46:18,180 [INFO] [ACCOUNTS-PIPELINE] Starting accounts processing with 106 records
-2025-06-13 12:46:18,180 [DEBUG] [ACCOUNTS-ORCHESTRATION] Loading account mapping configuration
-2025-06-13 12:46:18,180 [DEBUG] [ACCOUNTS-MAPPING] Loading baseline mapping from: C:\git-root\qbd-to-gnucash\src\modules\accounts\accounts_mapping_baseline.json
-2025-06-13 12:46:18,180 [INFO] [ACCOUNTS-MAPPING] Loaded and validated baseline mapping: 15 accounts
-2025-06-13 12:46:18,180 [INFO] [ACCOUNTS-MAPPING] No user override file found - using baseline configuration
-2025-06-13 12:46:18,180 [DEBUG] [ACCOUNTS-MAPPING] To customize mappings, create: output\accounts_mapping_specific.json
-2025-06-13 12:46:18,180 [INFO] [ACCOUNTS-MAPPING] Account mapping configuration ready - 15 types mapped and validated
-2025-06-13 12:46:18,180 [DEBUG] [ACCOUNTS-ORCHESTRATION] Beginning account validation
-2025-06-13 12:46:18,181 [DEBUG] [ACCOUNTS-ORCHESTRATION] Account validation completed - 106 accounts validated
-2025-06-13 12:46:18,181 [INFO] [ACCOUNTS-UNMAPPED-PROCESSING] Found 1 unmapped accounts requiring user input
-2025-06-13 12:46:18,181 [DEBUG] [ACCOUNTS-MAPPING] Mapped types available: ['AP', 'AR', 'BANK', 'CCARD', 'COGS', 'EQUITY', 'EXEXP', 'EXINC', 'EXP', 'FIXASSET', 'INC', 'LTLIAB', 'NONPOSTING', 'OCASSET', 'OCLIAB']
-2025-06-13 12:46:18,181 [INFO] [ACCOUNTS-ORCHESTRATION] Sub-module coordination: HALT condition detected
-2025-06-13 12:46:18,182 [INFO] [ACCOUNTS-UNMAPPED-PROCESSING] Generated questions file: accounts_mapping_questions.txt and accounts_mapping_instructions.txt
-2025-06-13 12:46:18,182 [INFO] [ACCOUNTS-UNMAPPED-PROCESSING] Edit the questions file and restart pipeline to continue
-2025-06-13 12:46:18,182 [INFO] [ACCOUNTS-UNMAPPED-PROCESSING] Pipeline HALT: User action required
-2025-06-13 12:46:18,182 [INFO] [ACCOUNTS-PIPELINE] Pipeline HALT: User action required for mapping completion
-2025-06-13 12:46:18,182 [DEBUG] [CORE] Module dispatch completed - ACCNT
-2025-06-13 12:46:18,183 [ERROR] ERROR: [ACCNT-PIPELINE] Module reports HALT. User action required. See debug log "E0113" around 12:46:18.183
-2025-06-13 12:46:18,183 [DEBUG] [CORE] E0113 Module returned False - ACCNT
-2025-06-13 12:46:18,183 [DEBUG] [CORE] Module key not registered - QB (7 module key records) - no processing module available
-2025-06-13 12:46:18,183 [DEBUG] [CORE] To process QB module keys, register a module with: register_global_module('QB', module_function)
-2025-06-13 12:46:18,183 [DEBUG] [CORE] Begin content-based processing - input\sample-qbd-customers.IIF
-2025-06-13 12:46:18,183 [DEBUG] [CORE] Initializing IIF parser for: input\sample-qbd-customers.IIF
-2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Beginning IIF file parsing: input\sample-qbd-customers.IIF
-2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Found module key: HDR at line 1
-2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Found module key: CUSTNAMEDICT at line 3
-2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Found module key: ENDCUSTNAMEDICT at line 4
-2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 5 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 6 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 7 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 8 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 9 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 10 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 11 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 12 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 13 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 14 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 15 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 16 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 17 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,183 [DEBUG] [IIF-PARSER] Field count mismatch at line 18 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 19 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 20 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 21 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 22 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 23 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 24 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 25 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 26 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 27 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 28 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 29 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 30 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 31 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 32 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 33 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 34 in section ENDCUSTNAMEDICT. Expected 1, got 6
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Found module key: CUST at line 36
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 37 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 38 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 39 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 40 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 41 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 42 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 43 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 44 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 45 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 46 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 47 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 48 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,184 [DEBUG] [IIF-PARSER] Field count mismatch at line 49 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 50 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 51 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 52 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 53 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 54 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 55 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 56 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 57 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 58 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 59 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 60 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 61 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 62 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 63 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 64 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 65 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 66 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 67 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 68 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 69 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 70 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 71 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 72 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 73 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 74 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 75 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 76 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,185 [DEBUG] [IIF-PARSER] Field count mismatch at line 77 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 78 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 79 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 80 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 81 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 82 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 83 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 84 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 85 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 86 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 87 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 88 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 89 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 90 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 91 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 92 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 93 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 94 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 95 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 96 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 97 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 98 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 99 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 100 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] Field count mismatch at line 101 in section CUST. Expected 59, got 58
-2025-06-13 12:46:18,186 [DEBUG] [IIF-PARSER] IIF parsing completed: 4 module keys, 101 lines processed
-2025-06-13 12:46:18,187 [DEBUG] [CORE] IIF parsing completed - input\sample-qbd-customers.IIF -> 4 module keys discovered, 97 lines processed
-2025-06-13 12:46:18,187 [DEBUG] [CORE] Module keys found: ['HDR', 'CUSTNAMEDICT', 'ENDCUSTNAMEDICT', 'CUST']
-2025-06-13 12:46:18,187 [DEBUG] [CORE] Module key not registered - HDR (1 module key records) - no processing module available
-2025-06-13 12:46:18,187 [DEBUG] [CORE] To process HDR module keys, register a module with: register_global_module('HDR', module_function)
-2025-06-13 12:46:18,187 [DEBUG] [CORE] Module key not registered - CUSTNAMEDICT (0 module key records) - no processing module available
-2025-06-13 12:46:18,187 [DEBUG] [CORE] To process CUSTNAMEDICT module keys, register a module with: register_global_module('CUSTNAMEDICT', module_function)
-2025-06-13 12:46:18,187 [DEBUG] [CORE] Module key not registered - ENDCUSTNAMEDICT (31 module key records) - no processing module available
-2025-06-13 12:46:18,187 [DEBUG] [CORE] To process ENDCUSTNAMEDICT module keys, register a module with: register_global_module('ENDCUSTNAMEDICT', module_function)
-2025-06-13 12:46:18,187 [DEBUG] [CORE] Module key not registered - CUST (65 module key records) - no processing module available
-2025-06-13 12:46:18,187 [DEBUG] [CORE] To process CUST module keys, register a module with: register_global_module('CUST', module_function)
-2025-06-13 12:46:18,187 [DEBUG] [CORE] Begin content-based processing - input\sample-qbd-items.IIF
-2025-06-13 12:46:18,187 [DEBUG] [CORE] Initializing IIF parser for: input\sample-qbd-items.IIF
-2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Beginning IIF file parsing: input\sample-qbd-items.IIF
-2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Found module key: HDR at line 1
-2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Found module key: CUSTITEMDICT at line 3
-2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Found module key: ENDCUSTITEMDICT at line 4
-2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 5 in section ENDCUSTITEMDICT. Expected 1, got 4
-2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 6 in section ENDCUSTITEMDICT. Expected 1, got 4
-2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 7 in section ENDCUSTITEMDICT. Expected 1, got 4
-2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 8 in section ENDCUSTITEMDICT. Expected 1, got 4
-2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 9 in section ENDCUSTITEMDICT. Expected 1, got 4
-2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 10 in section ENDCUSTITEMDICT. Expected 1, got 4
-2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 11 in section ENDCUSTITEMDICT. Expected 1, got 4
-2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 12 in section ENDCUSTITEMDICT. Expected 1, got 4
-2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 13 in section ENDCUSTITEMDICT. Expected 1, got 4
-2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 14 in section ENDCUSTITEMDICT. Expected 1, got 4
-2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 15 in section ENDCUSTITEMDICT. Expected 1, got 4
-2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 16 in section ENDCUSTITEMDICT. Expected 1, got 4
-2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 17 in section ENDCUSTITEMDICT. Expected 1, got 4
-2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 18 in section ENDCUSTITEMDICT. Expected 1, got 4
-2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Field count mismatch at line 19 in section ENDCUSTITEMDICT. Expected 1, got 4
-2025-06-13 12:46:18,187 [DEBUG] [IIF-PARSER] Found module key: INVITEM at line 21
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 22 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 23 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 24 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 25 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 26 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 27 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 28 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 29 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 30 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 31 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 32 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 33 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 34 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 35 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 36 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 37 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 38 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 39 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 40 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 41 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 42 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 43 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 44 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 45 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 46 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 47 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 48 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 49 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,188 [DEBUG] [IIF-PARSER] Field count mismatch at line 50 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 51 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 52 in section INVITEM. Expected 46, got 45
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 53 in section INVITEM. Expected 46, got 40
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 54 in section INVITEM. Expected 46, got 40
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 55 in section INVITEM. Expected 46, got 40
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 56 in section INVITEM. Expected 46, got 40
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 57 in section INVITEM. Expected 46, got 40
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 58 in section INVITEM. Expected 46, got 40
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 59 in section INVITEM. Expected 46, got 40
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 60 in section INVITEM. Expected 46, got 40
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 61 in section INVITEM. Expected 46, got 40
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 62 in section INVITEM. Expected 46, got 40
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 63 in section INVITEM. Expected 46, got 40
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 64 in section INVITEM. Expected 46, got 40
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Found module key: INVITEM at line 65
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Found module key: ENDGRP at line 66
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 67 in section ENDGRP. Expected 1, got 17
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 69 in section ENDGRP. Expected 1, got 17
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 70 in section ENDGRP. Expected 1, got 17
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 71 in section ENDGRP. Expected 1, got 17
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 72 in section ENDGRP. Expected 1, got 17
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 73 in section ENDGRP. Expected 1, got 17
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 75 in section ENDGRP. Expected 1, got 17
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 76 in section ENDGRP. Expected 1, got 17
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 77 in section ENDGRP. Expected 1, got 17
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 78 in section ENDGRP. Expected 1, got 17
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 80 in section ENDGRP. Expected 1, got 17
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 81 in section ENDGRP. Expected 1, got 17
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 82 in section ENDGRP. Expected 1, got 17
-2025-06-13 12:46:18,189 [DEBUG] [IIF-PARSER] Field count mismatch at line 84 in section ENDGRP. Expected 1, got 17
-2025-06-13 12:46:18,190 [DEBUG] [IIF-PARSER] Field count mismatch at line 85 in section ENDGRP. Expected 1, got 17
-2025-06-13 12:46:18,190 [DEBUG] [IIF-PARSER] Field count mismatch at line 86 in section ENDGRP. Expected 1, got 17
-2025-06-13 12:46:18,190 [DEBUG] [IIF-PARSER] IIF parsing completed: 5 module keys, 87 lines processed
-2025-06-13 12:46:18,190 [DEBUG] [CORE] IIF parsing completed - input\sample-qbd-items.IIF -> 5 module keys discovered, 38 lines processed
-2025-06-13 12:46:18,190 [DEBUG] [CORE] Module keys found: ['HDR', 'CUSTITEMDICT', 'ENDCUSTITEMDICT', 'INVITEM', 'ENDGRP']
-2025-06-13 12:46:18,190 [DEBUG] [CORE] Module key not registered - HDR (1 module key records) - no processing module available
-2025-06-13 12:46:18,190 [DEBUG] [CORE] To process HDR module keys, register a module with: register_global_module('HDR', module_function)
-2025-06-13 12:46:18,190 [DEBUG] [CORE] Module key not registered - CUSTITEMDICT (0 module key records) - no processing module available
-2025-06-13 12:46:18,190 [DEBUG] [CORE] To process CUSTITEMDICT module keys, register a module with: register_global_module('CUSTITEMDICT', module_function)
-2025-06-13 12:46:18,190 [DEBUG] [CORE] Module key not registered - ENDCUSTITEMDICT (16 module key records) - no processing module available
-2025-06-13 12:46:18,190 [DEBUG] [CORE] To process ENDCUSTITEMDICT module keys, register a module with: register_global_module('ENDCUSTITEMDICT', module_function)
-2025-06-13 12:46:18,190 [DEBUG] [CORE] Module key not registered - INVITEM (0 module key records) - no processing module available
-2025-06-13 12:46:18,190 [DEBUG] [CORE] To process INVITEM module keys, register a module with: register_global_module('INVITEM', module_function)
-2025-06-13 12:46:18,190 [DEBUG] [CORE] Module key not registered - ENDGRP (21 module key records) - no processing module available
-2025-06-13 12:46:18,190 [DEBUG] [CORE] To process ENDGRP module keys, register a module with: register_global_module('ENDGRP', module_function)
-2025-06-13 12:46:18,190 [DEBUG] [CORE] Begin content-based processing - input\sample-qbd-payment-terms.IIF
-2025-06-13 12:46:18,190 [DEBUG] [CORE] Initializing IIF parser for: input\sample-qbd-payment-terms.IIF
-2025-06-13 12:46:18,190 [DEBUG] [IIF-PARSER] Beginning IIF file parsing: input\sample-qbd-payment-terms.IIF
-2025-06-13 12:46:18,190 [DEBUG] [IIF-PARSER] Found module key: HDR at line 1
-2025-06-13 12:46:18,190 [DEBUG] [IIF-PARSER] Found module key: TERMS at line 3
-2025-06-13 12:46:18,190 [DEBUG] [IIF-PARSER] IIF parsing completed: 2 module keys, 10 lines processed
-2025-06-13 12:46:18,190 [DEBUG] [CORE] IIF parsing completed - input\sample-qbd-payment-terms.IIF -> 2 module keys discovered, 8 lines processed
-2025-06-13 12:46:18,190 [DEBUG] [CORE] Module keys found: ['HDR', 'TERMS']
-2025-06-13 12:46:18,190 [DEBUG] [CORE] Module key not registered - HDR (1 module key records) - no processing module available
-2025-06-13 12:46:18,190 [DEBUG] [CORE] To process HDR module keys, register a module with: register_global_module('HDR', module_function)
-2025-06-13 12:46:18,190 [DEBUG] [CORE] Module key not registered - TERMS (7 module key records) - no processing module available
-2025-06-13 12:46:18,190 [DEBUG] [CORE] To process TERMS module keys, register a module with: register_global_module('TERMS', module_function)
-2025-06-13 12:46:18,190 [DEBUG] [CORE] Begin content-based processing - input\sample-qbd-sales-tax-codes.IIF
-2025-06-13 12:46:18,190 [DEBUG] [CORE] Initializing IIF parser for: input\sample-qbd-sales-tax-codes.IIF
-2025-06-13 12:46:18,190 [DEBUG] [IIF-PARSER] Beginning IIF file parsing: input\sample-qbd-sales-tax-codes.IIF
-2025-06-13 12:46:18,191 [DEBUG] [IIF-PARSER] Found module key: HDR at line 1
-2025-06-13 12:46:18,191 [DEBUG] [IIF-PARSER] Found module key: SALESTAXCODE at line 3
-2025-06-13 12:46:18,191 [DEBUG] [IIF-PARSER] IIF parsing completed: 2 module keys, 6 lines processed
-2025-06-13 12:46:18,191 [DEBUG] [CORE] IIF parsing completed - input\sample-qbd-sales-tax-codes.IIF -> 2 module keys discovered, 4 lines processed
-2025-06-13 12:46:18,191 [DEBUG] [CORE] Module keys found: ['HDR', 'SALESTAXCODE']
-2025-06-13 12:46:18,191 [DEBUG] [CORE] Module key not registered - HDR (1 module key records) - no processing module available
-2025-06-13 12:46:18,191 [DEBUG] [CORE] To process HDR module keys, register a module with: register_global_module('HDR', module_function)
-2025-06-13 12:46:18,191 [DEBUG] [CORE] Module key not registered - SALESTAXCODE (3 module key records) - no processing module available
-2025-06-13 12:46:18,191 [DEBUG] [CORE] To process SALESTAXCODE module keys, register a module with: register_global_module('SALESTAXCODE', module_function)
-2025-06-13 12:46:18,191 [INFO] [CORE] No module key records were processed
-2025-06-13 12:46:18,191 [INFO] [CORE] To process additional data types, register modules for the discovered module keys
-2025-06-13 12:46:18,191 [DEBUG] [CORE] Available registered module keys: ['ACCNT']
-2025-06-13 12:46:18,191 [DEBUG] [CORE] Conversion failed with exit code 2
+2025-06-14 20:39:09,843 [INFO] [CORE] QBD to GnuCash Conversion Tool - Started
+2025-06-14 20:39:09,844 [DEBUG] [CORE] Detailed logging initialized: output\qbd-to-gnucash.log
+2025-06-14 20:39:09,844 [DEBUG] [CORE] Console logging: INFO level (user-focused)
+2025-06-14 20:39:09,844 [DEBUG] [CORE] File logging: DEBUG level (technical details)
+2025-06-14 20:39:09,844 [DEBUG] [CORE] QBD to GnuCash conversion tool started
+2025-06-14 20:39:09,844 [DEBUG] [CORE] Directory structure verified
+2025-06-14 20:39:09,844 [DEBUG] [CORE] Module registered - ACCNT module key -> processing function
+2025-06-14 20:39:09,844 [DEBUG] [CORE] Module registration completed
+2025-06-14 20:39:09,844 [DEBUG] [CORE] File discovery completed - 1 IIF files found
+2025-06-14 20:39:09,844 [DEBUG] [CORE] Starting conversion pipeline
+2025-06-14 20:39:09,844 [DEBUG] [CORE] Starting PRD compliant conversion pipeline
+2025-06-14 20:39:09,844 [DEBUG] [CORE] Pipeline initiated - 1 IIF files, output directory: output
+2025-06-14 20:39:09,845 [INFO] [CORE] Discovered 1 IIF files for processing:
+2025-06-14 20:39:09,845 [INFO] [CORE]   * qbd-all-lists-sample.IIF
+2025-06-14 20:39:09,845 [INFO] [CORE] Pipeline initiated
+2025-06-14 20:39:09,845 [DEBUG] [CORE] Begin content-based processing - input\qbd-all-lists-sample.IIF
+2025-06-14 20:39:09,845 [DEBUG] [CORE] Initializing IIF parser for: input\qbd-all-lists-sample.IIF
+2025-06-14 20:39:09,845 [DEBUG] [IIF-PARSER] Beginning IIF file parsing: input\qbd-all-lists-sample.IIF
+2025-06-14 20:39:09,846 [DEBUG] [IIF-PARSER] Found module key: HDR at line 1
+2025-06-14 20:39:09,846 [DEBUG] [IIF-PARSER] Found module key: ACCNT at line 3
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Found module key: QB at line 110
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Found module key: CUSTITEMDICT at line 118
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Found module key: ENDCUSTITEMDICT at line 119
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 120 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 121 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 122 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 123 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 124 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 125 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 126 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 127 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 128 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 129 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 130 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 131 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 132 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 133 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 134 in section ENDCUSTITEMDICT. Expected 1, got 4
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Found module key: INVITEM at line 136
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 137 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 138 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 139 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 140 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 141 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 142 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 143 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 144 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,847 [DEBUG] [IIF-PARSER] Field count mismatch at line 145 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 146 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 147 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 148 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 149 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 150 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 151 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 152 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 153 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 154 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 155 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 156 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 157 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 158 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 159 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 160 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 161 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 162 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 163 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 164 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 165 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 166 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 167 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 168 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 169 in section INVITEM. Expected 46, got 40
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 170 in section INVITEM. Expected 46, got 40
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 171 in section INVITEM. Expected 46, got 40
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 172 in section INVITEM. Expected 46, got 40
+2025-06-14 20:39:09,848 [DEBUG] [IIF-PARSER] Field count mismatch at line 173 in section INVITEM. Expected 46, got 40
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 174 in section INVITEM. Expected 46, got 40
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 175 in section INVITEM. Expected 46, got 40
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 176 in section INVITEM. Expected 46, got 40
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 177 in section INVITEM. Expected 46, got 40
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 178 in section INVITEM. Expected 46, got 40
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 179 in section INVITEM. Expected 46, got 40
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 180 in section INVITEM. Expected 46, got 40
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 181 in section INVITEM. Expected 46, got 45
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Found module key: INVITEM at line 182
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Found module key: ENDGRP at line 183
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 184 in section ENDGRP. Expected 1, got 17
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 186 in section ENDGRP. Expected 1, got 17
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 187 in section ENDGRP. Expected 1, got 17
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 188 in section ENDGRP. Expected 1, got 17
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 189 in section ENDGRP. Expected 1, got 17
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 190 in section ENDGRP. Expected 1, got 17
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 192 in section ENDGRP. Expected 1, got 17
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 193 in section ENDGRP. Expected 1, got 17
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 194 in section ENDGRP. Expected 1, got 17
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 195 in section ENDGRP. Expected 1, got 17
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 197 in section ENDGRP. Expected 1, got 17
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 198 in section ENDGRP. Expected 1, got 17
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 199 in section ENDGRP. Expected 1, got 17
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 201 in section ENDGRP. Expected 1, got 17
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 202 in section ENDGRP. Expected 1, got 17
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 203 in section ENDGRP. Expected 1, got 17
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Found module key: CLASS at line 205
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Found module key: CTYPE at line 210
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Found module key: CUSTNAMEDICT at line 213
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Found module key: ENDCUSTNAMEDICT at line 214
+2025-06-14 20:39:09,849 [DEBUG] [IIF-PARSER] Field count mismatch at line 215 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 216 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 217 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 218 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 219 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 220 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 221 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 222 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 223 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 224 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 225 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 226 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 227 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 228 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 229 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 230 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 231 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 232 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 233 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 234 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 235 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 236 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 237 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 238 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 239 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 240 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 241 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 242 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 243 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 244 in section ENDCUSTNAMEDICT. Expected 1, got 6
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Found module key: JOBTYPE at line 246
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Found module key: CUST at line 250
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 251 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,850 [DEBUG] [IIF-PARSER] Field count mismatch at line 252 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 253 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 254 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 255 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 256 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 257 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 258 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 259 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 260 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 261 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 262 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 263 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 264 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 265 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 266 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 267 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 268 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 269 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 270 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 271 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 272 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 273 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 274 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 275 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 276 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 277 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 278 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,851 [DEBUG] [IIF-PARSER] Field count mismatch at line 279 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 280 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 281 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 282 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 283 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 284 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 285 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 286 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 287 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 288 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 289 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 290 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 291 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 292 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 293 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 294 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 295 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 296 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 297 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 298 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 299 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 300 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 301 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 302 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 303 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 304 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,852 [DEBUG] [IIF-PARSER] Field count mismatch at line 305 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,853 [DEBUG] [IIF-PARSER] Field count mismatch at line 306 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,853 [DEBUG] [IIF-PARSER] Field count mismatch at line 307 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,853 [DEBUG] [IIF-PARSER] Field count mismatch at line 308 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,853 [DEBUG] [IIF-PARSER] Field count mismatch at line 309 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,853 [DEBUG] [IIF-PARSER] Field count mismatch at line 310 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,853 [DEBUG] [IIF-PARSER] Field count mismatch at line 311 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,853 [DEBUG] [IIF-PARSER] Field count mismatch at line 312 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,853 [DEBUG] [IIF-PARSER] Field count mismatch at line 313 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,853 [DEBUG] [IIF-PARSER] Field count mismatch at line 314 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,853 [DEBUG] [IIF-PARSER] Field count mismatch at line 315 in section CUST. Expected 59, got 58
+2025-06-14 20:39:09,853 [DEBUG] [IIF-PARSER] Found module key: VTYPE at line 316
+2025-06-14 20:39:09,853 [DEBUG] [IIF-PARSER] Found module key: VEND at line 324
+2025-06-14 20:39:09,853 [DEBUG] [IIF-PARSER] Found module key: EMP at line 363
+2025-06-14 20:39:09,853 [DEBUG] [IIF-PARSER] Field count mismatch at line 366 in section EMP. Expected 40, got 66
+2025-06-14 20:39:09,853 [DEBUG] [IIF-PARSER] Found module key: OTHERNAME at line 367
+2025-06-14 20:39:09,853 [DEBUG] [IIF-PARSER] Found module key: SHIPMETH at line 375
+2025-06-14 20:39:09,853 [DEBUG] [IIF-PARSER] Found module key: PAYMETH at line 381
+2025-06-14 20:39:09,853 [DEBUG] [IIF-PARSER] Found module key: INVMEMO at line 390
+2025-06-14 20:39:09,853 [DEBUG] [IIF-PARSER] Found module key: TERMS at line 396
+2025-06-14 20:39:09,853 [DEBUG] [IIF-PARSER] Found module key: BUD at line 404
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 405 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 406 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 407 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 408 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 409 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 410 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 411 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 412 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 413 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 414 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 415 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 416 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 417 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 418 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 419 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 420 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 421 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 422 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 423 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 424 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 425 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 426 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 427 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 428 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,854 [DEBUG] [IIF-PARSER] Field count mismatch at line 429 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,855 [DEBUG] [IIF-PARSER] Field count mismatch at line 430 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,855 [DEBUG] [IIF-PARSER] Field count mismatch at line 431 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,855 [DEBUG] [IIF-PARSER] Field count mismatch at line 432 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,855 [DEBUG] [IIF-PARSER] Field count mismatch at line 433 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,855 [DEBUG] [IIF-PARSER] Field count mismatch at line 434 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,855 [DEBUG] [IIF-PARSER] Field count mismatch at line 435 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,855 [DEBUG] [IIF-PARSER] Field count mismatch at line 436 in section BUD. Expected 18, got 16
+2025-06-14 20:39:09,855 [DEBUG] [IIF-PARSER] Field count mismatch at line 437 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,855 [DEBUG] [IIF-PARSER] Field count mismatch at line 438 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,855 [DEBUG] [IIF-PARSER] Field count mismatch at line 439 in section BUD. Expected 18, got 17
+2025-06-14 20:39:09,855 [DEBUG] [IIF-PARSER] Field count mismatch at line 440 in section BUD. Expected 18, got 16
+2025-06-14 20:39:09,855 [DEBUG] [IIF-PARSER] Field count mismatch at line 441 in section BUD. Expected 18, got 16
+2025-06-14 20:39:09,855 [DEBUG] [IIF-PARSER] Field count mismatch at line 442 in section BUD. Expected 18, got 16
+2025-06-14 20:39:09,855 [DEBUG] [IIF-PARSER] Found module key: SALESREP at line 443
+2025-06-14 20:39:09,855 [DEBUG] [IIF-PARSER] Found module key: TODO at line 445
+2025-06-14 20:39:09,855 [DEBUG] [IIF-PARSER] Found module key: PRICELEVEL at line 452
+2025-06-14 20:39:09,855 [DEBUG] [IIF-PARSER] Found module key: SALESTAXCODE at line 453
+2025-06-14 20:39:09,855 [DEBUG] [IIF-PARSER] IIF parsing completed: 26 module keys, 457 lines processed
+2025-06-14 20:39:09,855 [DEBUG] [CORE] IIF parsing completed - input\qbd-all-lists-sample.IIF -> 26 module keys discovered, 385 lines processed
+2025-06-14 20:39:09,855 [DEBUG] [CORE] Module keys found: ['HDR', 'ACCNT', 'QB', 'CUSTITEMDICT', 'ENDCUSTITEMDICT', 'INVITEM', 'ENDGRP', 'CLASS', 'CTYPE', 'CUSTNAMEDICT', 'ENDCUSTNAMEDICT', 'JOBTYPE', 'CUST', 'VTYPE', 'VEND', 'EMP', 'OTHERNAME', 'SHIPMETH', 'PAYMETH', 'INVMEMO', 'TERMS', 'BUD', 'SALESREP', 'TODO', 'PRICELEVEL', 'SALESTAXCODE']
+2025-06-14 20:39:09,855 [DEBUG] [CORE] Module key not registered - HDR (1 module key records) - no processing module available
+2025-06-14 20:39:09,855 [DEBUG] [CORE] To process HDR module keys, register a module with: register_global_module('HDR', module_function)
+2025-06-14 20:39:09,855 [DEBUG] [CORE] Module dispatch - 106 ACCNT module key records -> registered module
+2025-06-14 20:39:09,855 [DEBUG] [CORE] Module dispatch initiated - ACCNT
+2025-06-14 20:39:09,855 [INFO] [ACCOUNTS-PIPELINE] Starting accounts processing with 106 records
+2025-06-14 20:39:09,855 [DEBUG] [ACCOUNTS-ORCHESTRATION] Loading account mapping configuration
+2025-06-14 20:39:09,855 [DEBUG] [ACCOUNTS-MAPPING] Loading baseline mapping from: C:\git-root\qbd-to-gnucash\src\modules\accounts\accounts_mapping_baseline.json
+2025-06-14 20:39:09,864 [INFO] [ACCOUNTS-MAPPING] Loaded and validated baseline mapping: 15 accounts
+2025-06-14 20:39:09,864 [INFO] [ACCOUNTS-MAPPING] No user override file found - using baseline configuration
+2025-06-14 20:39:09,864 [DEBUG] [ACCOUNTS-MAPPING] To customize mappings, create: output\accounts_mapping_specific.json
+2025-06-14 20:39:09,864 [INFO] [ACCOUNTS-MAPPING] Account mapping configuration ready - 15 types mapped and validated
+2025-06-14 20:39:09,864 [DEBUG] [ACCOUNTS-ORCHESTRATION] Beginning account validation
+2025-06-14 20:39:09,864 [DEBUG] [ACCOUNTS-ORCHESTRATION] Account validation completed - 106 accounts validated
+2025-06-14 20:39:09,864 [DEBUG] [ACCOUNTS-MAPPING] All accounts are properly mapped
+2025-06-14 20:39:09,864 [DEBUG] [ACCOUNTS-ORCHESTRATION] Building account hierarchy tree
+2025-06-14 20:39:09,865 [DEBUG] Field capture: 'Root' no additional source fields found
+2025-06-14 20:39:09,865 [DEBUG] Field capture: 'Assets' no additional source fields found
+2025-06-14 20:39:09,865 [DEBUG] Field capture: 'Liabilities' no additional source fields found
+2025-06-14 20:39:09,865 [DEBUG] Field capture: 'Equity' no additional source fields found
+2025-06-14 20:39:09,865 [DEBUG] Field capture: 'Income' no additional source fields found
+2025-06-14 20:39:09,865 [DEBUG] Field capture: 'Expenses' no additional source fields found
+2025-06-14 20:39:09,865 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Checking' (BANK) -> ASSET at Assets:Current Assets:Bank
+2025-06-14 20:39:09,865 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Cash Expenditures' (BANK) -> ASSET at Assets:Current Assets:Bank
+2025-06-14 20:39:09,865 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Savings' (BANK) -> ASSET at Assets:Current Assets:Bank
+2025-06-14 20:39:09,865 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Barter Account' (BANK) -> ASSET at Assets:Current Assets:Bank
+2025-06-14 20:39:09,865 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Accounts Receivable' (AR) -> RECEIVABLE at Assets:Accounts Receivable
+2025-06-14 20:39:09,865 [DEBUG] Config: Registered AR account 'Accounts Receivable' - will enforce uniqueness
+2025-06-14 20:39:09,865 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Prepaid Insurance' (OCASSET) -> ASSET at Assets:Current Assets:Other Current Assets
+2025-06-14 20:39:09,865 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Employee advances' (OCASSET) -> ASSET at Assets:Current Assets:Other Current Assets
+2025-06-14 20:39:09,865 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Inventory Asset' (OCASSET) -> ASSET at Assets:Current Assets:Other Current Assets
+2025-06-14 20:39:09,865 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Undeposited Funds' (OCASSET) -> ASSET at Assets:Current Assets:Other Current Assets
+2025-06-14 20:39:09,865 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Truck' (FIXASSET) -> ASSET at Assets:Fixed Assets
+2025-06-14 20:39:09,865 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Truck:Accumulated Depreciation' (FIXASSET) -> ASSET at Assets:Fixed Assets
+2025-06-14 20:39:09,865 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Truck:Original Purchase' (FIXASSET) -> ASSET at Assets:Fixed Assets
+2025-06-14 20:39:09,865 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Accounts Payable' (AP) -> PAYABLE at Liabilities:Accounts Payable
+2025-06-14 20:39:09,865 [DEBUG] Config: Registered AP account 'Accounts Payable' - will enforce uniqueness
+2025-06-14 20:39:09,865 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'CalOil Card' (CCARD) -> LIABILITY at Liabilities:Credit Cards
+2025-06-14 20:39:09,865 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'QuickBooks Credit Card' (CCARD) -> LIABILITY at Liabilities:Credit Cards
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'QuickBooks Credit Card:QBCC Field Office' (CCARD) -> LIABILITY at Liabilities:Credit Cards
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'QuickBooks Credit Card:QBCC Home Office' (CCARD) -> LIABILITY at Liabilities:Credit Cards
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'QuickBooks Credit Card:QBCC Sales Dept' (CCARD) -> LIABILITY at Liabilities:Credit Cards
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Payroll Liabilities' (OCLIAB) -> LIABILITY at Liabilities:Current Liabilities
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Direct Deposit Liabilities' (OCLIAB) -> LIABILITY at Liabilities:Current Liabilities
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Payments on Account' (OCLIAB) -> LIABILITY at Liabilities:Current Liabilities
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Sales Tax Payable' (OCLIAB) -> LIABILITY at Liabilities:Current Liabilities
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Sales Tax Payable:EXTORTION-FEES-PAYABLE' (OCLIAB) -> LIABILITY at Liabilities:Current Liabilities
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Bank of Anycity Loan' (LTLIAB) -> LIABILITY at Liabilities:Long-Term Liabilities
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Equipment Loan' (LTLIAB) -> LIABILITY at Liabilities:Long-Term Liabilities
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Bank Loan' (LTLIAB) -> LIABILITY at Liabilities:Long-Term Liabilities
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Opening Bal Equity' (EQUITY) -> EQUITY at Equity
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Owner's Equity' (EQUITY) -> EQUITY at Equity
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Owner's Equity:Owner's Contributions' (EQUITY) -> EQUITY at Equity
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Owner's Equity:Owner's Draw' (EQUITY) -> EQUITY at Equity
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Retained Earnings' (EQUITY) -> EQUITY at Equity
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Discounts' (INC) -> INCOME at Income
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Landscaping Services' (INC) -> INCOME at Income
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Landscaping Services:Design Services' (INC) -> INCOME at Income
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Landscaping Services:Equipment Rental' (INC) -> INCOME at Income
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Landscaping Services:Job Materials' (INC) -> INCOME at Income
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Landscaping Services:Job Materials:Misc Materials' (INC) -> INCOME at Income
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Landscaping Services:Job Materials:Decks & Patios' (INC) -> INCOME at Income
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Landscaping Services:Job Materials:Fountains & Garden Lighting' (INC) -> INCOME at Income
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Landscaping Services:Job Materials:Plants and Sod' (INC) -> INCOME at Income
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Landscaping Services:Job Materials:Sprinklers & Drip systems' (INC) -> INCOME at Income
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Landscaping Services:Labor' (INC) -> INCOME at Income
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Landscaping Services:Labor:Installation' (INC) -> INCOME at Income
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Landscaping Services:Labor:Maintenance & Repairs' (INC) -> INCOME at Income
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Markup Income' (INC) -> INCOME at Income
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Other Income' (INC) -> INCOME at Income
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Retail Sales' (INC) -> INCOME at Income
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Service' (INC) -> INCOME at Income
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Uncategorized Income' (INC) -> INCOME at Income
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Cost of Goods Sold' (COGS) -> EXPENSE at Expenses:Cost of Goods Sold
+2025-06-14 20:39:09,866 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Payroll Expenses' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Advertising' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Amortization Expense' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Automobile' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Automobile:Insurance' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Automobile:License & Fees' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Automobile:Fuel' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Automobile:Maintenance & Repairs' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Bad Debt' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Bank Service Charges' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Bond Expense' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Delivery Fee' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Depreciation' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Dues and Subscription' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Insurance' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Insurance:Disability' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Insurance:Liability' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Insurance:Worker's Comp' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Interest Expense' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Interest Expense:Finance Charges' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Interest Expense:Interest on Loan' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Job Expenses' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Job Expenses:Equipmental Rental' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Job Expenses:Job Materials' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Job Expenses:Job Materials:Decks & Patio' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Job Expenses:Job Materials:Fountains & Garden Lighting' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Job Expenses:Job Materials:Plants & Sod' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Job Expenses:Job Materials:Sprinkler's & Drip Systems' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Job Expenses:Permits' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Job Expenses:Subcontractors' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Mileage Reimbursement' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Miscellaneous' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Office Supplies' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,867 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Professional Fees' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,868 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Professional Fees:Accounting' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,868 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Professional Fees:Legal' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,868 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Rent' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,868 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Repairs' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,868 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Repairs:Building Repairs' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,868 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Repairs:Computer Repairs' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,868 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Repairs:Equipment Repairs' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,868 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Taxes' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,868 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Taxes:Federal' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,868 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Taxes:Property' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,868 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Taxes:State' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,868 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Tools and Misc. Equipment' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,868 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Uncategorized Expenses' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,868 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Utilities' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,868 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Utilities:Gas and Electric' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,868 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Utilities:Telephone' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,868 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Utilities:Water' (EXP) -> EXPENSE at Expenses
+2025-06-14 20:39:09,868 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Misc Income' (EXINC) -> INCOME at Income:Extraordinary
+2025-06-14 20:39:09,868 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Interest Income' (EXINC) -> INCOME at Income:Extraordinary
+2025-06-14 20:39:09,868 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Other Expenses' (EXEXP) -> EXPENSE at Expenses:Extraordinary
+2025-06-14 20:39:09,868 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Sales Orders' (NONPOSTING) -> ASSET at Assets:Non-Posting
+2025-06-14 20:39:09,868 [DEBUG] [ACCOUNTS-MAPPING] Mapped account 'Purchase Orders' (NONPOSTING) -> ASSET at Assets:Non-Posting
+2025-06-14 20:39:09,868 [DEBUG] Field capture: 'Current Assets' no additional source fields found
+2025-06-14 20:39:09,868 [DEBUG] Config: Created intermediate hierarchy node 'Current Assets' under 'Assets'
+2025-06-14 20:39:09,868 [DEBUG] Field capture: 'Bank' no additional source fields found
+2025-06-14 20:39:09,868 [DEBUG] Config: Created intermediate hierarchy node 'Bank' under 'Assets:Current Assets'
+2025-06-14 20:39:09,868 [DEBUG] Field capture: 'Checking' preserved 12 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'DESC', 'SCD', 'BANKNUM', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,868 [DEBUG] [ACCOUNTS-TREE] Placed account 'Checking' under 'Assets:Current Assets:Bank' as ASSET
+2025-06-14 20:39:09,869 [DEBUG] Field capture: 'Cash Expenditures' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'DESC', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,869 [DEBUG] [ACCOUNTS-TREE] Placed account 'Cash Expenditures' under 'Assets:Current Assets:Bank' as ASSET
+2025-06-14 20:39:09,869 [DEBUG] Field capture: 'Savings' preserved 12 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'DESC', 'SCD', 'BANKNUM', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,869 [DEBUG] [ACCOUNTS-TREE] Placed account 'Savings' under 'Assets:Current Assets:Bank' as ASSET
+2025-06-14 20:39:09,869 [DEBUG] Field capture: 'Barter Account' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'DESC', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,869 [DEBUG] [ACCOUNTS-TREE] Placed account 'Barter Account' under 'Assets:Current Assets:Bank' as ASSET
+2025-06-14 20:39:09,869 [DEBUG] Config: Skipping intermediate node 'Accounts Receivable' - will be replaced by actual account 'Accounts Receivable'
+2025-06-14 20:39:09,869 [DEBUG] Field capture: 'Accounts Receivable' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,869 [DEBUG] [ACCOUNTS-TREE] Placed account 'Accounts Receivable' under 'Assets' as RECEIVABLE
+2025-06-14 20:39:09,869 [DEBUG] Field capture: 'Other Current Assets' no additional source fields found
+2025-06-14 20:39:09,869 [DEBUG] Config: Created intermediate hierarchy node 'Other Current Assets' under 'Assets:Current Assets'
+2025-06-14 20:39:09,869 [DEBUG] Field capture: 'Prepaid Insurance' preserved 10 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,869 [DEBUG] [ACCOUNTS-TREE] Placed account 'Prepaid Insurance' under 'Assets:Current Assets:Other Current Assets' as ASSET
+2025-06-14 20:39:09,869 [DEBUG] Field capture: 'Employee advances' preserved 10 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,869 [DEBUG] [ACCOUNTS-TREE] Placed account 'Employee advances' under 'Assets:Current Assets:Other Current Assets' as ASSET
+2025-06-14 20:39:09,869 [DEBUG] Field capture: 'Inventory Asset' preserved 12 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'EXTRA', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,869 [DEBUG] [ACCOUNTS-TREE] Placed account 'Inventory Asset' under 'Assets:Current Assets:Other Current Assets' as ASSET
+2025-06-14 20:39:09,869 [DEBUG] Field capture: 'Undeposited Funds' preserved 12 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'EXTRA', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,869 [DEBUG] [ACCOUNTS-TREE] Placed account 'Undeposited Funds' under 'Assets:Current Assets:Other Current Assets' as ASSET
+2025-06-14 20:39:09,869 [DEBUG] Field capture: 'Fixed Assets' no additional source fields found
+2025-06-14 20:39:09,869 [DEBUG] Config: Created intermediate hierarchy node 'Fixed Assets' under 'Assets'
+2025-06-14 20:39:09,869 [DEBUG] Field capture: 'Truck' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,869 [DEBUG] [ACCOUNTS-TREE] Placed account 'Truck' under 'Assets:Fixed Assets' as ASSET
+2025-06-14 20:39:09,869 [DEBUG] Config: Processing hierarchical account 'Truck:Accumulated Depreciation' with 2 levels
+2025-06-14 20:39:09,869 [DEBUG] Field capture: 'Truck' no additional source fields found
+2025-06-14 20:39:09,869 [DEBUG] Config: Created intermediate node 'Truck' under 'Assets:Fixed Assets:Truck'
+2025-06-14 20:39:09,869 [DEBUG] Field capture: 'Accumulated Depreciation' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,869 [DEBUG] [ACCOUNTS-TREE] Placed account 'Accumulated Depreciation' under 'Assets:Fixed Assets:Truck:Truck' as ASSET
+2025-06-14 20:39:09,869 [DEBUG] Config: Processing hierarchical account 'Truck:Original Purchase' with 2 levels
+2025-06-14 20:39:09,869 [DEBUG] Config: Using existing intermediate node 'Truck'
+2025-06-14 20:39:09,870 [DEBUG] Field capture: 'Original Purchase' preserved 12 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'DESC', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,870 [DEBUG] [ACCOUNTS-TREE] Placed account 'Original Purchase' under 'Assets:Fixed Assets:Truck:Truck' as ASSET
+2025-06-14 20:39:09,870 [DEBUG] Config: Skipping intermediate node 'Accounts Payable' - will be replaced by actual account 'Accounts Payable'
+2025-06-14 20:39:09,870 [DEBUG] Field capture: 'Accounts Payable' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,870 [DEBUG] [ACCOUNTS-TREE] Placed account 'Accounts Payable' under 'Liabilities' as PAYABLE
+2025-06-14 20:39:09,870 [DEBUG] Field capture: 'Credit Cards' no additional source fields found
+2025-06-14 20:39:09,870 [DEBUG] Config: Created intermediate hierarchy node 'Credit Cards' under 'Liabilities'
+2025-06-14 20:39:09,870 [DEBUG] Field capture: 'CalOil Card' preserved 12 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'BANKNUM', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,870 [DEBUG] [ACCOUNTS-TREE] Placed account 'CalOil Card' under 'Liabilities:Credit Cards' as LIABILITY
+2025-06-14 20:39:09,870 [DEBUG] Field capture: 'QuickBooks Credit Card' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'DESC', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,870 [DEBUG] [ACCOUNTS-TREE] Placed account 'QuickBooks Credit Card' under 'Liabilities:Credit Cards' as LIABILITY
+2025-06-14 20:39:09,870 [DEBUG] Config: Processing hierarchical account 'QuickBooks Credit Card:QBCC Field Office' with 2 levels
+2025-06-14 20:39:09,870 [DEBUG] Field capture: 'QuickBooks Credit Card' no additional source fields found
+2025-06-14 20:39:09,870 [DEBUG] Config: Created intermediate node 'QuickBooks Credit Card' under 'Liabilities:Credit Cards:QuickBooks Credit Card'
+2025-06-14 20:39:09,870 [DEBUG] Field capture: 'QBCC Field Office' preserved 12 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'DESC', 'SCD', 'BANKNUM', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,870 [DEBUG] [ACCOUNTS-TREE] Placed account 'QBCC Field Office' under 'Liabilities:Credit Cards:QuickBooks Credit Card:QuickBooks Credit Card' as LIABILITY
+2025-06-14 20:39:09,870 [DEBUG] Config: Processing hierarchical account 'QuickBooks Credit Card:QBCC Home Office' with 2 levels
+2025-06-14 20:39:09,870 [DEBUG] Config: Using existing intermediate node 'QuickBooks Credit Card'
+2025-06-14 20:39:09,870 [DEBUG] Field capture: 'QBCC Home Office' preserved 12 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'DESC', 'SCD', 'BANKNUM', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,870 [DEBUG] [ACCOUNTS-TREE] Placed account 'QBCC Home Office' under 'Liabilities:Credit Cards:QuickBooks Credit Card:QuickBooks Credit Card' as LIABILITY
+2025-06-14 20:39:09,870 [DEBUG] Config: Processing hierarchical account 'QuickBooks Credit Card:QBCC Sales Dept' with 2 levels
+2025-06-14 20:39:09,870 [DEBUG] Config: Using existing intermediate node 'QuickBooks Credit Card'
+2025-06-14 20:39:09,870 [DEBUG] Field capture: 'QBCC Sales Dept' preserved 12 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'DESC', 'SCD', 'BANKNUM', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,870 [DEBUG] [ACCOUNTS-TREE] Placed account 'QBCC Sales Dept' under 'Liabilities:Credit Cards:QuickBooks Credit Card:QuickBooks Credit Card' as LIABILITY
+2025-06-14 20:39:09,870 [DEBUG] Field capture: 'Current Liabilities' no additional source fields found
+2025-06-14 20:39:09,870 [DEBUG] Config: Created intermediate hierarchy node 'Current Liabilities' under 'Liabilities'
+2025-06-14 20:39:09,871 [DEBUG] Field capture: 'Payroll Liabilities' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,871 [DEBUG] [ACCOUNTS-TREE] Placed account 'Payroll Liabilities' under 'Liabilities:Current Liabilities' as LIABILITY
+2025-06-14 20:39:09,871 [DEBUG] Field capture: 'Direct Deposit Liabilities' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,871 [DEBUG] [ACCOUNTS-TREE] Placed account 'Direct Deposit Liabilities' under 'Liabilities:Current Liabilities' as LIABILITY
+2025-06-14 20:39:09,871 [DEBUG] Field capture: 'Payments on Account' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'DESC', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,871 [DEBUG] [ACCOUNTS-TREE] Placed account 'Payments on Account' under 'Liabilities:Current Liabilities' as LIABILITY
+2025-06-14 20:39:09,871 [DEBUG] Field capture: 'Sales Tax Payable' preserved 12 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'EXTRA', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,871 [DEBUG] [ACCOUNTS-TREE] Placed account 'Sales Tax Payable' under 'Liabilities:Current Liabilities' as LIABILITY
+2025-06-14 20:39:09,871 [DEBUG] Config: Processing hierarchical account 'Sales Tax Payable:EXTORTION-FEES-PAYABLE' with 2 levels
+2025-06-14 20:39:09,871 [DEBUG] Field capture: 'Sales Tax Payable' no additional source fields found
+2025-06-14 20:39:09,871 [DEBUG] Config: Created intermediate node 'Sales Tax Payable' under 'Liabilities:Current Liabilities:Sales Tax Payable'
+2025-06-14 20:39:09,871 [DEBUG] Field capture: 'EXTORTION-FEES-PAYABLE' preserved 10 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,871 [DEBUG] [ACCOUNTS-TREE] Placed account 'EXTORTION-FEES-PAYABLE' under 'Liabilities:Current Liabilities:Sales Tax Payable:Sales Tax Payable' as LIABILITY
+2025-06-14 20:39:09,871 [DEBUG] Field capture: 'Long-Term Liabilities' no additional source fields found
+2025-06-14 20:39:09,871 [DEBUG] Config: Created intermediate hierarchy node 'Long-Term Liabilities' under 'Liabilities'
+2025-06-14 20:39:09,871 [DEBUG] Field capture: 'Bank of Anycity Loan' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'SCD', 'BANKNUM', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,871 [DEBUG] [ACCOUNTS-TREE] Placed account 'Bank of Anycity Loan' under 'Liabilities:Long-Term Liabilities' as LIABILITY
+2025-06-14 20:39:09,871 [DEBUG] Field capture: 'Equipment Loan' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'SCD', 'BANKNUM', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,871 [DEBUG] [ACCOUNTS-TREE] Placed account 'Equipment Loan' under 'Liabilities:Long-Term Liabilities' as LIABILITY
+2025-06-14 20:39:09,871 [DEBUG] Field capture: 'Bank Loan' preserved 12 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'DESC', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,871 [DEBUG] [ACCOUNTS-TREE] Placed account 'Bank Loan' under 'Liabilities:Long-Term Liabilities' as LIABILITY
+2025-06-14 20:39:09,871 [DEBUG] Field capture: 'Opening Bal Equity' preserved 12 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'EXTRA', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,871 [DEBUG] [ACCOUNTS-TREE] Placed account 'Opening Bal Equity' under 'Equity' as EQUITY
+2025-06-14 20:39:09,871 [DEBUG] Field capture: 'Owner's Equity' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,871 [DEBUG] [ACCOUNTS-TREE] Placed account 'Owner's Equity' under 'Equity' as EQUITY
+2025-06-14 20:39:09,871 [DEBUG] Config: Processing hierarchical account 'Owner's Equity:Owner's Contributions' with 2 levels
+2025-06-14 20:39:09,871 [DEBUG] Field capture: 'Owner's Equity' no additional source fields found
+2025-06-14 20:39:09,871 [DEBUG] Config: Created intermediate node 'Owner's Equity' under 'Equity:Owner's Equity'
+2025-06-14 20:39:09,871 [DEBUG] Field capture: 'Owner's Contributions' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,872 [DEBUG] [ACCOUNTS-TREE] Placed account 'Owner's Contributions' under 'Equity:Owner's Equity:Owner's Equity' as EQUITY
+2025-06-14 20:39:09,872 [DEBUG] Config: Processing hierarchical account 'Owner's Equity:Owner's Draw' with 2 levels
+2025-06-14 20:39:09,872 [DEBUG] Config: Using existing intermediate node 'Owner's Equity'
+2025-06-14 20:39:09,872 [DEBUG] Field capture: 'Owner's Draw' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,872 [DEBUG] [ACCOUNTS-TREE] Placed account 'Owner's Draw' under 'Equity:Owner's Equity:Owner's Equity' as EQUITY
+2025-06-14 20:39:09,872 [DEBUG] Field capture: 'Retained Earnings' preserved 12 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'EXTRA', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,872 [DEBUG] [ACCOUNTS-TREE] Placed account 'Retained Earnings' under 'Equity' as EQUITY
+2025-06-14 20:39:09,872 [DEBUG] Field capture: 'Discounts' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,872 [DEBUG] [ACCOUNTS-TREE] Placed account 'Discounts' under 'Income' as INCOME
+2025-06-14 20:39:09,872 [DEBUG] Field capture: 'Landscaping Services' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,872 [DEBUG] [ACCOUNTS-TREE] Placed account 'Landscaping Services' under 'Income' as INCOME
+2025-06-14 20:39:09,872 [DEBUG] Config: Processing hierarchical account 'Landscaping Services:Design Services' with 2 levels
+2025-06-14 20:39:09,872 [DEBUG] Field capture: 'Landscaping Services' no additional source fields found
+2025-06-14 20:39:09,872 [DEBUG] Config: Created intermediate node 'Landscaping Services' under 'Income:Landscaping Services'
+2025-06-14 20:39:09,872 [DEBUG] Field capture: 'Design Services' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,872 [DEBUG] [ACCOUNTS-TREE] Placed account 'Design Services' under 'Income:Landscaping Services:Landscaping Services' as INCOME
+2025-06-14 20:39:09,872 [DEBUG] Config: Processing hierarchical account 'Landscaping Services:Equipment Rental' with 2 levels
+2025-06-14 20:39:09,872 [DEBUG] Config: Using existing intermediate node 'Landscaping Services'
+2025-06-14 20:39:09,872 [DEBUG] Field capture: 'Equipment Rental' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,872 [DEBUG] [ACCOUNTS-TREE] Placed account 'Equipment Rental' under 'Income:Landscaping Services:Landscaping Services' as INCOME
+2025-06-14 20:39:09,872 [DEBUG] Config: Processing hierarchical account 'Landscaping Services:Job Materials' with 2 levels
+2025-06-14 20:39:09,872 [DEBUG] Config: Using existing intermediate node 'Landscaping Services'
+2025-06-14 20:39:09,872 [DEBUG] Field capture: 'Job Materials' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,872 [DEBUG] [ACCOUNTS-TREE] Placed account 'Job Materials' under 'Income:Landscaping Services:Landscaping Services' as INCOME
+2025-06-14 20:39:09,872 [DEBUG] Config: Processing hierarchical account 'Landscaping Services:Job Materials:Misc Materials' with 3 levels
+2025-06-14 20:39:09,872 [DEBUG] Config: Using existing intermediate node 'Landscaping Services'
+2025-06-14 20:39:09,872 [DEBUG] Config: Using existing intermediate node 'Job Materials'
+2025-06-14 20:39:09,872 [DEBUG] Field capture: 'Misc Materials' preserved 10 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,872 [DEBUG] [ACCOUNTS-TREE] Placed account 'Misc Materials' under 'Income:Landscaping Services:Landscaping Services:Job Materials' as INCOME
+2025-06-14 20:39:09,872 [DEBUG] Config: Processing hierarchical account 'Landscaping Services:Job Materials:Decks & Patios' with 3 levels
+2025-06-14 20:39:09,872 [DEBUG] Config: Using existing intermediate node 'Landscaping Services'
+2025-06-14 20:39:09,872 [DEBUG] Config: Using existing intermediate node 'Job Materials'
+2025-06-14 20:39:09,872 [DEBUG] Field capture: 'Decks & Patios' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,872 [DEBUG] [ACCOUNTS-TREE] Placed account 'Decks & Patios' under 'Income:Landscaping Services:Landscaping Services:Job Materials' as INCOME
+2025-06-14 20:39:09,873 [DEBUG] Config: Processing hierarchical account 'Landscaping Services:Job Materials:Fountains & Garden Lighting' with 3 levels
+2025-06-14 20:39:09,873 [DEBUG] Config: Using existing intermediate node 'Landscaping Services'
+2025-06-14 20:39:09,873 [DEBUG] Config: Using existing intermediate node 'Job Materials'
+2025-06-14 20:39:09,873 [DEBUG] Field capture: 'Fountains & Garden Lighting' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,873 [DEBUG] [ACCOUNTS-TREE] Placed account 'Fountains & Garden Lighting' under 'Income:Landscaping Services:Landscaping Services:Job Materials' as INCOME
+2025-06-14 20:39:09,873 [DEBUG] Config: Processing hierarchical account 'Landscaping Services:Job Materials:Plants and Sod' with 3 levels
+2025-06-14 20:39:09,873 [DEBUG] Config: Using existing intermediate node 'Landscaping Services'
+2025-06-14 20:39:09,873 [DEBUG] Config: Using existing intermediate node 'Job Materials'
+2025-06-14 20:39:09,873 [DEBUG] Field capture: 'Plants and Sod' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,873 [DEBUG] [ACCOUNTS-TREE] Placed account 'Plants and Sod' under 'Income:Landscaping Services:Landscaping Services:Job Materials' as INCOME
+2025-06-14 20:39:09,873 [DEBUG] Config: Processing hierarchical account 'Landscaping Services:Job Materials:Sprinklers & Drip systems' with 3 levels
+2025-06-14 20:39:09,873 [DEBUG] Config: Using existing intermediate node 'Landscaping Services'
+2025-06-14 20:39:09,873 [DEBUG] Config: Using existing intermediate node 'Job Materials'
+2025-06-14 20:39:09,873 [DEBUG] Field capture: 'Sprinklers & Drip systems' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,873 [DEBUG] [ACCOUNTS-TREE] Placed account 'Sprinklers & Drip systems' under 'Income:Landscaping Services:Landscaping Services:Job Materials' as INCOME
+2025-06-14 20:39:09,873 [DEBUG] Config: Processing hierarchical account 'Landscaping Services:Labor' with 2 levels
+2025-06-14 20:39:09,873 [DEBUG] Config: Using existing intermediate node 'Landscaping Services'
+2025-06-14 20:39:09,873 [DEBUG] Field capture: 'Labor' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,873 [DEBUG] [ACCOUNTS-TREE] Placed account 'Labor' under 'Income:Landscaping Services:Landscaping Services' as INCOME
+2025-06-14 20:39:09,873 [DEBUG] Config: Processing hierarchical account 'Landscaping Services:Labor:Installation' with 3 levels
+2025-06-14 20:39:09,873 [DEBUG] Config: Using existing intermediate node 'Landscaping Services'
+2025-06-14 20:39:09,873 [DEBUG] Config: Using existing intermediate node 'Labor'
+2025-06-14 20:39:09,873 [DEBUG] Field capture: 'Installation' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,873 [DEBUG] [ACCOUNTS-TREE] Placed account 'Installation' under 'Income:Landscaping Services:Landscaping Services:Labor' as INCOME
+2025-06-14 20:39:09,873 [DEBUG] Config: Processing hierarchical account 'Landscaping Services:Labor:Maintenance & Repairs' with 3 levels
+2025-06-14 20:39:09,873 [DEBUG] Config: Using existing intermediate node 'Landscaping Services'
+2025-06-14 20:39:09,873 [DEBUG] Config: Using existing intermediate node 'Labor'
+2025-06-14 20:39:09,873 [DEBUG] Field capture: 'Maintenance & Repairs' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,873 [DEBUG] [ACCOUNTS-TREE] Placed account 'Maintenance & Repairs' under 'Income:Landscaping Services:Landscaping Services:Labor' as INCOME
+2025-06-14 20:39:09,873 [DEBUG] Field capture: 'Markup Income' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,874 [DEBUG] [ACCOUNTS-TREE] Placed account 'Markup Income' under 'Income' as INCOME
+2025-06-14 20:39:09,874 [DEBUG] Field capture: 'Other Income' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,874 [DEBUG] [ACCOUNTS-TREE] Placed account 'Other Income' under 'Income' as INCOME
+2025-06-14 20:39:09,874 [DEBUG] Field capture: 'Retail Sales' preserved 10 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,874 [DEBUG] [ACCOUNTS-TREE] Placed account 'Retail Sales' under 'Income' as INCOME
+2025-06-14 20:39:09,874 [DEBUG] Field capture: 'Service' preserved 10 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,874 [DEBUG] [ACCOUNTS-TREE] Placed account 'Service' under 'Income' as INCOME
+2025-06-14 20:39:09,874 [DEBUG] Field capture: 'Uncategorized Income' preserved 12 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'EXTRA', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,874 [DEBUG] [ACCOUNTS-TREE] Placed account 'Uncategorized Income' under 'Income' as INCOME
+2025-06-14 20:39:09,874 [DEBUG] Config: Skipping intermediate node 'Cost of Goods Sold' - will be replaced by actual account 'Cost of Goods Sold'
+2025-06-14 20:39:09,874 [DEBUG] Field capture: 'Cost of Goods Sold' preserved 12 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'EXTRA', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,874 [DEBUG] [ACCOUNTS-TREE] Placed account 'Cost of Goods Sold' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,874 [DEBUG] Field capture: 'Payroll Expenses' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,874 [DEBUG] [ACCOUNTS-TREE] Placed account 'Payroll Expenses' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,874 [DEBUG] Field capture: 'Advertising' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,874 [DEBUG] [ACCOUNTS-TREE] Placed account 'Advertising' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,874 [DEBUG] Field capture: 'Amortization Expense' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,874 [DEBUG] [ACCOUNTS-TREE] Placed account 'Amortization Expense' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,874 [DEBUG] Field capture: 'Automobile' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,874 [DEBUG] [ACCOUNTS-TREE] Placed account 'Automobile' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,874 [DEBUG] Config: Processing hierarchical account 'Automobile:Insurance' with 2 levels
+2025-06-14 20:39:09,874 [DEBUG] Field capture: 'Automobile' no additional source fields found
+2025-06-14 20:39:09,874 [DEBUG] Config: Created intermediate node 'Automobile' under 'Expenses:Automobile'
+2025-06-14 20:39:09,874 [DEBUG] Field capture: 'Insurance' preserved 10 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,874 [DEBUG] [ACCOUNTS-TREE] Placed account 'Insurance' under 'Expenses:Automobile:Automobile' as EXPENSE
+2025-06-14 20:39:09,874 [DEBUG] Config: Processing hierarchical account 'Automobile:License & Fees' with 2 levels
+2025-06-14 20:39:09,874 [DEBUG] Config: Using existing intermediate node 'Automobile'
+2025-06-14 20:39:09,874 [DEBUG] Field capture: 'License & Fees' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'SCD', 'BANKNUM', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,874 [DEBUG] [ACCOUNTS-TREE] Placed account 'License & Fees' under 'Expenses:Automobile:Automobile' as EXPENSE
+2025-06-14 20:39:09,874 [DEBUG] Config: Processing hierarchical account 'Automobile:Fuel' with 2 levels
+2025-06-14 20:39:09,874 [DEBUG] Config: Using existing intermediate node 'Automobile'
+2025-06-14 20:39:09,874 [DEBUG] Field capture: 'Fuel' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,875 [DEBUG] [ACCOUNTS-TREE] Placed account 'Fuel' under 'Expenses:Automobile:Automobile' as EXPENSE
+2025-06-14 20:39:09,875 [DEBUG] Config: Processing hierarchical account 'Automobile:Maintenance & Repairs' with 2 levels
+2025-06-14 20:39:09,875 [DEBUG] Config: Using existing intermediate node 'Automobile'
+2025-06-14 20:39:09,875 [DEBUG] Field capture: 'Maintenance & Repairs' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,875 [DEBUG] [ACCOUNTS-TREE] Placed account 'Maintenance & Repairs' under 'Expenses:Automobile:Automobile' as EXPENSE
+2025-06-14 20:39:09,875 [DEBUG] Field capture: 'Bad Debt' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,875 [DEBUG] [ACCOUNTS-TREE] Placed account 'Bad Debt' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,875 [DEBUG] Field capture: 'Bank Service Charges' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,875 [DEBUG] [ACCOUNTS-TREE] Placed account 'Bank Service Charges' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,875 [DEBUG] Field capture: 'Bond Expense' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,875 [DEBUG] [ACCOUNTS-TREE] Placed account 'Bond Expense' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,875 [DEBUG] Field capture: 'Delivery Fee' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,875 [DEBUG] [ACCOUNTS-TREE] Placed account 'Delivery Fee' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,875 [DEBUG] Field capture: 'Depreciation' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,875 [DEBUG] [ACCOUNTS-TREE] Placed account 'Depreciation' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,875 [DEBUG] Field capture: 'Dues and Subscription' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,875 [DEBUG] [ACCOUNTS-TREE] Placed account 'Dues and Subscription' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,875 [DEBUG] Field capture: 'Insurance' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,875 [DEBUG] [ACCOUNTS-TREE] Placed account 'Insurance' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,875 [DEBUG] Config: Processing hierarchical account 'Insurance:Disability' with 2 levels
+2025-06-14 20:39:09,875 [DEBUG] Field capture: 'Insurance' no additional source fields found
+2025-06-14 20:39:09,875 [DEBUG] Config: Created intermediate node 'Insurance' under 'Expenses:Insurance'
+2025-06-14 20:39:09,875 [DEBUG] Field capture: 'Disability' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,875 [DEBUG] [ACCOUNTS-TREE] Placed account 'Disability' under 'Expenses:Insurance:Insurance' as EXPENSE
+2025-06-14 20:39:09,875 [DEBUG] Config: Processing hierarchical account 'Insurance:Liability' with 2 levels
+2025-06-14 20:39:09,875 [DEBUG] Config: Using existing intermediate node 'Insurance'
+2025-06-14 20:39:09,875 [DEBUG] Field capture: 'Liability' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,875 [DEBUG] [ACCOUNTS-TREE] Placed account 'Liability' under 'Expenses:Insurance:Insurance' as EXPENSE
+2025-06-14 20:39:09,875 [DEBUG] Config: Processing hierarchical account 'Insurance:Worker's Comp' with 2 levels
+2025-06-14 20:39:09,875 [DEBUG] Config: Using existing intermediate node 'Insurance'
+2025-06-14 20:39:09,875 [DEBUG] Field capture: 'Worker's Comp' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,875 [DEBUG] [ACCOUNTS-TREE] Placed account 'Worker's Comp' under 'Expenses:Insurance:Insurance' as EXPENSE
+2025-06-14 20:39:09,876 [DEBUG] Field capture: 'Interest Expense' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,876 [DEBUG] [ACCOUNTS-TREE] Placed account 'Interest Expense' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,876 [DEBUG] Config: Processing hierarchical account 'Interest Expense:Finance Charges' with 2 levels
+2025-06-14 20:39:09,876 [DEBUG] Field capture: 'Interest Expense' no additional source fields found
+2025-06-14 20:39:09,876 [DEBUG] Config: Created intermediate node 'Interest Expense' under 'Expenses:Interest Expense'
+2025-06-14 20:39:09,876 [DEBUG] Field capture: 'Finance Charges' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,876 [DEBUG] [ACCOUNTS-TREE] Placed account 'Finance Charges' under 'Expenses:Interest Expense:Interest Expense' as EXPENSE
+2025-06-14 20:39:09,876 [DEBUG] Config: Processing hierarchical account 'Interest Expense:Interest on Loan' with 2 levels
+2025-06-14 20:39:09,876 [DEBUG] Config: Using existing intermediate node 'Interest Expense'
+2025-06-14 20:39:09,876 [DEBUG] Field capture: 'Interest on Loan' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,876 [DEBUG] [ACCOUNTS-TREE] Placed account 'Interest on Loan' under 'Expenses:Interest Expense:Interest Expense' as EXPENSE
+2025-06-14 20:39:09,876 [DEBUG] Field capture: 'Job Expenses' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,876 [DEBUG] [ACCOUNTS-TREE] Placed account 'Job Expenses' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,876 [DEBUG] Config: Processing hierarchical account 'Job Expenses:Equipmental Rental' with 2 levels
+2025-06-14 20:39:09,876 [DEBUG] Field capture: 'Job Expenses' no additional source fields found
+2025-06-14 20:39:09,876 [DEBUG] Config: Created intermediate node 'Job Expenses' under 'Expenses:Job Expenses'
+2025-06-14 20:39:09,876 [DEBUG] Field capture: 'Equipmental Rental' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,876 [DEBUG] [ACCOUNTS-TREE] Placed account 'Equipmental Rental' under 'Expenses:Job Expenses:Job Expenses' as EXPENSE
+2025-06-14 20:39:09,876 [DEBUG] Config: Processing hierarchical account 'Job Expenses:Job Materials' with 2 levels
+2025-06-14 20:39:09,876 [DEBUG] Config: Using existing intermediate node 'Job Expenses'
+2025-06-14 20:39:09,876 [DEBUG] Field capture: 'Job Materials' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,876 [DEBUG] [ACCOUNTS-TREE] Placed account 'Job Materials' under 'Expenses:Job Expenses:Job Expenses' as EXPENSE
+2025-06-14 20:39:09,876 [DEBUG] Config: Processing hierarchical account 'Job Expenses:Job Materials:Decks & Patio' with 3 levels
+2025-06-14 20:39:09,876 [DEBUG] Config: Using existing intermediate node 'Job Expenses'
+2025-06-14 20:39:09,876 [DEBUG] Config: Using existing intermediate node 'Job Materials'
+2025-06-14 20:39:09,876 [DEBUG] Field capture: 'Decks & Patio' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,876 [DEBUG] [ACCOUNTS-TREE] Placed account 'Decks & Patio' under 'Expenses:Job Expenses:Job Expenses:Job Materials' as EXPENSE
+2025-06-14 20:39:09,876 [DEBUG] Config: Processing hierarchical account 'Job Expenses:Job Materials:Fountains & Garden Lighting' with 3 levels
+2025-06-14 20:39:09,876 [DEBUG] Config: Using existing intermediate node 'Job Expenses'
+2025-06-14 20:39:09,876 [DEBUG] Config: Using existing intermediate node 'Job Materials'
+2025-06-14 20:39:09,876 [DEBUG] Field capture: 'Fountains & Garden Lighting' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,876 [DEBUG] [ACCOUNTS-TREE] Placed account 'Fountains & Garden Lighting' under 'Expenses:Job Expenses:Job Expenses:Job Materials' as EXPENSE
+2025-06-14 20:39:09,877 [DEBUG] Config: Processing hierarchical account 'Job Expenses:Job Materials:Plants & Sod' with 3 levels
+2025-06-14 20:39:09,877 [DEBUG] Config: Using existing intermediate node 'Job Expenses'
+2025-06-14 20:39:09,877 [DEBUG] Config: Using existing intermediate node 'Job Materials'
+2025-06-14 20:39:09,877 [DEBUG] Field capture: 'Plants & Sod' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,877 [DEBUG] [ACCOUNTS-TREE] Placed account 'Plants & Sod' under 'Expenses:Job Expenses:Job Expenses:Job Materials' as EXPENSE
+2025-06-14 20:39:09,877 [DEBUG] Config: Processing hierarchical account 'Job Expenses:Job Materials:Sprinkler's & Drip Systems' with 3 levels
+2025-06-14 20:39:09,877 [DEBUG] Config: Using existing intermediate node 'Job Expenses'
+2025-06-14 20:39:09,877 [DEBUG] Config: Using existing intermediate node 'Job Materials'
+2025-06-14 20:39:09,877 [DEBUG] Field capture: 'Sprinkler's & Drip Systems' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,877 [DEBUG] [ACCOUNTS-TREE] Placed account 'Sprinkler's & Drip Systems' under 'Expenses:Job Expenses:Job Expenses:Job Materials' as EXPENSE
+2025-06-14 20:39:09,877 [DEBUG] Config: Processing hierarchical account 'Job Expenses:Permits' with 2 levels
+2025-06-14 20:39:09,877 [DEBUG] Config: Using existing intermediate node 'Job Expenses'
+2025-06-14 20:39:09,877 [DEBUG] Field capture: 'Permits' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,877 [DEBUG] [ACCOUNTS-TREE] Placed account 'Permits' under 'Expenses:Job Expenses:Job Expenses' as EXPENSE
+2025-06-14 20:39:09,877 [DEBUG] Config: Processing hierarchical account 'Job Expenses:Subcontractors' with 2 levels
+2025-06-14 20:39:09,877 [DEBUG] Config: Using existing intermediate node 'Job Expenses'
+2025-06-14 20:39:09,877 [DEBUG] Field capture: 'Subcontractors' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,877 [DEBUG] [ACCOUNTS-TREE] Placed account 'Subcontractors' under 'Expenses:Job Expenses:Job Expenses' as EXPENSE
+2025-06-14 20:39:09,877 [DEBUG] Field capture: 'Mileage Reimbursement' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,877 [DEBUG] [ACCOUNTS-TREE] Placed account 'Mileage Reimbursement' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,877 [DEBUG] Field capture: 'Miscellaneous' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,877 [DEBUG] [ACCOUNTS-TREE] Placed account 'Miscellaneous' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,877 [DEBUG] Field capture: 'Office Supplies' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,877 [DEBUG] [ACCOUNTS-TREE] Placed account 'Office Supplies' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,877 [DEBUG] Field capture: 'Professional Fees' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,877 [DEBUG] [ACCOUNTS-TREE] Placed account 'Professional Fees' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,877 [DEBUG] Config: Processing hierarchical account 'Professional Fees:Accounting' with 2 levels
+2025-06-14 20:39:09,877 [DEBUG] Field capture: 'Professional Fees' no additional source fields found
+2025-06-14 20:39:09,877 [DEBUG] Config: Created intermediate node 'Professional Fees' under 'Expenses:Professional Fees'
+2025-06-14 20:39:09,877 [DEBUG] Field capture: 'Accounting' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,877 [DEBUG] [ACCOUNTS-TREE] Placed account 'Accounting' under 'Expenses:Professional Fees:Professional Fees' as EXPENSE
+2025-06-14 20:39:09,877 [DEBUG] Config: Processing hierarchical account 'Professional Fees:Legal' with 2 levels
+2025-06-14 20:39:09,877 [DEBUG] Config: Using existing intermediate node 'Professional Fees'
+2025-06-14 20:39:09,878 [DEBUG] Field capture: 'Legal' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,878 [DEBUG] [ACCOUNTS-TREE] Placed account 'Legal' under 'Expenses:Professional Fees:Professional Fees' as EXPENSE
+2025-06-14 20:39:09,878 [DEBUG] Field capture: 'Rent' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,878 [DEBUG] [ACCOUNTS-TREE] Placed account 'Rent' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,878 [DEBUG] Field capture: 'Repairs' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,878 [DEBUG] [ACCOUNTS-TREE] Placed account 'Repairs' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,878 [DEBUG] Config: Processing hierarchical account 'Repairs:Building Repairs' with 2 levels
+2025-06-14 20:39:09,878 [DEBUG] Field capture: 'Repairs' no additional source fields found
+2025-06-14 20:39:09,878 [DEBUG] Config: Created intermediate node 'Repairs' under 'Expenses:Repairs'
+2025-06-14 20:39:09,878 [DEBUG] Field capture: 'Building Repairs' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,878 [DEBUG] [ACCOUNTS-TREE] Placed account 'Building Repairs' under 'Expenses:Repairs:Repairs' as EXPENSE
+2025-06-14 20:39:09,878 [DEBUG] Config: Processing hierarchical account 'Repairs:Computer Repairs' with 2 levels
+2025-06-14 20:39:09,878 [DEBUG] Config: Using existing intermediate node 'Repairs'
+2025-06-14 20:39:09,878 [DEBUG] Field capture: 'Computer Repairs' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,878 [DEBUG] [ACCOUNTS-TREE] Placed account 'Computer Repairs' under 'Expenses:Repairs:Repairs' as EXPENSE
+2025-06-14 20:39:09,878 [DEBUG] Config: Processing hierarchical account 'Repairs:Equipment Repairs' with 2 levels
+2025-06-14 20:39:09,878 [DEBUG] Config: Using existing intermediate node 'Repairs'
+2025-06-14 20:39:09,878 [DEBUG] Field capture: 'Equipment Repairs' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,878 [DEBUG] [ACCOUNTS-TREE] Placed account 'Equipment Repairs' under 'Expenses:Repairs:Repairs' as EXPENSE
+2025-06-14 20:39:09,878 [DEBUG] Field capture: 'Taxes' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,878 [DEBUG] [ACCOUNTS-TREE] Placed account 'Taxes' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,878 [DEBUG] Config: Processing hierarchical account 'Taxes:Federal' with 2 levels
+2025-06-14 20:39:09,878 [DEBUG] Field capture: 'Taxes' no additional source fields found
+2025-06-14 20:39:09,878 [DEBUG] Config: Created intermediate node 'Taxes' under 'Expenses:Taxes'
+2025-06-14 20:39:09,878 [DEBUG] Field capture: 'Federal' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,878 [DEBUG] [ACCOUNTS-TREE] Placed account 'Federal' under 'Expenses:Taxes:Taxes' as EXPENSE
+2025-06-14 20:39:09,878 [DEBUG] Config: Processing hierarchical account 'Taxes:Property' with 2 levels
+2025-06-14 20:39:09,878 [DEBUG] Config: Using existing intermediate node 'Taxes'
+2025-06-14 20:39:09,878 [DEBUG] Field capture: 'Property' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,878 [DEBUG] [ACCOUNTS-TREE] Placed account 'Property' under 'Expenses:Taxes:Taxes' as EXPENSE
+2025-06-14 20:39:09,878 [DEBUG] Config: Processing hierarchical account 'Taxes:State' with 2 levels
+2025-06-14 20:39:09,879 [DEBUG] Config: Using existing intermediate node 'Taxes'
+2025-06-14 20:39:09,879 [DEBUG] Field capture: 'State' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,879 [DEBUG] [ACCOUNTS-TREE] Placed account 'State' under 'Expenses:Taxes:Taxes' as EXPENSE
+2025-06-14 20:39:09,879 [DEBUG] Field capture: 'Tools and Misc. Equipment' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,879 [DEBUG] [ACCOUNTS-TREE] Placed account 'Tools and Misc. Equipment' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,879 [DEBUG] Field capture: 'Uncategorized Expenses' preserved 12 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'EXTRA', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,879 [DEBUG] [ACCOUNTS-TREE] Placed account 'Uncategorized Expenses' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,879 [DEBUG] Field capture: 'Utilities' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,879 [DEBUG] [ACCOUNTS-TREE] Placed account 'Utilities' under 'Expenses' as EXPENSE
+2025-06-14 20:39:09,879 [DEBUG] Config: Processing hierarchical account 'Utilities:Gas and Electric' with 2 levels
+2025-06-14 20:39:09,879 [DEBUG] Field capture: 'Utilities' no additional source fields found
+2025-06-14 20:39:09,879 [DEBUG] Config: Created intermediate node 'Utilities' under 'Expenses:Utilities'
+2025-06-14 20:39:09,879 [DEBUG] Field capture: 'Gas and Electric' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,879 [DEBUG] [ACCOUNTS-TREE] Placed account 'Gas and Electric' under 'Expenses:Utilities:Utilities' as EXPENSE
+2025-06-14 20:39:09,879 [DEBUG] Config: Processing hierarchical account 'Utilities:Telephone' with 2 levels
+2025-06-14 20:39:09,879 [DEBUG] Config: Using existing intermediate node 'Utilities'
+2025-06-14 20:39:09,879 [DEBUG] Field capture: 'Telephone' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,879 [DEBUG] [ACCOUNTS-TREE] Placed account 'Telephone' under 'Expenses:Utilities:Utilities' as EXPENSE
+2025-06-14 20:39:09,879 [DEBUG] Config: Processing hierarchical account 'Utilities:Water' with 2 levels
+2025-06-14 20:39:09,879 [DEBUG] Config: Using existing intermediate node 'Utilities'
+2025-06-14 20:39:09,879 [DEBUG] Field capture: 'Water' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,879 [DEBUG] [ACCOUNTS-TREE] Placed account 'Water' under 'Expenses:Utilities:Utilities' as EXPENSE
+2025-06-14 20:39:09,879 [DEBUG] Field capture: 'Extraordinary' no additional source fields found
+2025-06-14 20:39:09,879 [DEBUG] Config: Created intermediate hierarchy node 'Extraordinary' under 'Income'
+2025-06-14 20:39:09,879 [DEBUG] Field capture: 'Misc Income' preserved 10 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,879 [DEBUG] [ACCOUNTS-TREE] Placed account 'Misc Income' under 'Income:Extraordinary' as INCOME
+2025-06-14 20:39:09,879 [DEBUG] Field capture: 'Interest Income' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,879 [DEBUG] [ACCOUNTS-TREE] Placed account 'Interest Income' under 'Income:Extraordinary' as INCOME
+2025-06-14 20:39:09,879 [DEBUG] Field capture: 'Extraordinary' no additional source fields found
+2025-06-14 20:39:09,879 [DEBUG] Config: Created intermediate hierarchy node 'Extraordinary' under 'Expenses'
+2025-06-14 20:39:09,880 [DEBUG] Field capture: 'Other Expenses' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,880 [DEBUG] [ACCOUNTS-TREE] Placed account 'Other Expenses' under 'Expenses:Extraordinary' as EXPENSE
+2025-06-14 20:39:09,880 [DEBUG] Field capture: 'Non-Posting' no additional source fields found
+2025-06-14 20:39:09,880 [DEBUG] Config: Created intermediate hierarchy node 'Non-Posting' under 'Assets'
+2025-06-14 20:39:09,880 [DEBUG] Field capture: 'Sales Orders' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'ACCNUM', 'SCD', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,880 [DEBUG] [ACCOUNTS-TREE] Placed account 'Sales Orders' under 'Assets:Non-Posting' as ASSET
+2025-06-14 20:39:09,880 [DEBUG] Field capture: 'Purchase Orders' preserved 11 source fields: ['!ACCNT', 'NAME', 'REFNUM', 'TIMESTAMP', 'ACCNTTYPE', 'OBAMOUNT', 'SCD', 'EXTRA', 'HIDDEN', 'DELCOUNT', 'USEID']
+2025-06-14 20:39:09,880 [DEBUG] [ACCOUNTS-TREE] Placed account 'Purchase Orders' under 'Assets:Non-Posting' as ASSET
+2025-06-14 20:39:09,880 [DEBUG] Config: Applied 1-child rule - eliminated redundant 'Truck' by merging child into parent
+2025-06-14 20:39:09,880 [DEBUG] Config: Moved 2 grandchildren up to eliminate redundant layer
+2025-06-14 20:39:09,880 [DEBUG] Config: 1-child rule skipped for 'Fixed Assets' - different name from child 'Truck' (legitimate hierarchy)
+2025-06-14 20:39:09,880 [DEBUG] Config: Applied 1-child rule - eliminated redundant 'QuickBooks Credit Card' by merging child into parent
+2025-06-14 20:39:09,880 [DEBUG] Config: Moved 3 grandchildren up to eliminate redundant layer
+2025-06-14 20:39:09,880 [DEBUG] Config: 1-child rule skipped for 'Sales Tax Payable' - different name from child 'EXTORTION-FEES-PAYABLE' (legitimate hierarchy)
+2025-06-14 20:39:09,880 [DEBUG] Config: Applied 1-child rule - eliminated redundant 'Sales Tax Payable' by merging child into parent
+2025-06-14 20:39:09,880 [DEBUG] Config: Moved 1 grandchildren up to eliminate redundant layer
+2025-06-14 20:39:09,880 [DEBUG] Config: Applied 1-child rule - eliminated redundant 'Owner's Equity' by merging child into parent
+2025-06-14 20:39:09,880 [DEBUG] Config: Moved 2 grandchildren up to eliminate redundant layer
+2025-06-14 20:39:09,880 [DEBUG] Config: Applied 1-child rule - eliminated redundant 'Landscaping Services' by merging child into parent
+2025-06-14 20:39:09,880 [DEBUG] Config: Moved 4 grandchildren up to eliminate redundant layer
+2025-06-14 20:39:09,880 [DEBUG] Config: Applied 1-child rule - eliminated redundant 'Automobile' by merging child into parent
+2025-06-14 20:39:09,880 [DEBUG] Config: Moved 4 grandchildren up to eliminate redundant layer
+2025-06-14 20:39:09,880 [DEBUG] Config: Applied 1-child rule - eliminated redundant 'Insurance' by merging child into parent
+2025-06-14 20:39:09,880 [DEBUG] Config: Moved 3 grandchildren up to eliminate redundant layer
+2025-06-14 20:39:09,880 [DEBUG] Config: Applied 1-child rule - eliminated redundant 'Interest Expense' by merging child into parent
+2025-06-14 20:39:09,880 [DEBUG] Config: Moved 2 grandchildren up to eliminate redundant layer
+2025-06-14 20:39:09,880 [DEBUG] Config: Applied 1-child rule - eliminated redundant 'Job Expenses' by merging child into parent
+2025-06-14 20:39:09,880 [DEBUG] Config: Moved 4 grandchildren up to eliminate redundant layer
+2025-06-14 20:39:09,880 [DEBUG] Config: Applied 1-child rule - eliminated redundant 'Professional Fees' by merging child into parent
+2025-06-14 20:39:09,880 [DEBUG] Config: Moved 2 grandchildren up to eliminate redundant layer
+2025-06-14 20:39:09,880 [DEBUG] Config: Applied 1-child rule - eliminated redundant 'Repairs' by merging child into parent
+2025-06-14 20:39:09,881 [DEBUG] Config: Moved 3 grandchildren up to eliminate redundant layer
+2025-06-14 20:39:09,881 [DEBUG] Config: Applied 1-child rule - eliminated redundant 'Taxes' by merging child into parent
+2025-06-14 20:39:09,881 [DEBUG] Config: Moved 3 grandchildren up to eliminate redundant layer
+2025-06-14 20:39:09,881 [DEBUG] Config: Applied 1-child rule - eliminated redundant 'Utilities' by merging child into parent
+2025-06-14 20:39:09,881 [DEBUG] Config: Moved 3 grandchildren up to eliminate redundant layer
+2025-06-14 20:39:09,881 [DEBUG] Config: 1-child rule skipped for 'Extraordinary' - different name from child 'Other Expenses' (legitimate hierarchy)
+2025-06-14 20:39:09,881 [DEBUG] Built double-entry accounting tree with 121 accounts
+2025-06-14 20:39:09,881 [DEBUG] AR accounts: 1, AP accounts: 1
+2025-06-14 20:39:09,881 [DEBUG] [ACCOUNTS-ORCHESTRATION] Account hierarchy tree construction completed
+2025-06-14 20:39:09,881 [DEBUG] [ACCOUNTS-ORCHESTRATION] Beginning CSV export
+2025-06-14 20:39:09,881 [DEBUG] Set placeholder=T for fundamental accounting type: Assets
+2025-06-14 20:39:09,881 [DEBUG] Exported account 'Assets' as type 'ASSET' with full name 'Assets'
+2025-06-14 20:39:09,881 [DEBUG] Exported account 'Current Assets' as type 'ASSET' with full name 'Assets:Current Assets'
+2025-06-14 20:39:09,881 [DEBUG] Exported account 'Bank' as type 'ASSET' with full name 'Assets:Current Assets:Bank'
+2025-06-14 20:39:09,881 [DEBUG] Exported account 'Checking' as type 'ASSET' with full name 'Assets:Current Assets:Bank:Checking'
+2025-06-14 20:39:09,881 [DEBUG] Exported account 'Cash Expenditures' as type 'ASSET' with full name 'Assets:Current Assets:Bank:Cash Expenditures'
+2025-06-14 20:39:09,881 [DEBUG] Exported account 'Savings' as type 'ASSET' with full name 'Assets:Current Assets:Bank:Savings'
+2025-06-14 20:39:09,881 [DEBUG] Exported account 'Barter Account' as type 'ASSET' with full name 'Assets:Current Assets:Bank:Barter Account'
+2025-06-14 20:39:09,881 [DEBUG] Exported account 'Other Current Assets' as type 'ASSET' with full name 'Assets:Current Assets:Other Current Assets'
+2025-06-14 20:39:09,881 [DEBUG] Exported account 'Prepaid Insurance' as type 'ASSET' with full name 'Assets:Current Assets:Other Current Assets:Prepaid Insurance'
+2025-06-14 20:39:09,881 [DEBUG] Exported account 'Employee advances' as type 'ASSET' with full name 'Assets:Current Assets:Other Current Assets:Employee advances'
+2025-06-14 20:39:09,881 [DEBUG] Exported account 'Inventory Asset' as type 'ASSET' with full name 'Assets:Current Assets:Other Current Assets:Inventory Asset'
+2025-06-14 20:39:09,881 [DEBUG] Exported account 'Undeposited Funds' as type 'ASSET' with full name 'Assets:Current Assets:Other Current Assets:Undeposited Funds'
+2025-06-14 20:39:09,881 [DEBUG] Exported account 'Accounts Receivable' as type 'RECEIVABLE' with full name 'Assets:Accounts Receivable'
+2025-06-14 20:39:09,881 [DEBUG] Exported account 'Fixed Assets' as type 'ASSET' with full name 'Assets:Fixed Assets'
+2025-06-14 20:39:09,881 [DEBUG] Exported account 'Truck' as type 'ASSET' with full name 'Assets:Fixed Assets:Truck'
+2025-06-14 20:39:09,881 [DEBUG] Exported account 'Accumulated Depreciation' as type 'ASSET' with full name 'Assets:Fixed Assets:Truck:Accumulated Depreciation'
+2025-06-14 20:39:09,881 [DEBUG] Exported account 'Original Purchase' as type 'ASSET' with full name 'Assets:Fixed Assets:Truck:Original Purchase'
+2025-06-14 20:39:09,881 [DEBUG] Exported account 'Non-Posting' as type 'ASSET' with full name 'Assets:Non-Posting'
+2025-06-14 20:39:09,881 [DEBUG] Exported account 'Sales Orders' as type 'ASSET' with full name 'Assets:Non-Posting:Sales Orders'
+2025-06-14 20:39:09,881 [DEBUG] Exported account 'Purchase Orders' as type 'ASSET' with full name 'Assets:Non-Posting:Purchase Orders'
+2025-06-14 20:39:09,881 [DEBUG] Set placeholder=T for fundamental accounting type: Liabilities
+2025-06-14 20:39:09,881 [DEBUG] Exported account 'Liabilities' as type 'LIABILITY' with full name 'Liabilities'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Accounts Payable' as type 'PAYABLE' with full name 'Liabilities:Accounts Payable'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Credit Cards' as type 'LIABILITY' with full name 'Liabilities:Credit Cards'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'CalOil Card' as type 'LIABILITY' with full name 'Liabilities:Credit Cards:CalOil Card'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'QuickBooks Credit Card' as type 'LIABILITY' with full name 'Liabilities:Credit Cards:QuickBooks Credit Card'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'QBCC Field Office' as type 'LIABILITY' with full name 'Liabilities:Credit Cards:QuickBooks Credit Card:QBCC Field Office'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'QBCC Home Office' as type 'LIABILITY' with full name 'Liabilities:Credit Cards:QuickBooks Credit Card:QBCC Home Office'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'QBCC Sales Dept' as type 'LIABILITY' with full name 'Liabilities:Credit Cards:QuickBooks Credit Card:QBCC Sales Dept'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Current Liabilities' as type 'LIABILITY' with full name 'Liabilities:Current Liabilities'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Payroll Liabilities' as type 'LIABILITY' with full name 'Liabilities:Current Liabilities:Payroll Liabilities'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Direct Deposit Liabilities' as type 'LIABILITY' with full name 'Liabilities:Current Liabilities:Direct Deposit Liabilities'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Payments on Account' as type 'LIABILITY' with full name 'Liabilities:Current Liabilities:Payments on Account'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Sales Tax Payable' as type 'LIABILITY' with full name 'Liabilities:Current Liabilities:Sales Tax Payable'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'EXTORTION-FEES-PAYABLE' as type 'LIABILITY' with full name 'Liabilities:Current Liabilities:Sales Tax Payable:EXTORTION-FEES-PAYABLE'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Long-Term Liabilities' as type 'LIABILITY' with full name 'Liabilities:Long-Term Liabilities'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Bank of Anycity Loan' as type 'LIABILITY' with full name 'Liabilities:Long-Term Liabilities:Bank of Anycity Loan'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Equipment Loan' as type 'LIABILITY' with full name 'Liabilities:Long-Term Liabilities:Equipment Loan'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Bank Loan' as type 'LIABILITY' with full name 'Liabilities:Long-Term Liabilities:Bank Loan'
+2025-06-14 20:39:09,882 [DEBUG] Set placeholder=T for fundamental accounting type: Equity
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Equity' as type 'EQUITY' with full name 'Equity'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Opening Bal Equity' as type 'EQUITY' with full name 'Equity:Opening Bal Equity'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Owner's Equity' as type 'EQUITY' with full name 'Equity:Owner's Equity'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Owner's Contributions' as type 'EQUITY' with full name 'Equity:Owner's Equity:Owner's Contributions'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Owner's Draw' as type 'EQUITY' with full name 'Equity:Owner's Equity:Owner's Draw'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Retained Earnings' as type 'EQUITY' with full name 'Equity:Retained Earnings'
+2025-06-14 20:39:09,882 [DEBUG] Set placeholder=T for fundamental accounting type: Income
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Income' as type 'INCOME' with full name 'Income'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Discounts' as type 'INCOME' with full name 'Income:Discounts'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Landscaping Services' as type 'INCOME' with full name 'Income:Landscaping Services'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Design Services' as type 'INCOME' with full name 'Income:Landscaping Services:Design Services'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Equipment Rental' as type 'INCOME' with full name 'Income:Landscaping Services:Equipment Rental'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Job Materials' as type 'INCOME' with full name 'Income:Landscaping Services:Job Materials'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Misc Materials' as type 'INCOME' with full name 'Income:Landscaping Services:Job Materials:Misc Materials'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Decks & Patios' as type 'INCOME' with full name 'Income:Landscaping Services:Job Materials:Decks & Patios'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Fountains & Garden Lighting' as type 'INCOME' with full name 'Income:Landscaping Services:Job Materials:Fountains & Garden Lighting'
+2025-06-14 20:39:09,882 [DEBUG] Exported account 'Plants and Sod' as type 'INCOME' with full name 'Income:Landscaping Services:Job Materials:Plants and Sod'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Sprinklers & Drip systems' as type 'INCOME' with full name 'Income:Landscaping Services:Job Materials:Sprinklers & Drip systems'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Labor' as type 'INCOME' with full name 'Income:Landscaping Services:Labor'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Installation' as type 'INCOME' with full name 'Income:Landscaping Services:Labor:Installation'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Maintenance & Repairs' as type 'INCOME' with full name 'Income:Landscaping Services:Labor:Maintenance & Repairs'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Markup Income' as type 'INCOME' with full name 'Income:Markup Income'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Other Income' as type 'INCOME' with full name 'Income:Other Income'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Retail Sales' as type 'INCOME' with full name 'Income:Retail Sales'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Service' as type 'INCOME' with full name 'Income:Service'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Uncategorized Income' as type 'INCOME' with full name 'Income:Uncategorized Income'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Extraordinary' as type 'INCOME' with full name 'Income:Extraordinary'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Misc Income' as type 'INCOME' with full name 'Income:Extraordinary:Misc Income'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Interest Income' as type 'INCOME' with full name 'Income:Extraordinary:Interest Income'
+2025-06-14 20:39:09,883 [DEBUG] Set placeholder=T for fundamental accounting type: Expenses
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Expenses' as type 'EXPENSE' with full name 'Expenses'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Cost of Goods Sold' as type 'EXPENSE' with full name 'Expenses:Cost of Goods Sold'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Payroll Expenses' as type 'EXPENSE' with full name 'Expenses:Payroll Expenses'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Advertising' as type 'EXPENSE' with full name 'Expenses:Advertising'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Amortization Expense' as type 'EXPENSE' with full name 'Expenses:Amortization Expense'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Automobile' as type 'EXPENSE' with full name 'Expenses:Automobile'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Insurance' as type 'EXPENSE' with full name 'Expenses:Automobile:Insurance'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'License & Fees' as type 'EXPENSE' with full name 'Expenses:Automobile:License & Fees'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Fuel' as type 'EXPENSE' with full name 'Expenses:Automobile:Fuel'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Maintenance & Repairs' as type 'EXPENSE' with full name 'Expenses:Automobile:Maintenance & Repairs'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Bad Debt' as type 'EXPENSE' with full name 'Expenses:Bad Debt'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Bank Service Charges' as type 'EXPENSE' with full name 'Expenses:Bank Service Charges'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Bond Expense' as type 'EXPENSE' with full name 'Expenses:Bond Expense'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Delivery Fee' as type 'EXPENSE' with full name 'Expenses:Delivery Fee'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Depreciation' as type 'EXPENSE' with full name 'Expenses:Depreciation'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Dues and Subscription' as type 'EXPENSE' with full name 'Expenses:Dues and Subscription'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Insurance' as type 'EXPENSE' with full name 'Expenses:Insurance'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Disability' as type 'EXPENSE' with full name 'Expenses:Insurance:Disability'
+2025-06-14 20:39:09,883 [DEBUG] Exported account 'Liability' as type 'EXPENSE' with full name 'Expenses:Insurance:Liability'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Worker's Comp' as type 'EXPENSE' with full name 'Expenses:Insurance:Worker's Comp'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Interest Expense' as type 'EXPENSE' with full name 'Expenses:Interest Expense'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Finance Charges' as type 'EXPENSE' with full name 'Expenses:Interest Expense:Finance Charges'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Interest on Loan' as type 'EXPENSE' with full name 'Expenses:Interest Expense:Interest on Loan'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Job Expenses' as type 'EXPENSE' with full name 'Expenses:Job Expenses'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Equipmental Rental' as type 'EXPENSE' with full name 'Expenses:Job Expenses:Equipmental Rental'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Job Materials' as type 'EXPENSE' with full name 'Expenses:Job Expenses:Job Materials'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Decks & Patio' as type 'EXPENSE' with full name 'Expenses:Job Expenses:Job Materials:Decks & Patio'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Fountains & Garden Lighting' as type 'EXPENSE' with full name 'Expenses:Job Expenses:Job Materials:Fountains & Garden Lighting'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Plants & Sod' as type 'EXPENSE' with full name 'Expenses:Job Expenses:Job Materials:Plants & Sod'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Sprinkler's & Drip Systems' as type 'EXPENSE' with full name 'Expenses:Job Expenses:Job Materials:Sprinkler's & Drip Systems'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Permits' as type 'EXPENSE' with full name 'Expenses:Job Expenses:Permits'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Subcontractors' as type 'EXPENSE' with full name 'Expenses:Job Expenses:Subcontractors'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Mileage Reimbursement' as type 'EXPENSE' with full name 'Expenses:Mileage Reimbursement'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Miscellaneous' as type 'EXPENSE' with full name 'Expenses:Miscellaneous'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Office Supplies' as type 'EXPENSE' with full name 'Expenses:Office Supplies'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Professional Fees' as type 'EXPENSE' with full name 'Expenses:Professional Fees'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Accounting' as type 'EXPENSE' with full name 'Expenses:Professional Fees:Accounting'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Legal' as type 'EXPENSE' with full name 'Expenses:Professional Fees:Legal'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Rent' as type 'EXPENSE' with full name 'Expenses:Rent'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Repairs' as type 'EXPENSE' with full name 'Expenses:Repairs'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Building Repairs' as type 'EXPENSE' with full name 'Expenses:Repairs:Building Repairs'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Computer Repairs' as type 'EXPENSE' with full name 'Expenses:Repairs:Computer Repairs'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Equipment Repairs' as type 'EXPENSE' with full name 'Expenses:Repairs:Equipment Repairs'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Taxes' as type 'EXPENSE' with full name 'Expenses:Taxes'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Federal' as type 'EXPENSE' with full name 'Expenses:Taxes:Federal'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Property' as type 'EXPENSE' with full name 'Expenses:Taxes:Property'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'State' as type 'EXPENSE' with full name 'Expenses:Taxes:State'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Tools and Misc. Equipment' as type 'EXPENSE' with full name 'Expenses:Tools and Misc. Equipment'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Uncategorized Expenses' as type 'EXPENSE' with full name 'Expenses:Uncategorized Expenses'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Utilities' as type 'EXPENSE' with full name 'Expenses:Utilities'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Gas and Electric' as type 'EXPENSE' with full name 'Expenses:Utilities:Gas and Electric'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Telephone' as type 'EXPENSE' with full name 'Expenses:Utilities:Telephone'
+2025-06-14 20:39:09,884 [DEBUG] Exported account 'Water' as type 'EXPENSE' with full name 'Expenses:Utilities:Water'
+2025-06-14 20:39:09,885 [DEBUG] Exported account 'Extraordinary' as type 'EXPENSE' with full name 'Expenses:Extraordinary'
+2025-06-14 20:39:09,885 [DEBUG] Exported account 'Other Expenses' as type 'EXPENSE' with full name 'Expenses:Extraordinary:Other Expenses'
+2025-06-14 20:39:09,886 [INFO] [EXPORT] Exported 121 accounts to GnuCash-compatible CSV format
+2025-06-14 20:39:09,886 [DEBUG] [EXPORT] Output file: output\accounts.csv with 12 columns
+2025-06-14 20:39:09,886 [INFO] [ACCOUNTS-PIPELINE] Generated output file: output\accounts.csv (10511 bytes)
+2025-06-14 20:39:09,887 [INFO] [ACCOUNTS-PIPELINE] Accounts processing completed successfully
+2025-06-14 20:39:09,887 [DEBUG] [CORE] Module dispatch completed - ACCNT
+2025-06-14 20:39:09,887 [DEBUG] [CORE] Module completed successfully - ACCNT -> processing completed successfully
+2025-06-14 20:39:09,887 [DEBUG] [CORE] Module key not registered - QB (7 module key records) - no processing module available
+2025-06-14 20:39:09,887 [DEBUG] [CORE] To process QB module keys, register a module with: register_global_module('QB', module_function)
+2025-06-14 20:39:09,887 [DEBUG] [CORE] Module key not registered - CUSTITEMDICT (0 module key records) - no processing module available
+2025-06-14 20:39:09,887 [DEBUG] [CORE] To process CUSTITEMDICT module keys, register a module with: register_global_module('CUSTITEMDICT', module_function)
+2025-06-14 20:39:09,887 [DEBUG] [CORE] Module key not registered - ENDCUSTITEMDICT (16 module key records) - no processing module available
+2025-06-14 20:39:09,887 [DEBUG] [CORE] To process ENDCUSTITEMDICT module keys, register a module with: register_global_module('ENDCUSTITEMDICT', module_function)
+2025-06-14 20:39:09,887 [DEBUG] [CORE] Module key not registered - INVITEM (0 module key records) - no processing module available
+2025-06-14 20:39:09,887 [DEBUG] [CORE] To process INVITEM module keys, register a module with: register_global_module('INVITEM', module_function)
+2025-06-14 20:39:09,887 [DEBUG] [CORE] Module key not registered - ENDGRP (21 module key records) - no processing module available
+2025-06-14 20:39:09,887 [DEBUG] [CORE] To process ENDGRP module keys, register a module with: register_global_module('ENDGRP', module_function)
+2025-06-14 20:39:09,887 [DEBUG] [CORE] Module key not registered - CLASS (4 module key records) - no processing module available
+2025-06-14 20:39:09,887 [DEBUG] [CORE] To process CLASS module keys, register a module with: register_global_module('CLASS', module_function)
+2025-06-14 20:39:09,887 [DEBUG] [CORE] Module key not registered - CTYPE (2 module key records) - no processing module available
+2025-06-14 20:39:09,887 [DEBUG] [CORE] To process CTYPE module keys, register a module with: register_global_module('CTYPE', module_function)
+2025-06-14 20:39:09,887 [DEBUG] [CORE] Module key not registered - CUSTNAMEDICT (0 module key records) - no processing module available
+2025-06-14 20:39:09,887 [DEBUG] [CORE] To process CUSTNAMEDICT module keys, register a module with: register_global_module('CUSTNAMEDICT', module_function)
+2025-06-14 20:39:09,887 [DEBUG] [CORE] Module key not registered - ENDCUSTNAMEDICT (31 module key records) - no processing module available
+2025-06-14 20:39:09,887 [DEBUG] [CORE] To process ENDCUSTNAMEDICT module keys, register a module with: register_global_module('ENDCUSTNAMEDICT', module_function)
+2025-06-14 20:39:09,887 [DEBUG] [CORE] Module key not registered - JOBTYPE (3 module key records) - no processing module available
+2025-06-14 20:39:09,887 [DEBUG] [CORE] To process JOBTYPE module keys, register a module with: register_global_module('JOBTYPE', module_function)
+2025-06-14 20:39:09,887 [DEBUG] [CORE] Module key not registered - CUST (65 module key records) - no processing module available
+2025-06-14 20:39:09,887 [DEBUG] [CORE] To process CUST module keys, register a module with: register_global_module('CUST', module_function)
+2025-06-14 20:39:09,887 [DEBUG] [CORE] Module key not registered - VTYPE (7 module key records) - no processing module available
+2025-06-14 20:39:09,887 [DEBUG] [CORE] To process VTYPE module keys, register a module with: register_global_module('VTYPE', module_function)
+2025-06-14 20:39:09,887 [DEBUG] [CORE] Module key not registered - VEND (38 module key records) - no processing module available
+2025-06-14 20:39:09,887 [DEBUG] [CORE] To process VEND module keys, register a module with: register_global_module('VEND', module_function)
+2025-06-14 20:39:09,888 [DEBUG] [CORE] Module key not registered - EMP (3 module key records) - no processing module available
+2025-06-14 20:39:09,888 [DEBUG] [CORE] To process EMP module keys, register a module with: register_global_module('EMP', module_function)
+2025-06-14 20:39:09,888 [DEBUG] [CORE] Module key not registered - OTHERNAME (7 module key records) - no processing module available
+2025-06-14 20:39:09,888 [DEBUG] [CORE] To process OTHERNAME module keys, register a module with: register_global_module('OTHERNAME', module_function)
+2025-06-14 20:39:09,888 [DEBUG] [CORE] Module key not registered - SHIPMETH (5 module key records) - no processing module available
+2025-06-14 20:39:09,888 [DEBUG] [CORE] To process SHIPMETH module keys, register a module with: register_global_module('SHIPMETH', module_function)
+2025-06-14 20:39:09,888 [DEBUG] [CORE] Module key not registered - PAYMETH (8 module key records) - no processing module available
+2025-06-14 20:39:09,888 [DEBUG] [CORE] To process PAYMETH module keys, register a module with: register_global_module('PAYMETH', module_function)
+2025-06-14 20:39:09,888 [DEBUG] [CORE] Module key not registered - INVMEMO (5 module key records) - no processing module available
+2025-06-14 20:39:09,888 [DEBUG] [CORE] To process INVMEMO module keys, register a module with: register_global_module('INVMEMO', module_function)
+2025-06-14 20:39:09,888 [DEBUG] [CORE] Module key not registered - TERMS (7 module key records) - no processing module available
+2025-06-14 20:39:09,888 [DEBUG] [CORE] To process TERMS module keys, register a module with: register_global_module('TERMS', module_function)
+2025-06-14 20:39:09,888 [DEBUG] [CORE] Module key not registered - BUD (38 module key records) - no processing module available
+2025-06-14 20:39:09,888 [DEBUG] [CORE] To process BUD module keys, register a module with: register_global_module('BUD', module_function)
+2025-06-14 20:39:09,888 [DEBUG] [CORE] Module key not registered - SALESREP (1 module key records) - no processing module available
+2025-06-14 20:39:09,888 [DEBUG] [CORE] To process SALESREP module keys, register a module with: register_global_module('SALESREP', module_function)
+2025-06-14 20:39:09,888 [DEBUG] [CORE] Module key not registered - TODO (6 module key records) - no processing module available
+2025-06-14 20:39:09,888 [DEBUG] [CORE] To process TODO module keys, register a module with: register_global_module('TODO', module_function)
+2025-06-14 20:39:09,888 [DEBUG] [CORE] Module key not registered - PRICELEVEL (0 module key records) - no processing module available
+2025-06-14 20:39:09,888 [DEBUG] [CORE] To process PRICELEVEL module keys, register a module with: register_global_module('PRICELEVEL', module_function)
+2025-06-14 20:39:09,888 [DEBUG] [CORE] Module key not registered - SALESTAXCODE (4 module key records) - no processing module available
+2025-06-14 20:39:09,888 [DEBUG] [CORE] To process SALESTAXCODE module keys, register a module with: register_global_module('SALESTAXCODE', module_function)
+2025-06-14 20:39:09,888 [INFO] SUCCESS: [CORE] Processing qbd-all-lists-sample.IIF -> accnt module -> accnt.csv (106 accounts)
+2025-06-14 20:39:09,890 [INFO] [CORE] Some QBD data types are not yet implemented. See log file for details.
+2025-06-14 20:39:09,890 [INFO] [CORE] Pipeline completed: 1 modules processed successfully from 1 files
+2025-06-14 20:39:09,890 [DEBUG] [CORE] Conversion completed successfully
