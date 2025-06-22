@@ -1,3 +1,4 @@
 qbd-to-gnucash.code-workspace
-bu-qb-gnuc.ps1src/__pycache__/
+bu-qb-gnuc.ps1
+src/__pycache__/
 src/modules/accounts/__pycache__/
