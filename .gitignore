@@ -1,4 +1,10 @@
-qbd-to-gnucash.code-workspace
-bu-qb-gnuc.ps1
-src/__pycache__/
-src/modules/accounts/__pycache__/
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# VS Code workspace files
+*.code-workspace
+
+# PowerShell scripts (if you want to ignore them)
+*.ps1
